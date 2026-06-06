@@ -3,6 +3,7 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import 'package:google_fonts/google_fonts.dart';
 
 import "theme/colors.dart";
 
@@ -27,6 +28,8 @@ class GrobownikApp extends StatelessWidget {
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +167,189 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MyDraggableSheet extends StatefulWidget {
+  const MyDraggableSheet({super.key});
+
+  @override
+  State<MyDraggableSheet> createState() => _MyDraggableSheetState();
+}
+
+class _MyDraggableSheetState extends State<MyDraggableSheet> {
+  final _sheet = GlobalKey();
+  final _controller = DraggableScrollableController();
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_onChanged); 
+  }
+
+  void _onChanged() {
+    final currentSize = _controller.size;
+    if (currentSize <= 0.05) _collapse();
+  }
+
+  void _collapse() => _animateSheet(sheet.snapSizes!.first);
+
+  void _anchor() => _animateSheet(sheet.snapSizes!.last);
+
+  void _expand() => _animateSheet(sheet.maxChildSize);
+
+  void _hide() => _animateSheet(sheet.minChildSize);
+
+  void _animateSheet(double size) {
+    _controller.animateTo(
+      size,
+      duration: const Duration(milliseconds: 50),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Sprzątamy po sobie, gdy widget jest usuwany z ekranu
+    _controller.dispose(); 
+  }
+
+  DraggableScrollableSheet get sheet =>
+      (_sheet.currentWidget as DraggableScrollableSheet);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return DraggableScrollableSheet(
+          key: _sheet,
+          initialChildSize: 0.5,
+          maxChildSize: 1,
+          minChildSize: 0,
+          expand: true,
+          snap: true,
+          snapSizes: [
+            60 / constraints.maxHeight,
+            0.5,
+          ],
+          controller: _controller,
+          builder: (BuildContext context, ScrollController scrollController) {
+            // Dodajemy DefaultTabController, aby pasek zakładek (TabBar) miał z czego czerpać stan
+            return DefaultTabController(
+              length: 2, // Mamy 4 zakładki
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  
+                  color: Theme.of(context).bottomSheetTheme.backgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0), // Odsunięcie zawartości od krawędzi
+                child: CustomScrollView(
+                  controller: scrollController,
+                  slivers: [
+                     SliverToBoxAdapter(
+                      child: Text('Imię i nazwisko',
+                      style: Theme.of(context).textTheme.headlineMedium,)
+                    ),
+                    SliverList.list(
+                      children: [
+                         Text('XX.XX.XXXX - XX.XX.XXXX',
+                         style: Theme.of(context).textTheme.bodyLarge,),
+                        const SizedBox(height: 16), 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center, 
+                          children: [
+                            FilledButton.icon(
+                              onPressed: () {
+                                print('Kliknięto Start');
+                              },
+                              icon: const Icon(Icons.navigation),
+                              label: const Text('Odznacz jako odwiedzony'),
+                            ),
+                            const SizedBox(width: 12), 
+                            FilledButton.tonalIcon(
+                              onPressed: () {
+                                print('Kliknięto Directions');
+                              },
+                              icon: const Icon(Icons.directions),
+                              label: const Text('Nawigacja'),
+                            ),                   
+                            
+                          ],
+                        ),
+                        const SizedBox(height: 16), 
+                        
+                        Image.asset('assets/images/grave.jpg', width: 300.0, height: 300.0,),
+
+                        // ==========================================
+                        // NOWY KOD
+                        // ==========================================
+                        const SizedBox(height: 16),
+
+                        // 1. Rząd zakładek (TabBar)
+                        const TabBar(
+                          isScrollable: true, // Pozwala przewijać zakładki na boki
+                          tabAlignment: TabAlignment.center, // Wyrównuje zakładki do lewej krawędzi, jak na zdjęciu
+                          tabs: [
+                            Tab(text: 'Wzkazówki dojścia'),
+                            Tab(text: 'Życiorys'),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // 2. Ciemnoniebieski obszar z tekstem (Card)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Card(
+                            // Ręcznie ustawiony ciemny kolor na wzór tego ze zdjęcia
+                            color: const Color(0xFF1A262C), 
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+              
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // 3. Przycisk "Suggest an edit" (TextButton.icon)
+                        Center(
+                          child: TextButton.icon(
+                            onPressed: () {
+                              print('Kliknięto Suggest an edit');
+                            },
+                            icon: const Icon(Icons.edit_outlined),
+                            label: const Text('Suggest an edit'),
+                          ),
+                        ),
+
+                        const SizedBox(height: 32), // Bezpieczny margines na samym dole sheeta
+                        // ==========================================
+                        // KONIEC NOWEGO KODU
+                        // ==========================================
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

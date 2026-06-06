@@ -20,6 +20,7 @@ dependencies:
   flutter_svg: ^2.3.0
   dio: ^5.9.2
   intl: ^0.20.2
+  google_fonts: ^8.1.0
 
 dev_dependencies:
   flutter_test:
@@ -61,3 +62,5 @@ flutter:
         - asset: assets/fonts/KONSTRUKT-Regular.otf
 lint_staged:
   "lib/**.dart": dart format && dart fix --apply
+  assets:
+    - assets/images/
