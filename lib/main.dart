@@ -36,29 +36,26 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.roboto().fontFamily,
         textTheme: TextTheme(
           headlineMedium: TextStyle(
-            fontSize: 24.0,          
-            fontWeight: FontWeight.bold, 
-            letterSpacing: 0.15, 
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.15,
             fontFamily: GoogleFonts.robotoSlab().fontFamily,
           ),
           headlineSmall: TextStyle(
-            fontSize: 18.0,          
-            fontWeight: FontWeight.bold, 
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
             fontFamily: GoogleFonts.robotoSlab().fontFamily,
           ),
-          bodyMedium: TextStyle(
-            fontSize: 16.0            
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 20.0
-          )
+          bodyMedium: TextStyle(fontSize: 16.0),
+          bodyLarge: TextStyle(fontSize: 20.0),
         ),
         bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Palette.inkBlack
+          backgroundColor: Palette.inkBlack,
         ),
         colorScheme: .fromSeed(
           seedColor: Palette.inkBlack,
-        brightness: Brightness.dark),
+          brightness: Brightness.dark,
+        ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -96,8 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +143,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_onChanged); 
+    _controller.addListener(_onChanged);
   }
 
   void _onChanged() {
@@ -175,7 +170,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose(); 
+    _controller.dispose();
   }
 
   DraggableScrollableSheet get sheet =>
@@ -192,17 +187,13 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
           minChildSize: 0,
           expand: true,
           snap: true,
-          snapSizes: [
-            60 / constraints.maxHeight,
-            0.5,
-          ],
+          snapSizes: [60 / constraints.maxHeight, 0.5],
           controller: _controller,
           builder: (BuildContext context, ScrollController scrollController) {
             return DefaultTabController(
-              length: 2, 
+              length: 2,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  
                   color: Theme.of(context).bottomSheetTheme.backgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
@@ -210,152 +201,189 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),  
-                child: CustomScrollView(
-                  controller: scrollController,
-                  slivers: [
-                     SliverToBoxAdapter(
-                      child: Text('Imię i nazwisko',
-                      style: Theme.of(context).textTheme.headlineMedium,)
-                    ),
-                    SliverList.list(
-                      children: [
-                         Text('XX.XX.XXXX - XX.XX.XXXX',
-                         style: Theme.of(context).textTheme.bodyLarge,),
-                        const SizedBox(height: 16), 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center, 
-                          children: [
-                            FilledButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.navigation),
-                              label: const Text('Odznacz jako odwiedzony'),
-                            ),
-                            const SizedBox(width: 12), 
-                            FilledButton.tonalIcon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.directions),
-                              label: const Text('Nawigacja'),
-                            ),                   
-                            
-                          ],
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Text(
+                          'Imię i nazwisko',
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                        const SizedBox(height: 16), 
-                        
-                        Image.asset('assets/images/grave.jpg', width: 300.0, height: 300.0,),
+                      ),
+                      SliverList.list(
+                        children: [
+                          Text(
+                            'XX.XX.XXXX - XX.XX.XXXX',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FilledButton.icon(
+                                onPressed: () {},
+                                icon: const Icon(Icons.navigation),
+                                label: const Text('Odznacz jako odwiedzony'),
+                              ),
+                              const SizedBox(width: 12),
+                              FilledButton.tonalIcon(
+                                onPressed: () {},
+                                icon: const Icon(Icons.directions),
+                                label: const Text('Nawigacja'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
 
-                        const SizedBox(height: 16),
+                          SizedBox(
+                                height: 300, 
+                                child: CarouselView(
+                                  itemExtent: 280, 
+                                  shrinkExtent: 200, 
+                                  children: [
+                                    Image.asset('assets/images/grave.jpg', fit: BoxFit.cover),
+                                    Image.asset('assets/images/grave.jpg', fit: BoxFit.cover),
+                                  ],
+                                ),
+                              ),
 
-                        const TabBar(
-                          isScrollable: true, 
-                          tabAlignment: TabAlignment.center, 
-                          tabs: [
-                            Tab(text: 'Wzkazówki dojścia'),
-                            Tab(text: 'Życiorys'),
-                          ],
-                        ),
+                          const SizedBox(height: 16),
 
-                        const SizedBox(height: 16),
+                          const TabBar(
+                            isScrollable: true,
+                            tabAlignment: TabAlignment.center,
+                            tabs: [
+                              Tab(text: 'Wzkazówki dojścia'),
+                              Tab(text: 'Życiorys'),
+                            ],
+                          ),
 
-                        Builder(
-                          builder: (context) {
-                            final tabController = DefaultTabController.of(context);
-                            
+                          const SizedBox(height: 16),
 
-                            return AnimatedBuilder(
-                              animation: tabController,
-                              builder: (context, child) {
-                                
-                                if (tabController.index == 0) {
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        child: Card(
-                                          color: Palette.charcoalBlue, 
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
+                          Builder(
+                            builder: (context) {
+                              final tabController = DefaultTabController.of(
+                                context,
+                              );
+
+                              return AnimatedBuilder(
+                                animation: tabController,
+                                builder: (context, child) {
+                                  if (tabController.index == 0) {
+                                    return Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
                                           ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(16.0),
-                                            child: Text(
-                                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                            ),
-                                          ),
-                                        ),
-                                      ),                                
-                                    ],
-                                  );
-                                } 
-                                
-                                else {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                    child: Column(
-                                      children: List.generate(4, (index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(bottom: 12.0),
                                           child: Card(
                                             color: Palette.charcoalBlue,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(16),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(16.0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Icon(Icons.timeline, color: Colors.grey),
-                                                  const SizedBox(width: 16),
-                                                  
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          " ${1900 + (index*10)}: Osiągnięcie",
-                                                          style: Theme.of(context).textTheme.headlineSmall,
-                                                        ),
-                                                        const SizedBox(height: 4),
-                                                        const Text(
-                                                          'Tutaj znajduje się dłuższy opis konkretnego wydarzenia z życiorysu, który automatycznie zawija się do nowej linii.',
-                                                          style: TextStyle(color: Colors.white70),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Text(
+                                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                               ),
                                             ),
                                           ),
-                                        );
-                                      }),
-                                    ),
-                                  );
-                                }
-                              },
-                            );
-                          },
-                        ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0,
+                                      ),
+                                      child: Column(
+                                        children: List.generate(4, (index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 12.0,
+                                            ),
+                                            child: Card(
+                                              color: Palette.charcoalBlue,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  16.0,
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.timeline,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    const SizedBox(width: 16),
 
-                        const SizedBox(height: 8),
-
-                        Center(
-                          child: TextButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.edit_outlined),
-                            label: const Text('Zgłoś poprawkę'),
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            " ${1900 + (index * 10)}: Osiągnięcie",
+                                                            style:
+                                                                Theme.of(
+                                                                      context,
+                                                                    )
+                                                                    .textTheme
+                                                                    .headlineSmall,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 4,
+                                                          ),
+                                                          const Text(
+                                                            'Tutaj znajduje się dłuższy opis konkretnego wydarzenia z życiorysu, który automatycznie zawija się do nowej linii.',
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .white70,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    );
+                                  }
+                                },
+                              );
+                            },
                           ),
-                        ),
 
-                        const SizedBox(height: 32), 
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 8),
+
+                          Center(
+                            child: TextButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit_outlined),
+                              label: const Text('Zgłoś poprawkę'),
+                            ),
+                          ),
+
+                          const SizedBox(height: 32),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               ),
             );
           },
