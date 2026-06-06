@@ -2,8 +2,9 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:hooks_riverpod/hooks_riverpod.dart";
 import 'package:google_fonts/google_fonts.dart';
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import 'package:mobile_grobownik/palette.dart';
 
 import "theme/colors.dart";
 
@@ -211,7 +212,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   @override
   void dispose() {
     super.dispose();
-    // Sprzątamy po sobie, gdy widget jest usuwany z ekranu
     _controller.dispose(); 
   }
 
@@ -235,9 +235,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
           ],
           controller: _controller,
           builder: (BuildContext context, ScrollController scrollController) {
-            // Dodajemy DefaultTabController, aby pasek zakładek (TabBar) miał z czego czerpać stan
             return DefaultTabController(
-              length: 2, // Mamy 4 zakładki
+              length: 2, 
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   
@@ -248,7 +247,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0), // Odsunięcie zawartości od krawędzi
+                  padding: const EdgeInsets.all(16.0),  
                 child: CustomScrollView(
                   controller: scrollController,
                   slivers: [
@@ -265,17 +264,13 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                           mainAxisAlignment: MainAxisAlignment.center, 
                           children: [
                             FilledButton.icon(
-                              onPressed: () {
-                                print('Kliknięto Start');
-                              },
+                              onPressed: () {},
                               icon: const Icon(Icons.navigation),
                               label: const Text('Odznacz jako odwiedzony'),
                             ),
                             const SizedBox(width: 12), 
                             FilledButton.tonalIcon(
-                              onPressed: () {
-                                print('Kliknięto Directions');
-                              },
+                              onPressed: () {},
                               icon: const Icon(Icons.directions),
                               label: const Text('Nawigacja'),
                             ),                   
@@ -286,15 +281,11 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                         
                         Image.asset('assets/images/grave.jpg', width: 300.0, height: 300.0,),
 
-                        // ==========================================
-                        // NOWY KOD
-                        // ==========================================
                         const SizedBox(height: 16),
 
-                        // 1. Rząd zakładek (TabBar)
                         const TabBar(
-                          isScrollable: true, // Pozwala przewijać zakładki na boki
-                          tabAlignment: TabAlignment.center, // Wyrównuje zakładki do lewej krawędzi, jak na zdjęciu
+                          isScrollable: true, 
+                          tabAlignment: TabAlignment.center, 
                           tabs: [
                             Tab(text: 'Wzkazówki dojścia'),
                             Tab(text: 'Życiorys'),
@@ -303,43 +294,100 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
                         const SizedBox(height: 16),
 
-                        // 2. Ciemnoniebieski obszar z tekstem (Card)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Card(
-                            // Ręcznie ustawiony ciemny kolor na wzór tego ze zdjęcia
-                            color: const Color(0xFF1A262C), 
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-              
-                              ),
-                            ),
-                          ),
+                        Builder(
+                          builder: (context) {
+                            final tabController = DefaultTabController.of(context);
+                            
+
+                            return AnimatedBuilder(
+                              animation: tabController,
+                              builder: (context, child) {
+                                
+                                if (tabController.index == 0) {
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                        child: Card(
+                                          color: Palette.charcoalBlue, 
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                                            ),
+                                          ),
+                                        ),
+                                      ),                                
+                                    ],
+                                  );
+                                } 
+                                
+                                else {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Column(
+                                      children: List.generate(4, (index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(bottom: 12.0),
+                                          child: Card(
+                                            color: Palette.charcoalBlue,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(16.0),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Icon(Icons.timeline, color: Colors.grey),
+                                                  const SizedBox(width: 16),
+                                                  
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          " ${1900 + (index*10)}: Osiągnięcie",
+                                                          style: Theme.of(context).textTheme.headlineSmall,
+                                                        ),
+                                                        const SizedBox(height: 4),
+                                                        const Text(
+                                                          'Tutaj znajduje się dłuższy opis konkretnego wydarzenia z życiorysu, który automatycznie zawija się do nowej linii.',
+                                                          style: TextStyle(color: Colors.white70),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          },
                         ),
 
                         const SizedBox(height: 8),
 
-                        // 3. Przycisk "Suggest an edit" (TextButton.icon)
                         Center(
                           child: TextButton.icon(
-                            onPressed: () {
-                              print('Kliknięto Suggest an edit');
-                            },
+                            onPressed: () {},
                             icon: const Icon(Icons.edit_outlined),
-                            label: const Text('Suggest an edit'),
+                            label: const Text('Zgłoś poprawkę'),
                           ),
                         ),
 
-                        const SizedBox(height: 32), // Bezpieczny margines na samym dole sheeta
-                        // ==========================================
-                        // KONIEC NOWEGO KODU
-                        // ==========================================
+                        const SizedBox(height: 32), 
                       ],
                     ),
                   ],
