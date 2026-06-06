@@ -41,3 +41,8 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: KONSTRUKT-Regular
+      fonts:
+        - asset: assets/fonts/KONSTRUKT-Regular.otf

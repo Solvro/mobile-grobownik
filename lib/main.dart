@@ -1,122 +1,354 @@
+//WERSJA 1 - Lepsza :)
+
+/*PALETA KOLORÓW – GROBOWNIK UI
+
+TŁO APLIKACJI (BACKGROUND)
+#001626
+TŁO MAPY
+#001626
+PANEL DOLNY
+#001F33
+AKCENT 
+#FFD358
+KARTY / ELEMENTY LISTY
+#002E4D
+OBRAMOWANIE KART
+#083A5C
+TŁO AVATARÓW / IKON
+#002E4D
+TEKST GŁÓWNY
+#FFFFFF
+TEKST W KARTACH
+#FFFFFF
+TEKST POMOCNICZY (PLACEHOLDER MAPY)
+#A9C2D8
+*/
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const GrobownikApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GrobownikApp extends StatelessWidget {
+  const GrobownikApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Grobownik',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final graves = List.generate(8, (index) => 'Grave ${index + 1}');
+
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      backgroundColor: const Color(0xFF001626), // было 011B2F
+      body: Stack(
+        children: [
+          Container(
+            color: const Color(0xFF001626),
+            child: const Center(
+              child: Text(
+                'MAP PLACEHOLDER',
+                style: TextStyle(
+                  color: Color(0xFFA9C2D8),
+                  fontSize: 18,
+                ),
+              ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+          ),
+
+          DraggableScrollableSheet(
+            initialChildSize: 0.18,
+            minChildSize: 0.12,
+            maxChildSize: 0.85,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF001F33), // было 002A45
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+
+                    Container(
+                      width: 50,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFD358),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Color(0xFF002E4D), // темнее
+                            child: Icon(
+                              Icons.person_outline,
+                              color: Color(0xFFFFD358),
+                            ),
+                          ),
+
+                          const Expanded(
+                            child: Center(
+                              child: Text(
+                                'GROBOWNIK',
+                                style: TextStyle(
+                                  fontFamily: 'KONSTRUKT-Regular',
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 4,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Color(0xFF002E4D), // темнее
+                            child: Icon(
+                              Icons.add,
+                              color: Color(0xFFFFD358),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: graves.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            child: Container(
+                              height: 220,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF002E4D), // было 003F66
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                  color: const Color(0xFF083A5C), // темнее граница
+                                  width: 2,
+                                ),
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: Text(
+                                    graves[index],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
+} 
+
+//WERSJA 2 - świetła, mi się nie podoba, ale zostawiam dla porównania :(
+
+// Kolorów nie będzie :}
+
+/*import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const GrobownikApp());
 }
+
+class GrobownikApp extends StatelessWidget {
+  const GrobownikApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Grobownik',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final graves = List.generate(8, (index) => 'Grave ${index + 1}');
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF0F2F5), // холодный серый фон
+      body: Stack(
+        children: [
+          Container(
+            color: const Color(0xFFE3E7ED), // карта (стальной серый)
+            child: const Center(
+              child: Text(
+                'MAP PLACEHOLDER',
+                style: TextStyle(
+                  color: Color(0xFF6B7280),
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+
+          DraggableScrollableSheet(
+            initialChildSize: 0.18,
+            minChildSize: 0.12,
+            maxChildSize: 0.85,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFFFFFF), // панель белая
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+
+                    Container(
+                      width: 50,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F6FEB), // акцент синий
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Color(0xFFE9EDF2),
+                            child: Icon(
+                              Icons.person_outline,
+                              color: Color(0xFF1F6FEB),
+                            ),
+                          ),
+
+                          const Expanded(
+                            child: Center(
+                              child: Text(
+                                'GROBOWNIK',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 2,
+                                  color: Color(0xFF111827),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Color(0xFFE9EDF2),
+                            child: Icon(
+                              Icons.add,
+                              color: Color(0xFF1F6FEB),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: graves.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            child: Container(
+                              height: 220,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF8FAFC), // карточки
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                  color: const Color(0xFFD0D7E2),
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: Text(
+                                    graves[index],
+                                    style: const TextStyle(
+                                      color: Color(0xFF475569),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}*/
