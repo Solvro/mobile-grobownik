@@ -9,3 +9,5 @@ plugins:
     version: ^1.8.0
     diagnostics:
       provider_dependencies: false # this works weirdly
+    haptic_wrappers:
+      - HapticFeedback. # todo: you can change the name here if you want to do a haptic wrapper
