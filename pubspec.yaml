@@ -25,7 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  solvro_config: ^1.8.2-dev.2
+  solvro_config: ^1.8.3-dev
   build_runner: ^2.15.0
   json_serializable: ^6.14.0
   riverpod_generator: ^4.0.4-dev.3
