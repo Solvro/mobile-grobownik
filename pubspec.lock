@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: a49d6cf99e8d8e7a8e93668d09ced0bbdb954d0b4fccc2f5f9241c6b87fad95c
+      sha256: "8d718c5c58904f9937290fd5dbf2d6a0e02456867706bfb6cd7b81d394e738d5"
       url: "https://pub.dev"
     source: hosted
-    version: "99.0.0"
+    version: "98.0.0"
   analysis_server_plugin:
     dependency: transitive
     description:
@@ -18,13 +18,13 @@ packages:
     source: hosted
     version: "0.3.14"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
-      sha256: "663efa951fb8a45e06f491223a604c93820598f20e6a99c25617a1576065e8b7"
+      sha256: "6141ad5d092d1e1d13929c0504658bbeccc1703505830d7c26e859908f5efc88"
       url: "https://pub.dev"
     source: hosted
-    version: "12.1.0"
+    version: "12.0.0"
   analyzer_buffer:
     dependency: transitive
     description:
@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  ansicolor:
+    dependency: transitive
+    description:
+      name: ansicolor
+      sha256: "50e982d500bc863e1d703448afdbf9e5a72eb48840a4f766fa361ffd6877055f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   args:
     dependency: transitive
     description:
@@ -81,6 +89,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "11.1.0"
+  auto_route_generator:
+    dependency: "direct dev"
+    description:
+      name: auto_route_generator
+      sha256: "7aa0e90874928e78709f0a21a69fb5bc2ae1aa932dec862930d2af85c40adb01"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.5.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -242,7 +258,7 @@ packages:
     source: hosted
     version: "1.0.9"
   dart_style:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: dart_style
       sha256: a4c1ccfee44c7e75ed80484071a5c142a385345e658fd8bd7c4b5c97e7198f98
@@ -387,6 +403,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.2-dev.2"
+  hotreloader:
+    dependency: transitive
+    description:
+      name: hotreloader
+      sha256: "66871df468fc24eee81f1a0a7cb98acc104716f9b7376d355437b48d633c4ebf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.0"
   http:
     dependency: transitive
     description:
@@ -475,6 +499,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  lean_builder:
+    dependency: transitive
+    description:
+      name: lean_builder
+      sha256: c16e95ddf7b2d49dd551357b7212fe2ce9f13ec7ad1b1e660c157184031e96c0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.10"
   lint_staged:
     dependency: transitive
     description:
@@ -532,7 +564,7 @@ packages:
     source: hosted
     version: "2.0.0"
   mockito:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: mockito
       sha256: eff30d002f0c8bf073b6f929df4483b543133fcafce056870163587b03f1d422
@@ -716,10 +748,10 @@ packages:
     dependency: "direct dev"
     description:
       name: solvro_config
-      sha256: "166bac1fe8dd4050cdabd24063f1088198b345a7c7503c177df2ed6d2fc4a025"
+      sha256: "27cc9e1fc5eaa2b44c4313cac4d91d32e59ee9899803528d1bfdc9bb8fb48c4b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.3-dev"
+    version: "1.8.4-dev"
   source_gen:
     dependency: transitive
     description:
@@ -968,6 +1000,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.6.1"
+  xxh3:
+    dependency: transitive
+    description:
+      name: xxh3
+      sha256: "399a0438f5d426785723c99da6b16e136f4953fb1e9db0bf270bd41dd4619916"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   yaml:
     dependency: transitive
     description:

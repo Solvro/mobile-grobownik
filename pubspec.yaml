@@ -29,6 +29,17 @@ dev_dependencies:
   build_runner: ^2.15.0
   json_serializable: ^6.14.0
   riverpod_generator: ^4.0.4-dev.3
+  auto_route_generator: ^10.5.0
+
+# auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
+# the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.
+# Revisit once auto_route_generator ships analyzer-12 support.
+dependency_overrides:
+  analyzer: ^12.0.0
+  # dart_style 3.1.9 requires analyzer ^13; pin to last analyzer-12-compatible release.
+  dart_style: 3.1.8
+  # mockito 5.7.0 requires analyzer ^13; pulled in transitively by riverpod_generator.
+  mockito: 5.6.4
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)
