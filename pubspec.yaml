@@ -6,13 +6,14 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.11.1
+  flutter: 3.44.1
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
   auto_route: ^11.1.0
-  freezed: ^3.2.5
+  freezed: ^3.2.6-dev.1
   hooks_riverpod: ^3.3.1
   flutter_hooks: ^0.21.3+1
   riverpod_annotation: ^4.0.2
@@ -24,9 +25,21 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^6.0.0
+  solvro_config: ^1.8.4-dev
   build_runner: ^2.15.0
-  riverpod_generator: ^4.0.3
+  json_serializable: ^6.14.0
+  riverpod_generator: ^4.0.4-dev.3
+  auto_route_generator: ^10.5.0
+
+# auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
+# the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.
+# Revisit once auto_route_generator ships analyzer-12 support.
+dependency_overrides:
+  analyzer: ^12.0.0
+  # dart_style 3.1.9 requires analyzer ^13; pin to last analyzer-12-compatible release.
+  dart_style: 3.1.8
+  # mockito 5.7.0 requires analyzer ^13; pulled in transitively by riverpod_generator.
+  mockito: 5.6.4
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)
@@ -46,3 +59,5 @@ flutter:
     - family: KONSTRUKT-Regular
       fonts:
         - asset: assets/fonts/KONSTRUKT-Regular.otf
+lint_staged:
+  "lib/**.dart": dart format && dart fix --apply

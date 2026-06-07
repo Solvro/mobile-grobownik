@@ -1,8 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:mobile_grobownik/theme/colors.dart';
+import "dart:async";
+
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+
+import "theme/colors.dart";
+
 
 void main() {
-  runApp(const GrobownikApp());
+  runApp(const ProviderScope(child: GrobownikApp()));
 }
 
 class GrobownikApp extends StatelessWidget {
@@ -11,7 +17,7 @@ class GrobownikApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Grobownik',
+      title: "Grobownik",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: const HomeScreen(),
