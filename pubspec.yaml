@@ -6,13 +6,14 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.11.1
+  flutter: 3.44.1
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
   auto_route: ^11.1.0
-  freezed: ^3.2.5
+  freezed: ^3.2.6-dev.1
   hooks_riverpod: ^3.3.1
   flutter_hooks: ^0.21.3+1
   riverpod_annotation: ^4.0.2
@@ -24,9 +25,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^6.0.0
+  solvro_config: ^1.8.2-dev.1
   build_runner: ^2.15.0
-  riverpod_generator: ^4.0.3
+  json_serializable: ^6.14.0
+  riverpod_generator: ^4.0.4-dev.3
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)
@@ -41,3 +43,6 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
+
+lint_staged:
+  "lib/**.dart": dart format && dart fix --apply
