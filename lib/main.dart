@@ -1,10 +1,13 @@
 import "dart:async";
-
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:google_fonts/google_fonts.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import 'package:mobile_grobownik/theme/colors.dart';
 import 'package:mobile_grobownik/widgets/bottom_sheet.dart';
+import "theme/app_theme.dart";
+import "theme/colors.dart";
+import "widgets/bottom_sheet.dart";
 
 import "theme/colors.dart";
 
@@ -21,7 +24,7 @@ class GrobownikApp extends StatelessWidget {
     return MaterialApp(
       title: "Grobownik",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: const AppTheme().dark,
       home: const HomeScreen(),
     );
   }
@@ -35,17 +38,16 @@ class HomeScreen extends StatelessWidget {
     final graves = List.generate(8, (index) => 'Grave ${index + 1}');
 
     return Scaffold(
-      backgroundColor: ColorsConsts.background,
+      backgroundColor: context.colorScheme.onPrimary,
       body: Stack(
         children: [
           Container(
             color: ColorsConsts.background,
-            child: const Center(
+            child: Center(
               child: Text(
                 'MAP PLACEHOLDER',
-                style: TextStyle(
-                  color: ColorsConsts.textSecondary,
-                  fontSize: 18,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant, // dawniej textSecondary
                 ),
               ),
             ),
@@ -169,4 +171,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

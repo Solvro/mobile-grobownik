@@ -13,7 +13,7 @@ abstract class ColorsConsts {
   // Border #083A5C
   static const border = Color(0xFF083A5C);
 
-  // Accent #FFD358
+  // Accent #FFD358 
   static const accent = Color(0xFFFFD358);
 
   // Primary Text #FFFFFF
