@@ -55,6 +55,8 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
 
   fonts:
     - family: KONSTRUKT-Regular
@@ -62,5 +64,3 @@ flutter:
         - asset: assets/fonts/KONSTRUKT-Regular.otf
 lint_staged:
   "lib/**.dart": dart format && dart fix --apply
-  assets:
-    - assets/images/
