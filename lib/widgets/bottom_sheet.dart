@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:mobile_grobownik/theme/colors.dart';
+import "package:flutter/material.dart";
+import "../theme/colors.dart";
 
 class MyDraggableSheet extends StatefulWidget {
   const MyDraggableSheet({super.key});
@@ -24,18 +24,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
   void _collapse() => _animateSheet(sheet.snapSizes!.first);
 
-  void _anchor() => _animateSheet(sheet.snapSizes!.last);
-
-  void _expand() => _animateSheet(sheet.maxChildSize);
-
-  void _hide() => _animateSheet(sheet.minChildSize);
-
-  void _animateSheet(double size) {
-    _controller.animateTo(
-      size,
-      duration: const Duration(milliseconds: 50),
-      curve: Curves.easeInOut,
-    );
+  Future<void> _animateSheet(double size) async {
+    await _controller.animateTo(size, duration: const Duration(milliseconds: 50), curve: Curves.easeInOut);
   }
 
   @override
@@ -44,8 +34,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     _controller.dispose();
   }
 
-  DraggableScrollableSheet get sheet =>
-      (_sheet.currentWidget as DraggableScrollableSheet);
+  DraggableScrollableSheet get sheet => _sheet.currentWidget! as DraggableScrollableSheet;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +42,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       builder: (context, constraints) {
         return DraggableScrollableSheet(
           key: _sheet,
-          initialChildSize: 0.5,
-          maxChildSize: 1,
           minChildSize: 0,
-          expand: true,
           snap: true,
           snapSizes: [60 / constraints.maxHeight, 0.5],
           controller: _controller,
@@ -66,42 +52,33 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Theme.of(context).bottomSheetTheme.backgroundColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: CustomScrollView(
                     controller: scrollController,
                     slivers: [
                       SliverToBoxAdapter(
-                        child: Text(
-                          'Imię i nazwisko',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
+                        child: Text("Imię i nazwisko", style: Theme.of(context).textTheme.headlineMedium),
                       ),
                       SliverList.list(
                         children: [
-                          Text(
-                            'XX.XX.XXXX - XX.XX.XXXX',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
+                          Text("XX.XX.XXXX - XX.XX.XXXX", style: Theme.of(context).textTheme.bodyLarge),
                           const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               FilledButton.icon(
                                 onPressed: () {},
-                                icon: const Icon(Icons.navigation),
-                                label: const Text('Odznacz jako odwiedzony'),
+                                icon: const Icon(Icons.navigation, semanticLabel: "Odznacz grób jako odwiedzony"),
+                                label: const Text("Odznacz jako odwiedzony"),
                               ),
                               const SizedBox(width: 12),
                               FilledButton.tonalIcon(
                                 onPressed: () {},
-                                icon: const Icon(Icons.directions),
-                                label: const Text('Nawigacja'),
+                                icon: const Icon(Icons.directions, semanticLabel: "Nawiguj do celu"),
+                                label: const Text("Nawigacja"),
                               ),
                             ],
                           ),
@@ -113,14 +90,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                               itemExtent: 280,
                               shrinkExtent: 200,
                               children: [
-                                Image.asset(
-                                  'assets/images/grave.jpg',
-                                  fit: BoxFit.cover,
-                                ),
-                                Image.asset(
-                                  'assets/images/grave.jpg',
-                                  fit: BoxFit.cover,
-                                ),
+                                Image.asset("assets/images/grave.jpg", fit: BoxFit.cover),
+                                Image.asset("assets/images/grave.jpg", fit: BoxFit.cover),
                               ],
                             ),
                           ),
@@ -134,8 +105,11 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                           Center(
                             child: TextButton.icon(
                               onPressed: () {},
-                              icon: const Icon(Icons.edit_outlined),
-                              label: const Text('Zgłoś poprawkę'),
+                              icon: const Icon(
+                                Icons.edit_outlined,
+                                semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie",
+                              ),
+                              label: const Text("Zgłoś poprawkę"),
                             ),
                           ),
 
@@ -163,8 +137,8 @@ class DetailsSection extends StatelessWidget {
           isScrollable: true,
           tabAlignment: TabAlignment.center,
           tabs: [
-            Tab(text: 'Wzkazówki dojścia'),
-            Tab(text: 'Życiorys'),
+            Tab(text: "Wzkazówki dojścia"),
+            Tab(text: "Życiorys"),
           ],
         ),
         const SizedBox(height: 16),
@@ -177,29 +151,23 @@ class DetailsSection extends StatelessWidget {
               animation: tabController,
               builder: (context, child) {
                 if (tabController.index == 0) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Card(
-                          color: ColorsConsts.charcoalBlue,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
+                  return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: ColorsConsts.charcoalBlue,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                            ),
+                          child: const Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                           ),
                         ),
-                      ),
-                    ],
-                  );
+                      ); 
+                  
                 } else {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: List.generate(
                         4,
@@ -232,31 +200,24 @@ class BiographyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Card(
         color: ColorsConsts.charcoalBlue,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.timeline, color: Colors.grey),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "$date: $event",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
+                    Text("$date: $event", style: Theme.of(context).textTheme.headlineSmall),
                     const SizedBox(height: 4),
-                    Text(
-                      description,
-                      style: const TextStyle(color: Colors.white70),
-                    ),
+                    Text(description, style: const TextStyle(color: Colors.white70)),
                   ],
                 ),
               ),

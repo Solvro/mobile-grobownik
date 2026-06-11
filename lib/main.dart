@@ -1,11 +1,10 @@
 import "dart:async";
-
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:google_fonts/google_fonts.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_grobownik/theme/colors.dart';
-import 'package:mobile_grobownik/widgets/bottom_sheet.dart';
+import "theme/colors.dart";
+import "widgets/bottom_sheet.dart";
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: "Flutter Demo",
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -37,18 +36,18 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.roboto().fontFamily,
         textTheme: TextTheme(
           headlineMedium: TextStyle(
-            fontSize: 24.0,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.15,
             fontFamily: GoogleFonts.robotoSlab().fontFamily,
           ),
           headlineSmall: TextStyle(
-            fontSize: 18.0,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: GoogleFonts.robotoSlab().fontFamily,
           ),
-          bodyMedium: TextStyle(fontSize: 16.0),
-          bodyLarge: TextStyle(fontSize: 20.0),
+          bodyMedium: const TextStyle(fontSize: 16),
+          bodyLarge: const TextStyle(fontSize: 20),
         ),
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: ColorsConsts.inkBlack,
@@ -58,7 +57,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: "Flutter Demo Home Page"),
     );
   }
 }
@@ -108,9 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('You have pushed the button this many times:'),
+                const Text("You have pushed the button this many times:"),
                 Text(
-                  '$_counter',
+                  "$_counter",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
@@ -130,4 +129,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
