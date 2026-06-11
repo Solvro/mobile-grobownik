@@ -55,8 +55,8 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
 
 lint_staged:
   "lib/**.dart": dart format && dart fix --apply
-  assets:
-    - assets/images/
