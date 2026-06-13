@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 abstract class ColorsConsts {
+  
   // Background #001626
   static const background = Color(0xFF001626);
 
@@ -13,7 +14,7 @@ abstract class ColorsConsts {
   // Border #083A5C
   static const border = Color(0xFF083A5C);
 
-  // Accent #FFD358 
+  // Accent #FFD358
   static const accent = Color(0xFFFFD358);
 
   // Primary Text #FFFFFF
@@ -35,11 +36,7 @@ abstract class ColorsConsts {
   static const appGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFF002E4D),
-      Color(0xFF001F33),
-      Color(0xFF001626),
-    ],
+    colors: [Color(0xFF002E4D), Color(0xFF001F33), Color(0xFF001626)],
     stops: [0.0, 0.5, 1.0],
   );
 
@@ -47,9 +44,6 @@ abstract class ColorsConsts {
   static const cardGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Color(0xFF083A5C),
-      Color(0xFF002E4D),
-    ],
+    colors: [Color(0xFF083A5C), Color(0xFF002E4D)],
   );
 }

@@ -1,10 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "theme/app_theme.dart";
-import "theme/colors.dart";
 import "widgets/bottom_sheet.dart";
-
-
 
 void main() {
   runApp(const ProviderScope(child: GrobownikApp()));
@@ -29,20 +26,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorScheme.tertiary,
-      body: const Stack(
-        children: [
-
-          //placeholder na mapę i inne komponenty
-          ColoredBox(
-            color: ColorsConsts.textSecondary,
-          ),
-
-          MyDraggableSheet()
-        ],
-      ),
-    );
+    return Scaffold(backgroundColor: context.colorScheme.tertiary, body: const MyDraggableSheet());
   }
 }
-         
