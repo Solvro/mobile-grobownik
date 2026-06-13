@@ -24,18 +24,13 @@ class AppTheme implements AppThemeData {
     colorScheme: const ColorScheme.dark(
       primary: ColorsConsts.accent,
       onPrimary: ColorsConsts.background,
-
       surface: ColorsConsts.surface,
       onSurfaceVariant: ColorsConsts.textSecondary,
-
       outline: ColorsConsts.border,
-
       error: ColorsConsts.error,
       onError: ColorsConsts.textPrimary,
-
       secondary: ColorsConsts.card,
       onSecondary: ColorsConsts.textPrimary,
-
       onTertiary: ColorsConsts.textPrimary,
     ),
     textTheme: _AppTextTheme(),

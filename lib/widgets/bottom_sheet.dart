@@ -193,7 +193,6 @@ class DetailsSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-
         Builder(
           builder: (context) {
             final tabController = DefaultTabController.of(context);
@@ -202,29 +201,23 @@ class DetailsSection extends StatelessWidget {
               animation: tabController,
               builder: (context, child) {
                 if (tabController.index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                      child: const Text(
+                  return Card(
+                    color: context.colorScheme.secondary,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       ),
                     ),
                   );
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: List.generate(
-                        4,
-                        (index) => BiographyCard(
-                          "199$index",
-                          "Osiągnięcie",
-                          "Opis osiągnięcia profesora",
-                          key: ValueKey(index),
-                        ),
-                      ),
+                  return Column(
+                    children: List.generate(
+                      4,
+                      (index) =>
+                          BiographyCard("199$index", "Osiągnięcie", "Opis osiągnięcia profesora", key: ValueKey(index)),
                     ),
                   );
                 }
@@ -248,30 +241,25 @@ class BiographyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Card(
-        color: context.colorScheme.secondary,
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("$date: $event", style: Theme.of(context).textTheme.headlineSmall),
-                    const SizedBox(height: 4),
-                    Text(
-                      description,
-                      style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurfaceVariant),
-                    ),
-                  ],
+      child: SizedBox(
+        width: double.infinity,
+        child: Card(
+          color: context.colorScheme.secondary,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("$date: $event", style: context.textTheme.headlineSmall),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurfaceVariant),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
