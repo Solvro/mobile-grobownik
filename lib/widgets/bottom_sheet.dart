@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "../theme/colors.dart";
+import "../theme/app_theme.dart";
 
 class MyDraggableSheet extends StatefulWidget {
   const MyDraggableSheet({super.key});
@@ -53,9 +53,9 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
             return DefaultTabController(
               length: 2,
               child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: ColorsConsts.surface,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                decoration: BoxDecoration(
+                  color: context.colorScheme.surface,
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
@@ -72,15 +72,15 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: Text("Imię i nazwisko", style: Theme.of(context).textTheme.headlineMedium),
+                                      child: Text("Imię i nazwisko", style: context.textTheme.headlineMedium),
                                     ),
                                     const SizedBox(width: 16),
-                                    const CircleAvatar(
+                                    CircleAvatar(
                                       radius: 22,
-                                      backgroundColor: ColorsConsts.card,
+                                      backgroundColor: context.colorScheme.secondary,
                                       child: Icon(
                                         Icons.person_outline,
-                                        color: ColorsConsts.accent,
+                                        color: context.colorScheme.primary,
                                         semanticLabel: "Profile",
                                       ),
                                     ),
@@ -89,7 +89,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
                                 const SizedBox(height: 8),
 
-                                Text("XX.XX.XXXX - XX.XX.XXXX", style: Theme.of(context).textTheme.bodyLarge),
+                                Text("XX.XX.XXXX - XX.XX.XXXX", style: context.textTheme.bodyLarge),
                                 const SizedBox(height: 16),
 
                                 Row(
@@ -97,13 +97,13 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   children: [
                                     FilledButton.icon(
                                       onPressed: () {},
-                                      icon: const Icon(Icons.navigation, semanticLabel: "Odznacz grób jako odwiedzony"),
+                                      icon: const Icon(Icons.done, semanticLabel: "Odznacz grób jako odwiedzony"),
                                       label: const Text("Odznacz jako odwiedzony"),
                                     ),
                                     const SizedBox(width: 12),
                                     FilledButton.tonalIcon(
                                       onPressed: () {},
-                                      icon: const Icon(Icons.directions, semanticLabel: "Nawiguj do celu"),
+                                      icon: const Icon(Icons.navigation, semanticLabel: "Nawiguj do celu"),
                                       label: const Text("Nawigacja"),
                                     ),
                                   ],
@@ -129,7 +129,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                DetailsSection(),
+                                 DetailsSection(),
 
                                 const SizedBox(height: 8),
 
@@ -156,13 +156,13 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                         child: IgnorePointer(
                           child: Container(
                             height: 29,
-                            color: ColorsConsts.surface,
+                            color: context.colorScheme.surface,
                             child: Center(
                               child: Container(
                                 width: 50,
                                 height: 5,
                                 decoration: BoxDecoration(
-                                  color: ColorsConsts.accent,
+                                  color: context.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),

@@ -1,14 +1,15 @@
 import "package:flutter/material.dart";
 import "colors.dart";
-import "typography.dart"; 
+import "typography.dart";
+
 class _AppTextTheme extends TextTheme {
   _AppTextTheme()
-      : super(
-          headlineMedium: HeadlineMediumTextStyle(),
-          headlineSmall: HeadlineSmallTextStyle(),
-          bodyLarge: BodyLargeTextStyle(),
-          bodyMedium: BodyMediumTextStyle(),
-        );
+    : super(
+        headlineMedium: HeadlineMediumTextStyle(),
+        headlineSmall: HeadlineSmallTextStyle(),
+        bodyLarge: BodyLargeTextStyle(),
+        bodyMedium: BodyMediumTextStyle(),
+      );
 }
 
 abstract interface class AppThemeData {
@@ -21,30 +22,25 @@ class AppTheme implements AppThemeData {
   @override
   ThemeData get dark => ThemeData(
     colorScheme: const ColorScheme.dark(
-     primary: ColorsConsts.accent,
-      onPrimary: ColorsConsts.background, 
-      
+      primary: ColorsConsts.accent,
+      onPrimary: ColorsConsts.background,
+
       surface: ColorsConsts.surface,
       onSurfaceVariant: ColorsConsts.textSecondary,
-      
+
       outline: ColorsConsts.border,
-      
+
       error: ColorsConsts.error,
       onError: ColorsConsts.textPrimary,
 
-      
-      secondary: ColorsConsts.card, 
+      secondary: ColorsConsts.card,
       onSecondary: ColorsConsts.textPrimary,
-      
-      tertiary: ColorsConsts.success,
+
       onTertiary: ColorsConsts.textPrimary,
-      
-      surfaceContainer: ColorsConsts.offline,
     ),
     textTheme: _AppTextTheme(),
   );
 }
-
 
 extension AppThemeX on BuildContext {
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
