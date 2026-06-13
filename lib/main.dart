@@ -1,15 +1,9 @@
-import "dart:async";
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "package:google_fonts/google_fonts.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import 'package:mobile_grobownik/theme/colors.dart';
-import 'package:mobile_grobownik/widgets/bottom_sheet.dart';
 import "theme/app_theme.dart";
 import "theme/colors.dart";
 import "widgets/bottom_sheet.dart";
 
-import "theme/colors.dart";
 
 
 void main() {
@@ -35,139 +29,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final graves = List.generate(8, (index) => 'Grave ${index + 1}');
-
     return Scaffold(
-      backgroundColor: context.colorScheme.onPrimary,
-      body: Stack(
+      backgroundColor: context.colorScheme.tertiary,
+      body: const Stack(
         children: [
-          Container(
-            color: ColorsConsts.background,
-            child: Center(
-              child: Text(
-                'MAP PLACEHOLDER',
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant, // dawniej textSecondary
-                ),
-              ),
-            ),
+
+          //placeholder na mapę i inne komponenty
+          ColoredBox(
+            color: ColorsConsts.textSecondary,
           ),
 
-          DraggableScrollableSheet(
-            initialChildSize: 0.18,
-            minChildSize: 0.12,
-            maxChildSize: 0.85,
-            builder: (context, scrollController) {
-              return Container(
-                decoration: const BoxDecoration(
-                  color: ColorsConsts.surface,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(28),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-
-                    Container(
-                      width: 50,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: ColorsConsts.accent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 22,
-                            backgroundColor: ColorsConsts.card,
-                            child: Icon(
-                              Icons.person_outline,
-                              color: ColorsConsts.accent,
-                            ),
-                          ),
-
-                          const Expanded(
-                            child: Center(
-                              child: Text(
-                                'GROBOWNIK',
-                                style: TextStyle(
-                                  fontFamily: 'KONSTRUKT-Regular',
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 4,
-                                  color: ColorsConsts.textPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const CircleAvatar(
-                            radius: 22,
-                            backgroundColor: ColorsConsts.card,
-                            child: Icon(
-                              Icons.add,
-                              color: ColorsConsts.accent,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: graves.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            child: Container(
-                              height: 220,
-                              decoration: BoxDecoration(
-                                color: ColorsConsts.card,
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(
-                                  color: ColorsConsts.border,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    graves[index],
-                                    style: const TextStyle(
-                                      color: ColorsConsts.textPrimary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          MyDraggableSheet()
         ],
       ),
     );
   }
 }
+         

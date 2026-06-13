@@ -58,12 +58,9 @@ flutter:
   assets:
     - assets/images/
 
-<<<<<<< HEAD
   fonts:
     - family: KONSTRUKT-Regular
       fonts:
         - asset: assets/fonts/KONSTRUKT-Regular.otf
-=======
->>>>>>> 021ad5bb5d7488213286862ec06f86271d9c8155
 lint_staged:
   "lib/**.dart": dart format && dart fix --apply

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+
 import "../theme/colors.dart";
 
 class MyDraggableSheet extends StatefulWidget {
@@ -40,81 +41,134 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        final minSize = 200 / constraints.maxHeight;
+
         return DraggableScrollableSheet(
           key: _sheet,
-          minChildSize: 0,
+          minChildSize: minSize,
           snap: true,
-          snapSizes: [60 / constraints.maxHeight, 0.5],
+          snapSizes: [minSize, 0.5],
           controller: _controller,
           builder: (BuildContext context, ScrollController scrollController) {
             return DefaultTabController(
               length: 2,
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).bottomSheetTheme.backgroundColor,
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                decoration: const BoxDecoration(
+                  color: ColorsConsts.surface,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Text("Imię i nazwisko", style: Theme.of(context).textTheme.headlineMedium),
-                      ),
-                      SliverList.list(
-                        children: [
-                          Text("XX.XX.XXXX - XX.XX.XXXX", style: Theme.of(context).textTheme.bodyLarge),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FilledButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(Icons.navigation, semanticLabel: "Odznacz grób jako odwiedzony"),
-                                label: const Text("Odznacz jako odwiedzony"),
-                              ),
-                              const SizedBox(width: 12),
-                              FilledButton.tonalIcon(
-                                onPressed: () {},
-                                icon: const Icon(Icons.directions, semanticLabel: "Nawiguj do celu"),
-                                label: const Text("Nawigacja"),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          SizedBox(
-                            height: 300,
-                            child: CarouselView(
-                              itemExtent: 280,
-                              shrinkExtent: 200,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                  child: Stack(
+                    children: [
+                      CustomScrollView(
+                        controller: scrollController,
+                        slivers: [
+                          const SliverToBoxAdapter(child: SizedBox(height: 29)),
+                          SliverPadding(
+                            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                            sliver: SliverList.list(
                               children: [
-                                Image.asset("assets/images/grave.jpg", fit: BoxFit.cover),
-                                Image.asset("assets/images/grave.jpg", fit: BoxFit.cover),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text("Imię i nazwisko", style: Theme.of(context).textTheme.headlineMedium),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    const CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor: ColorsConsts.card,
+                                      child: Icon(
+                                        Icons.person_outline,
+                                        color: ColorsConsts.accent,
+                                        semanticLabel: "Profile",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 8),
+
+                                Text("XX.XX.XXXX - XX.XX.XXXX", style: Theme.of(context).textTheme.bodyLarge),
+                                const SizedBox(height: 16),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FilledButton.icon(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.navigation, semanticLabel: "Odznacz grób jako odwiedzony"),
+                                      label: const Text("Odznacz jako odwiedzony"),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    FilledButton.tonalIcon(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.directions, semanticLabel: "Nawiguj do celu"),
+                                      label: const Text("Nawigacja"),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+
+                                SizedBox(
+                                  height: 300,
+                                  child: CarouselView(
+                                    itemExtent: 280,
+                                    shrinkExtent: 200,
+                                    children: [
+                                      for (int i = 0; i < 3; i++)
+                                        // ignore: solvro_config/asset_image
+                                        Image.asset(
+                                          "assets/images/grave.jpg",
+                                          fit: BoxFit.cover,
+                                          semanticLabel:
+                                              "Zdjęcie grobu numer ${i + 1}",
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                DetailsSection(),
+
+                                const SizedBox(height: 8),
+
+                                Center(
+                                  child: TextButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.edit_outlined,
+                                      semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie",
+                                    ),
+                                    label: const Text("Zgłoś poprawkę"),
+                                  ),
+                                ),
+                                const SizedBox(height: 32),
                               ],
                             ),
                           ),
-
-                          const SizedBox(height: 16),
-
-                          DetailsSection(),
-
-                          const SizedBox(height: 8),
-
-                          Center(
-                            child: TextButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.edit_outlined,
-                                semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie",
+                        ],
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: IgnorePointer(
+                          child: Container(
+                            height: 29,
+                            color: ColorsConsts.surface,
+                            child: Center(
+                              child: Container(
+                                width: 50,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: ColorsConsts.accent,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                               ),
-                              label: const Text("Zgłoś poprawkę"),
                             ),
                           ),
-
-                          const SizedBox(height: 32),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -152,19 +206,17 @@ class DetailsSection extends StatelessWidget {
               builder: (context, child) {
                 if (tabController.index == 0) {
                   return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            // color: ColorsConsts.charcoalBlue,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                          ),
-                        ),
-                      ); 
-                  
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      ),
+                    ),
+                  );
                 } else {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -202,7 +254,6 @@ class BiographyCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Card(
-        // color: ColorsConsts.charcoalBlue,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
