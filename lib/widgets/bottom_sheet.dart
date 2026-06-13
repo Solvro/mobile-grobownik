@@ -71,9 +71,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                               children: [
                                 Row(
                                   children: [
-                                    Expanded(
-                                      child: Text("Imię i nazwisko", style: context.textTheme.headlineMedium),
-                                    ),
+                                    Expanded(child: Text("Imię i nazwisko", style: context.textTheme.headlineMedium)),
                                     const SizedBox(width: 16),
                                     CircleAvatar(
                                       radius: 22,
@@ -121,15 +119,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                         Image.asset(
                                           "assets/images/grave.jpg",
                                           fit: BoxFit.cover,
-                                          semanticLabel:
-                                              "Zdjęcie grobu numer ${i + 1}",
+                                          semanticLabel: "Zdjęcie grobu numer ${i + 1}",
                                         ),
                                     ],
                                   ),
                                 ),
                                 const SizedBox(height: 16),
 
-                                 DetailsSection(),
+                                DetailsSection(),
 
                                 const SizedBox(height: 8),
 
@@ -209,9 +206,7 @@ class DetailsSection extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
                       child: const Text(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       ),
@@ -269,7 +264,10 @@ class BiographyCard extends StatelessWidget {
                   children: [
                     Text("$date: $event", style: Theme.of(context).textTheme.headlineSmall),
                     const SizedBox(height: 4),
-                    Text(description, style: const TextStyle(color: Colors.white70)),
+                    Text(
+                      description,
+                      style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurfaceVariant),
+                    ),
                   ],
                 ),
               ),
