@@ -22,16 +22,16 @@ class AppTheme implements AppThemeData {
   @override
   ThemeData get dark => ThemeData(
     colorScheme: const ColorScheme.dark(
-      primary: ColorsConsts.accent,
-      onPrimary: ColorsConsts.background,
-      surface: ColorsConsts.surface,
-      onSurfaceVariant: ColorsConsts.textSecondary,
-      outline: ColorsConsts.border,
-      error: ColorsConsts.error,
-      onError: ColorsConsts.textPrimary,
-      secondary: ColorsConsts.card,
-      onSecondary: ColorsConsts.textPrimary,
-      onTertiary: ColorsConsts.textPrimary,
+      primary: ColorsConsts.goldenYellow,
+      onPrimary: ColorsConsts.midnightNavy,
+      surface: ColorsConsts.darkNavyBlue,
+      onSurfaceVariant: ColorsConsts.lightSteelBlue,
+      outline: ColorsConsts.steelBlue,
+      error: ColorsConsts.crimsonRed,
+      onError: ColorsConsts.white,
+      secondary: ColorsConsts.deepOceanBlue,
+      onSecondary: ColorsConsts.lightSteelBlue,
+      onTertiary: ColorsConsts.white,
     ),
     textTheme: _AppTextTheme(),
   );

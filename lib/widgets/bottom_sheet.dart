@@ -76,10 +76,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                     CircleAvatar(
                                       radius: 22,
                                       backgroundColor: context.colorScheme.secondary,
-                                      child: Icon(
-                                        Icons.person_outline,
-                                        color: context.colorScheme.primary,
-                                        semanticLabel: "Profile",
+                                      child: IconButton(
+                                        tooltip: "Profile",  
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.person_outline,
+                                          color: context.colorScheme.primary,
+                                          semanticLabel: "Profile",
+                                        ),
                                       ),
                                     ),
                                   ],

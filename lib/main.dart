@@ -26,6 +26,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: context.colorScheme.tertiary, body: const MyDraggableSheet());
+    return const Scaffold(body: MyDraggableSheet());
   }
 }
