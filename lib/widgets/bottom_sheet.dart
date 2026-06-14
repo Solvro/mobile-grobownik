@@ -78,6 +78,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                       backgroundColor: context.colorScheme.secondary,
                                       child: IconButton(
                                         tooltip: "Profile",  
+                                        // ignore: solvro_config/add_haptic_feedback_on_user_interaction
                                         onPressed: () {},
                                         icon: Icon(
                                           Icons.person_outline,
@@ -98,12 +99,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     FilledButton.icon(
+                                      // ignore: solvro_config/add_haptic_feedback_on_user_interaction
                                       onPressed: () {},
                                       icon: const Icon(Icons.done, semanticLabel: "Odznacz grób jako odwiedzony"),
                                       label: const Text("Odznacz jako odwiedzony"),
                                     ),
                                     const SizedBox(width: 12),
                                     FilledButton.tonalIcon(
+                                      // ignore: solvro_config/add_haptic_feedback_on_user_interaction
                                       onPressed: () {},
                                       icon: const Icon(Icons.navigation, semanticLabel: "Nawiguj do celu"),
                                       label: const Text("Nawigacja"),
@@ -136,6 +139,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
                                 Center(
                                   child: TextButton.icon(
+                                    // ignore: solvro_config/add_haptic_feedback_on_user_interaction
                                     onPressed: () {},
                                     icon: const Icon(
                                       Icons.edit_outlined,
