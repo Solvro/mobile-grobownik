@@ -77,7 +77,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                       radius: 22,
                                       backgroundColor: context.colorScheme.secondary,
                                       child: IconButton(
-                                        tooltip: "Profile",  
+                                        tooltip: "Profile",
                                         // ignore: solvro_config/add_haptic_feedback_on_user_interaction
                                         onPressed: () {},
                                         icon: Icon(
