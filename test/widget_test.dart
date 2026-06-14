@@ -13,7 +13,6 @@ void main() {
   testWidgets("Grobownik app loads smoke test", (WidgetTester tester) async {
     await tester.pumpWidget(const GrobownikApp());
 
-    expect(find.text("GROBOWNIK"), findsOneWidget);
-    expect(find.text("MAP PLACEHOLDER"), findsOneWidget);
+    expect(find.text("Imię i nazwisko"), findsOneWidget);
   });
 }
