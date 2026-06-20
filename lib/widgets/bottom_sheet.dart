@@ -3,9 +3,9 @@ import "package:flutter/material.dart";
 import "../l10n/app_localizations.dart";
 import "../theme/app_theme.dart";
 import "detail_views/bottom_sheet_handler.dart";
+import "detail_views/feedback_section.dart";
 import "detail_views/profile_icon_widget.dart";
 import "details_section.dart";
-import "feedback_section.dart";
 import "grave_action_buttons.dart";
 import "image_carousel.dart";
 
