@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 
+import "../gen/assets.gen.dart";
 import "../theme/app_theme.dart";
 
 class MyDraggableSheet extends StatefulWidget {
@@ -122,9 +123,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                     shrinkExtent: 200,
                                     children: [
                                       for (int i = 0; i < 3; i++)
-                                        // ignore: solvro_config/asset_image
-                                        Image.asset(
-                                          "assets/images/grave.jpg",
+                                        Assets.images.grave.image(
                                           fit: BoxFit.cover,
                                           semanticLabel: "Zdjęcie grobu numer ${i + 1}",
                                         ),
