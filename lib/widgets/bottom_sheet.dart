@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 import "../gen/assets.gen.dart";
 import "../theme/app_theme.dart";
@@ -54,9 +55,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
             return DefaultTabController(
               length: 2,
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: context.colorScheme.surface,
-                ),
+                decoration: BoxDecoration(color: context.colorScheme.surface),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                   child: Stack(
@@ -78,8 +77,9 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                       backgroundColor: context.colorScheme.secondary,
                                       child: IconButton(
                                         tooltip: "Profile",
-                                        // ignore: solvro_config/add_haptic_feedback_on_user_interaction
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await HapticFeedback.selectionClick();
+                                        },
                                         icon: Icon(
                                           Icons.person_outline,
                                           color: context.colorScheme.primary,
@@ -99,15 +99,17 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     FilledButton.icon(
-                                      // ignore: solvro_config/add_haptic_feedback_on_user_interaction
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        await HapticFeedback.selectionClick();
+                                      },
                                       icon: const Icon(Icons.done, semanticLabel: "Odznacz grób jako odwiedzony"),
                                       label: const Text("Odznacz jako odwiedzony"),
                                     ),
                                     const SizedBox(width: 12),
                                     FilledButton.tonalIcon(
-                                      // ignore: solvro_config/add_haptic_feedback_on_user_interaction
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        await HapticFeedback.selectionClick();
+                                      },
                                       icon: const Icon(Icons.navigation, semanticLabel: "Nawiguj do celu"),
                                       label: const Text("Nawigacja"),
                                     ),
@@ -137,8 +139,9 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
                                 Center(
                                   child: TextButton.icon(
-                                    // ignore: solvro_config/add_haptic_feedback_on_user_interaction
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await HapticFeedback.selectionClick();
+                                    },
                                     icon: const Icon(
                                       Icons.edit_outlined,
                                       semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie",
