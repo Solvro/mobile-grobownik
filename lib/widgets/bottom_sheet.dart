@@ -80,10 +80,16 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(AppLocalizations.of(context)!.name_and_surname, style: context.textTheme.headlineMedium),
+                                        Text(
+                                          AppLocalizations.of(context)!.name_and_surname,
+                                          style: context.textTheme.headlineMedium,
+                                        ),
                                         const SizedBox(height: 8),
 
-                                        Text(AppLocalizations.of(context)!.birth_death_dates, style: context.textTheme.bodyLarge),
+                                        Text(
+                                          AppLocalizations.of(context)!.birth_death_dates,
+                                          style: context.textTheme.bodyLarge,
+                                        ),
                                       ],
                                     ),
 

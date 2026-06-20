@@ -15,7 +15,11 @@ class ProfileIconWidget extends StatelessWidget {
         onPressed: () async {
           await HapticFeedback.selectionClick();
         },
-        icon: Icon(Icons.person_outline, color: context.colorScheme.primary, semanticLabel: AppLocalizations.of(context)!.profile_semantic_label),
+        icon: Icon(
+          Icons.person_outline,
+          color: context.colorScheme.primary,
+          semanticLabel: AppLocalizations.of(context)!.profile_semantic_label,
+        ),
       ),
     );
   }

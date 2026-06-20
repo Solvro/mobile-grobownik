@@ -19,10 +19,9 @@ class GrobownikApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: const AppTheme().dark,
       home: const HomeScreen(),
-      
-      
-  localizationsDelegates: AppLocalizations.localizationsDelegates,
-  supportedLocales: AppLocalizations.supportedLocales,
+
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
