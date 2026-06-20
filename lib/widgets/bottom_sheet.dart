@@ -56,7 +56,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: context.colorScheme.surface,
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
