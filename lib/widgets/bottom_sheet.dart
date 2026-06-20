@@ -1,8 +1,12 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 
-import "../gen/assets.gen.dart";
 import "../theme/app_theme.dart";
+import "detail_views/bottom_sheet_handler.dart";
+import "detail_views/profile_icon_widget.dart";
+import "details_section.dart";
+import "feedback_section.dart";
+import "grave_action_buttons.dart";
+import "image_carousel.dart";
 
 class MyDraggableSheet extends StatefulWidget {
   const MyDraggableSheet({super.key});
@@ -60,6 +64,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                   child: Stack(
                     children: [
+                      BottomSheetHandler(),
                       CustomScrollView(
                         controller: scrollController,
                         slivers: [
@@ -69,112 +74,42 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                             sliver: SliverList.list(
                               children: [
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(child: Text("Imię i nazwisko", style: context.textTheme.headlineMedium)),
-                                    const SizedBox(width: 16),
-                                    CircleAvatar(
-                                      radius: 22,
-                                      backgroundColor: context.colorScheme.secondary,
-                                      child: IconButton(
-                                        tooltip: "Profile",
-                                        onPressed: () async {
-                                          await HapticFeedback.selectionClick();
-                                        },
-                                        icon: Icon(
-                                          Icons.person_outline,
-                                          color: context.colorScheme.primary,
-                                          semanticLabel: "Profile",
-                                        ),
-                                      ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Imię i nazwisko", style: context.textTheme.headlineMedium),
+                                        const SizedBox(height: 8),
+
+                                        Text("XX.XX.XXXX - XX.XX.XXXX", style: context.textTheme.bodyLarge),
+                                      ],
                                     ),
+
+                                    ProfileIconWidget(),
                                   ],
                                 ),
 
-                                const SizedBox(height: 8),
-
-                                Text("XX.XX.XXXX - XX.XX.XXXX", style: context.textTheme.bodyLarge),
                                 const SizedBox(height: 16),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FilledButton.icon(
-                                      onPressed: () async {
-                                        await HapticFeedback.selectionClick();
-                                      },
-                                      icon: const Icon(Icons.done, semanticLabel: "Odznacz grób jako odwiedzony"),
-                                      label: const Text("Odznacz jako odwiedzony"),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    FilledButton.tonalIcon(
-                                      onPressed: () async {
-                                        await HapticFeedback.selectionClick();
-                                      },
-                                      icon: const Icon(Icons.navigation, semanticLabel: "Nawiguj do celu"),
-                                      label: const Text("Nawigacja"),
-                                    ),
-                                  ],
-                                ),
+                                GraveActionButtons(),
+
                                 const SizedBox(height: 16),
 
-                                SizedBox(
-                                  height: 300,
-                                  child: CarouselView(
-                                    itemExtent: 280,
-                                    shrinkExtent: 200,
-                                    children: [
-                                      for (int i = 0; i < 3; i++)
-                                        Assets.images.grave.image(
-                                          fit: BoxFit.cover,
-                                          semanticLabel: "Zdjęcie grobu numer ${i + 1}",
-                                        ),
-                                    ],
-                                  ),
-                                ),
+                                ImageCarousel(),
                                 const SizedBox(height: 16),
 
                                 DetailsSection(),
 
                                 const SizedBox(height: 8),
 
-                                Center(
-                                  child: TextButton.icon(
-                                    onPressed: () async {
-                                      await HapticFeedback.selectionClick();
-                                    },
-                                    icon: const Icon(
-                                      Icons.edit_outlined,
-                                      semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie",
-                                    ),
-                                    label: const Text("Zgłoś poprawkę"),
-                                  ),
-                                ),
+                                FeedbackSection(),
+
                                 const SizedBox(height: 32),
                               ],
                             ),
                           ),
                         ],
-                      ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: IgnorePointer(
-                          child: Container(
-                            height: 29,
-                            color: context.colorScheme.surface,
-                            child: Center(
-                              child: Container(
-                                width: 50,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  color: context.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -184,94 +119,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
           },
         );
       },
-    );
-  }
-}
-
-class DetailsSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const TabBar(
-          isScrollable: true,
-          tabAlignment: TabAlignment.center,
-          tabs: [
-            Tab(text: "Wzkazówki dojścia"),
-            Tab(text: "Życiorys"),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Builder(
-          builder: (context) {
-            final tabController = DefaultTabController.of(context);
-
-            return AnimatedBuilder(
-              animation: tabController,
-              builder: (context, child) {
-                if (tabController.index == 0) {
-                  return Card(
-                    color: context.colorScheme.secondary,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                      ),
-                    ),
-                  );
-                } else {
-                  return Column(
-                    children: List.generate(
-                      4,
-                      (index) =>
-                          BiographyCard("199$index", "Osiągnięcie", "Opis osiągnięcia profesora", key: ValueKey(index)),
-                    ),
-                  );
-                }
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class BiographyCard extends StatelessWidget {
-  final String date;
-  final String event;
-  final String description;
-
-  const BiographyCard(this.date, this.event, this.description, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: SizedBox(
-        width: double.infinity,
-        child: Card(
-          color: context.colorScheme.secondary,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("$date: $event", style: context.textTheme.headlineSmall),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurfaceVariant),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
