@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+
+import "l10n/app_localizations.dart";
 import "theme/app_theme.dart";
 import "widgets/bottom_sheet.dart";
 
@@ -17,6 +19,10 @@ class GrobownikApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: const AppTheme().dark,
       home: const HomeScreen(),
+      
+      
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

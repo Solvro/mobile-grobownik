@@ -1,0 +1,51 @@
+{
+  "@@locale": "pl",
+  "name_and_surname": "Imię i nazwisko",
+  "@name_and_surname": {
+    "description": "Placeholder for name and surname"
+  },
+  "birth_death_dates": "XX.XX.XXXX - XX.XX.XXXX",
+  "@birth_death_dates": {
+    "description": "Placeholder for birth and death dates"
+  },
+  "mark_as_visited": "Oznacz jako odwiedzony",
+  "@mark_as_visited": {
+    "description": "Button for marking a grave as visited"
+  },
+  "mark_as_visited_semantic_label": "Odznacz grób jako odwiedzony",
+  "@mark_as_visited_semantic_label": {
+    "description": "Semantic label for button for marking a grave as visited"
+  },
+  "navigate": "Nawigacja",
+  "@navigate": {
+    "description": "Button for navigation"
+  },
+    "navigate_semantic_label": "Nawiguj do celu",
+  "@navigate_semantic_label": {
+    "description": "Semantic label for button for navigation"
+  },
+  "issue_fix": "Zgłoś poprawkę",
+  "@issue_fix": {
+    "description": "Button for issuing a fix regarding grave information"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Text for button and title of Profile screen"
+  },
+  "profile_semantic_label": "Profil użytkownika",
+  "@profile_semantic_label": {
+    "description": "Semantic label for profile button"
+  },
+    "suggest_fix": "Zgłoś poprawkę",
+  "@suggest_fix": {
+    "description": "Button for fix issue"
+  },
+     "suggest_fix_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
+  "@suggest_fix_semantic_label": {
+    "description": "Semantic label for fix issue button"
+  },
+    "image_carousel_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
+  "@image_carousel_semantic_label": {
+    "description": "Semantic label for image caroudel images"
+  }
+} 

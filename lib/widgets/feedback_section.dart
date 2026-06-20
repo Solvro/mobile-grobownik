@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
+import "../l10n/app_localizations.dart";
+
 class FeedbackSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,8 +11,8 @@ class FeedbackSection extends StatelessWidget {
         onPressed: () async {
           await HapticFeedback.selectionClick();
         },
-        icon: const Icon(Icons.edit_outlined, semanticLabel: "Zgłoś poprawkę dotyczącą informacji o grobie"),
-        label: const Text("Zgłoś poprawkę"),
+        icon: Icon(Icons.edit_outlined, semanticLabel: AppLocalizations.of(context)!.suggest_fix_semantic_label),
+        label: Text(AppLocalizations.of(context)!.suggest_fix),
       ),
     );
   }

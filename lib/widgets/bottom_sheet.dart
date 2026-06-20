@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 
+import "../l10n/app_localizations.dart";
 import "../theme/app_theme.dart";
 import "detail_views/bottom_sheet_handler.dart";
 import "detail_views/profile_icon_widget.dart";
@@ -79,10 +80,10 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Imię i nazwisko", style: context.textTheme.headlineMedium),
+                                        Text(AppLocalizations.of(context)!.name_and_surname, style: context.textTheme.headlineMedium),
                                         const SizedBox(height: 8),
 
-                                        Text("XX.XX.XXXX - XX.XX.XXXX", style: context.textTheme.bodyLarge),
+                                        Text(AppLocalizations.of(context)!.birth_death_dates, style: context.textTheme.bodyLarge),
                                       ],
                                     ),
 
