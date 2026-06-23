@@ -19,6 +19,9 @@ dependencies:
   riverpod_annotation: ^4.0.2
   flutter_svg: ^2.3.0
   dio: ^5.9.2
+  google_fonts: ^8.1.0
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.20.2
   freezed_annotation: ^3.1.0
 
@@ -31,6 +34,7 @@ dev_dependencies:
   json_serializable: ^6.14.0
   riverpod_generator: ^4.0.4-dev.3
   auto_route_generator: ^10.5.0
+  flutter_gen_runner: ^5.14.1
 
 # auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
 # the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.
@@ -49,12 +53,15 @@ flutter_gen:
     image: true
     flutter_svg: true
 
-  colors:
-    inputs:
-      - assets/color/colors.xml
-
 flutter:
+  generate: true
   uses-material-design: true
+  assets:
+    - assets/images/
 
+  fonts:
+    - family: KONSTRUKT-Regular
+      fonts:
+        - asset: assets/fonts/KONSTRUKT-Regular.otf
 lint_staged:
   "lib/**.dart": dart format && dart fix --apply
