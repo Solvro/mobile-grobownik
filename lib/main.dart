@@ -4,6 +4,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "l10n/app_localizations.dart";
 import "theme/app_theme.dart";
 import "widgets/bottom_sheet.dart";
+import "widgets/map_view.dart";
 
 void main() {
   runApp(const ProviderScope(child: GrobownikApp()));
@@ -31,6 +32,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: MyDraggableSheet());
+    return const Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(child: MapView()),
+          MyDraggableSheet(),
+        ],
+      ),
+    );
   }
 }
