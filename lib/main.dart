@@ -5,6 +5,7 @@ import "l10n/app_localizations.dart";
 import "theme/app_theme.dart";
 import "widgets/bottom_sheet.dart";
 import "widgets/map_view.dart";
+import "widgets/permission_gate.dart";
 
 void main() {
   runApp(const ProviderScope(child: GrobownikApp()));
@@ -19,7 +20,7 @@ class GrobownikApp extends StatelessWidget {
       title: "Grobownik",
       debugShowCheckedModeBanner: false,
       theme: const AppTheme().dark,
-      home: const HomeScreen(),
+      home: const PermissionGate(child: HomeScreen()),
 
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
