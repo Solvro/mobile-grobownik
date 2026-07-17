@@ -26,6 +26,8 @@ dependencies:
   freezed_annotation: ^3.1.0
   maplibre_gl: ^0.21.0
   geolocator: ^14.0.0
+  fast_immutable_collections: ^11.2.0
+  envied: ^1.3.8
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +39,7 @@ dev_dependencies:
   riverpod_generator: ^4.0.4-dev.3
   auto_route_generator: ^10.5.0
   flutter_gen_runner: ^5.14.1
+  envied_generator: ^1.3.8
 
 # auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
 # the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.
