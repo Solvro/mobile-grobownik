@@ -7,6 +7,8 @@ import "subject.dart";
 part "grave.freezed.dart";
 part "grave.g.dart";
 
+enum Status { published, draft, archived }
+
 @freezed
 abstract class Grave with _$Grave {
   const factory Grave({
@@ -15,12 +17,13 @@ abstract class Grave with _$Grave {
     required String lastName,
     @Default([]) List<Subject> subjects,
     String? education,
+    required Status status,
     String? biography,
     @Default([]) List<Achievement> achievements,
     DateTime? birthDate,
     DateTime? deathDate,
     required Location location,
-    @Default([]) List<String> photoUrls,
+    @JsonKey(name: "photos") @Default([]) List<int> photoIds,
   }) = _Grave;
 
   factory Grave.fromJson(Map<String, dynamic> json) => _$GraveFromJson(json);
