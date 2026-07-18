@@ -6,19 +6,19 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.11.1
-  flutter: 3.44.1
+  flutter: 3.44.4
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
   auto_route: ^11.1.0
-  freezed: ^3.2.6-dev.1
-  hooks_riverpod: ^3.3.1
+  freezed: ^3.2.5
+  hooks_riverpod: ^3.3.2
   flutter_hooks: ^0.21.3+1
-  riverpod_annotation: ^4.0.2
+  riverpod_annotation: ^4.0.3
   flutter_svg: ^2.3.0
-  dio: ^5.9.2
+  dio: ^5.10.0
   google_fonts: ^8.1.0
   flutter_localizations:
     sdk: flutter
@@ -31,7 +31,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  solvro_config: ^1.8.4-dev
+  solvro_config: ^1.9.0
   build_runner: ^2.15.0
   json_serializable: ^6.14.0
   riverpod_generator: ^4.0.4-dev.3

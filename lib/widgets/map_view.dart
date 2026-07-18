@@ -16,12 +16,12 @@ class _MapViewState extends State<MapView> {
   final _controller = Completer<MapLibreMapController>();
   static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
 
-  bool _hasLocationPermission = false;
+  var _hasLocationPermission = false;
 
   @override
   void initState() {
     super.initState();
-    _requestLocation();
+    unawaited(_requestLocation());
   }
 
   Future<void> _requestLocation() async {
