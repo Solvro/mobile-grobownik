@@ -28,7 +28,5 @@ base class AppProviderObserver extends ProviderObserver {
   @override
   void didDisposeProvider(ProviderObserverContext context) {
     if (!kDebugMode) return;
-    debugPrint('--- [Riverpod Disposed] ---');
-    debugPrint('Provider: ${context.provider.name ?? context.provider.runtimeType}');
-  }
+    }
 }
