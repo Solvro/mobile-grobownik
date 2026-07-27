@@ -42,11 +42,7 @@ class DetailsSection extends StatelessWidget {
                   );
                 } else {
                   // Отображаем полученную биографию в карточке
-                  return BiographyCard(
-                    "Życiorys", 
-                    "Informacje", 
-                    biography,
-                  );
+                  return BiographyCard("Życiorys", "Informacje", biography);
                 }
               },
             );

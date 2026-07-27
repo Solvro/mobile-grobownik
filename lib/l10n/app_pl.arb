@@ -47,5 +47,9 @@
     "image_carousel_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
   "@image_carousel_semantic_label": {
     "description": "Semantic label for image caroudel images"
+  },
+  "loading_error": "Nie udało się wczytać danych",
+  "@loading_error": {
+    "description": "Shown when grave details could not be fetched"
   }
 } 
