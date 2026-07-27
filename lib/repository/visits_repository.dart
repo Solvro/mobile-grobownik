@@ -8,7 +8,14 @@ import "graves_repository.dart";
 
 part "visits_repository.g.dart";
 
-class VisitSubmissionException implements Exception {}
+class VisitSubmissionException implements Exception {
+  const VisitSubmissionException(this.cause);
+
+  final DioException cause;
+
+  @override
+  String toString() => "VisitSubmissionException: ${cause.message ?? cause.type.name}";
+}
 
 @riverpod
 class VisitsRepository extends _$VisitsRepository {
@@ -36,8 +43,8 @@ class VisitsRepository extends _$VisitsRepository {
       ref.invalidate(gravesRepositoryProvider);
 
       return newLog;
-    } on DioException catch (e) {
-      throw VisitSubmissionException();
+    } on DioException catch (e, stackTrace) {
+      Error.throwWithStackTrace(VisitSubmissionException(e), stackTrace);
     }
   }
 }

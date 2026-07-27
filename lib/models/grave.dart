@@ -17,13 +17,13 @@ abstract class Grave with _$Grave {
     required String lastName,
     @Default([]) List<Subject> subjects,
     String? education,
-    required Status status,
+    Status? status,
     String? biography,
     @Default([]) List<Achievement> achievements,
     DateTime? birthDate,
     DateTime? deathDate,
     required Location location,
-    @JsonKey(name: "photos") @Default([]) List<int> photoIds,
+    @JsonKey(name: "photos") @Default([]) List<String> photoIds,
   }) = _Grave;
 
   factory Grave.fromJson(Map<String, dynamic> json) => _$GraveFromJson(json);

@@ -9,7 +9,14 @@ import "../utils/ref_extensions.dart";
 
 part "graves_repository.g.dart";
 
-class DirectusOfflineException implements Exception {}
+class DirectusOfflineException implements Exception {
+  const DirectusOfflineException(this.cause);
+
+  final DioException cause;
+
+  @override
+  String toString() => "DirectusOfflineException: ${cause.message ?? cause.type.name}";
+}
 
 @riverpod
 Future<IList<Grave>> gravesRepository(Ref ref) async {
@@ -22,45 +29,37 @@ Future<IList<Grave>> gravesRepository(Ref ref) async {
 extension DioFetchGravesX on Dio {
   Future<List<Grave>> fetchGraves() async {
     try {
-      final gravesRes = await get<Map<String, dynamic>>(
+      final response = await get<Map<String, dynamic>>(
         "/Graves",
-        queryParameters: {"fields": "*,subjects.*,achievements.*"},
+        queryParameters: {"fields": "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id"},
       );
 
-      final subjectsRes = await get<Map<String, dynamic>>("/Subjects");
-      final achievementsRes = await get<Map<String, dynamic>>("/Achievements");
+      final graves = response.data?["data"] as List? ?? [];
 
-      final gravesList = gravesRes.data?["data"] as List? ?? [];
-      final subjectsList = subjectsRes.data?["data"] as List? ?? [];
-      final achievementsList = achievementsRes.data?["data"] as List? ?? [];
-
-      return gravesList.map((dynamic item) {
+      return graves.map((dynamic item) {
         final map = Map<String, dynamic>.from(item as Map);
-
-        if (map["subjects"] is List) {
-          final subjectIds = (map["subjects"] as List).map((dynamic j) => (j as Map)["Subjects_id"]).toList();
-
-          map["subjects"] = subjectsList.where((dynamic s) => subjectIds.contains((s as Map)["id"])).toList();
-        }
-
-        if (map["achievements"] is List) {
-          final achIds = (map["achievements"] as List).map((dynamic j) => (j as Map)["Achievements_id"]).toList();
-
-          map["achievements"] = achievementsList.where((dynamic a) => achIds.contains((a as Map)["id"])).toList();
-        }
+        map["subjects"] = _unwrapJunction(map["subjects"], "Subjects_id");
+        map["achievements"] = _unwrapJunction(map["achievements"], "Achievements_id");
+        map["photos"] = _unwrapJunction(map["photos"], "directus_files_id");
 
         return Grave.fromJson(map);
       }).toList();
-    } on DioException catch (e) {
-      throw DirectusOfflineException();
+    } on DioException catch (e, stackTrace) {
+      Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
   }
 
   Future<void> updateGraveStatus(String graveId, String newStatus) async {
     try {
       await patch<Map<String, dynamic>>("/Graves/$graveId", data: {"status": newStatus});
-    } on DioException catch (_) {
-      throw DirectusOfflineException();
+    } on DioException catch (e, stackTrace) {
+      Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
   }
+}
+
+List<dynamic> _unwrapJunction(dynamic relation, String relatedKey) {
+  if (relation is! List) return const [];
+
+  return relation.map((dynamic row) => row is Map ? row[relatedKey] : row).whereType<Object>().toList();
 }
