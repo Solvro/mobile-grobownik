@@ -1,6 +1,11 @@
-import "package:flutter/material.dart";
+import "dart:async";
 
+import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+
+import "../features/grave/presentation/providers/grave_details_provider.dart";
 import "../l10n/app_localizations.dart";
+import "../models/grave.dart";
 import "../theme/app_theme.dart";
 import "detail_views/bottom_sheet_handler.dart";
 import "detail_views/feedback_section.dart";
@@ -9,16 +14,19 @@ import "details_section.dart";
 import "grave_action_buttons.dart";
 import "image_carousel.dart";
 
-class MyDraggableSheet extends StatefulWidget {
-  const MyDraggableSheet({super.key});
+class MyDraggableSheet extends ConsumerStatefulWidget {
+  const MyDraggableSheet({required this.graveId, super.key});
+
+  final String graveId;
 
   @override
-  State<MyDraggableSheet> createState() => _MyDraggableSheetState();
+  ConsumerState<MyDraggableSheet> createState() => _MyDraggableSheetState();
 }
 
-class _MyDraggableSheetState extends State<MyDraggableSheet> {
+class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
   final _sheet = GlobalKey();
   final _controller = DraggableScrollableController();
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +38,10 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     if (currentSize <= 0.05) _collapse();
   }
 
-  void _collapse() => _animateSheet(sheet.snapSizes!.first);
+  void _collapse() {
+    final snapSizes = (_sheet.currentWidget as DraggableScrollableSheet?)?.snapSizes;
+    if (snapSizes != null && snapSizes.isNotEmpty) unawaited(_animateSheet(snapSizes.first));
+  }
 
   Future<void> _animateSheet(double size) async {
     await _controller.animateTo(size, duration: const Duration(milliseconds: 50), curve: Curves.easeInOut);
@@ -38,14 +49,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
-
-  DraggableScrollableSheet get sheet => _sheet.currentWidget! as DraggableScrollableSheet;
 
   @override
   Widget build(BuildContext context) {
+    final graveState = ref.watch(graveDetailsProvider(widget.graveId));
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final minSize = 200 / constraints.maxHeight;
@@ -69,51 +80,20 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                       CustomScrollView(
                         controller: scrollController,
                         slivers: [
-                          const SliverToBoxAdapter(child: SizedBox(height: 29)),
                           SliverPadding(
-                            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                            sliver: SliverList.list(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          AppLocalizations.of(context)!.name_and_surname,
-                                          style: context.textTheme.headlineMedium,
-                                        ),
-                                        const SizedBox(height: 8),
-
-                                        Text(
-                                          AppLocalizations.of(context)!.birth_death_dates,
-                                          style: context.textTheme.bodyLarge,
-                                        ),
-                                      ],
-                                    ),
-
-                                    ProfileIconWidget(),
-                                  ],
+                            padding: const EdgeInsets.only(top: 29, left: 16, right: 16, bottom: 16),
+                            sliver: SliverToBoxAdapter(
+                              child: graveState.when(
+                                loading: () => const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 40),
+                                  child: Center(child: CircularProgressIndicator()),
                                 ),
-
-                                const SizedBox(height: 16),
-
-                                GraveActionButtons(),
-
-                                const SizedBox(height: 16),
-
-                                ImageCarousel(),
-                                const SizedBox(height: 16),
-
-                                DetailsSection(),
-
-                                const SizedBox(height: 8),
-
-                                FeedbackSection(),
-
-                                const SizedBox(height: 32),
-                              ],
+                                error: (error, stackTrace) => Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 40),
+                                  child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
+                                ),
+                                data: (grave) => _GraveDetails(grave: grave),
+                              ),
                             ),
                           ),
                         ],
@@ -126,6 +106,54 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
           },
         );
       },
+    );
+  }
+}
+
+class _GraveDetails extends StatelessWidget {
+  const _GraveDetails({required this.grave});
+
+  final Grave grave;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
+                const SizedBox(height: 8),
+
+                Text(AppLocalizations.of(context)!.birth_death_dates, style: context.textTheme.bodyLarge),
+              ],
+            ),
+
+            ProfileIconWidget(),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        GraveActionButtons(),
+
+        const SizedBox(height: 16),
+
+        ImageCarousel(),
+        const SizedBox(height: 16),
+
+        DetailsSection(biography: grave.biography ?? ""),
+
+        const SizedBox(height: 8),
+
+        FeedbackSection(),
+
+        const SizedBox(height: 32),
+      ],
     );
   }
 }

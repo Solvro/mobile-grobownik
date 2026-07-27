@@ -43,4 +43,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get image_carousel_semantic_label => 'Zgłoś poprawkę dotyczącą informacji o grobie';
+
+  @override
+  String get loading_error => 'Nie udało się wczytać danych';
 }

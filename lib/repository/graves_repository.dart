@@ -9,6 +9,8 @@ import "../utils/ref_extensions.dart";
 
 part "graves_repository.g.dart";
 
+const _graveFields = "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id";
+
 class DirectusOfflineException implements Exception {
   const DirectusOfflineException(this.cause);
 
@@ -26,24 +28,31 @@ Future<IList<Grave>> gravesRepository(Ref ref) async {
   return gravesList.toIList();
 }
 
+@riverpod
+Future<Grave> graveRepository(Ref ref, String graveId) {
+  final restClient = ref.watch(directusClientProvider);
+  ref.setRefresh(DirectusConfig.gravesRefreshInterval);
+
+  return restClient.fetchGrave(graveId);
+}
+
 extension DioFetchGravesX on Dio {
   Future<List<Grave>> fetchGraves() async {
     try {
-      final response = await get<Map<String, dynamic>>(
-        "/Graves",
-        queryParameters: {"fields": "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id"},
-      );
-
+      final response = await get<Map<String, dynamic>>("/Graves", queryParameters: {"fields": _graveFields});
       final graves = response.data?["data"] as List? ?? [];
 
-      return graves.map((dynamic item) {
-        final map = Map<String, dynamic>.from(item as Map);
-        map["subjects"] = _unwrapJunction(map["subjects"], "Subjects_id");
-        map["achievements"] = _unwrapJunction(map["achievements"], "Achievements_id");
-        map["photos"] = _unwrapJunction(map["photos"], "directus_files_id");
+      return graves.map((dynamic item) => _parseGrave(item as Map)).toList();
+    } on DioException catch (e, stackTrace) {
+      Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
+    }
+  }
 
-        return Grave.fromJson(map);
-      }).toList();
+  Future<Grave> fetchGrave(String graveId) async {
+    try {
+      final response = await get<Map<String, dynamic>>("/Graves/$graveId", queryParameters: {"fields": _graveFields});
+
+      return _parseGrave(response.data?["data"] as Map);
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
@@ -56,6 +65,15 @@ extension DioFetchGravesX on Dio {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
   }
+}
+
+Grave _parseGrave(Map<dynamic, dynamic> raw) {
+  final map = Map<String, dynamic>.from(raw);
+  map["subjects"] = _unwrapJunction(map["subjects"], "Subjects_id");
+  map["achievements"] = _unwrapJunction(map["achievements"], "Achievements_id");
+  map["photos"] = _unwrapJunction(map["photos"], "directus_files_id");
+
+  return Grave.fromJson(map);
 }
 
 List<dynamic> _unwrapJunction(dynamic relation, String relatedKey) {

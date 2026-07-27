@@ -162,6 +162,12 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Zgłoś poprawkę dotyczącą informacji o grobie'**
   String get image_carousel_semantic_label;
+
+  /// Shown when grave details could not be fetched
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się wczytać danych'**
+  String get loading_error;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

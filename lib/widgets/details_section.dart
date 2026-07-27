@@ -4,6 +4,10 @@ import "../theme/app_theme.dart";
 import "biography_card.dart";
 
 class DetailsSection extends StatelessWidget {
+  final String biography; // <-- Передаем биографию из модели могилы
+
+  const DetailsSection({required this.biography, super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -12,7 +16,7 @@ class DetailsSection extends StatelessWidget {
           isScrollable: true,
           tabAlignment: TabAlignment.center,
           tabs: [
-            Tab(text: "Wzkazówki dojścia"),
+            Tab(text: "Wskazówki dojścia"), // Исправлено: "Wskazówki" вместо "Wzkazówki" :)
             Tab(text: "Życiorys"),
           ],
         ),
@@ -37,13 +41,8 @@ class DetailsSection extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Column(
-                    children: List.generate(
-                      4,
-                      (index) =>
-                          BiographyCard("199$index", "Osiągnięcie", "Opis osiągnięcia profesora", key: ValueKey(index)),
-                    ),
-                  );
+                  // Отображаем полученную биографию в карточке
+                  return BiographyCard("Życiorys", "Informacje", biography);
                 }
               },
             );
