@@ -1,20 +1,23 @@
 import "dart:async";
-
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
-
+import "../core/providers/location_provider.dart";
 import "../services/location_permission_service.dart";
 
-class MapView extends StatefulWidget {
+class MapView extends ConsumerStatefulWidget {
   const MapView({super.key});
 
   @override
-  State<MapView> createState() => _MapViewState();
+  ConsumerState<MapView> createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> {
+class _MapViewState extends ConsumerState<MapView> {
   final _controller = Completer<MapLibreMapController>();
-  static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
+  static const _initial = CameraPosition(
+    target: LatLng(51.1079, 17.0385),
+    zoom: 14,
+  );
 
   var _hasLocationPermission = false;
 
@@ -30,15 +33,61 @@ class _MapViewState extends State<MapView> {
     setState(() => _hasLocationPermission = granted);
   }
 
+  void _moveToCurrentLocation() async {
+    final locationNotifier = ref.read(locationStateProvider.notifier);
+    final position = await locationNotifier.getPosition();
+
+    if (position == null || !mounted) return;
+
+    final controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(position.latitude, position.longitude),
+        16.0,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MapLibreMap(
-      initialCameraPosition: _initial,
-      onMapCreated: _controller.complete,
-      styleString: "https://tiles.openfreemap.org/styles/liberty",
-      myLocationEnabled: _hasLocationPermission,
-      myLocationTrackingMode: _hasLocationPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
-      myLocationRenderMode: _hasLocationPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
+    final locationState = ref.watch(locationStateProvider);
+
+    return Stack(
+      children: [
+        MapLibreMap(
+          initialCameraPosition: _initial,
+          onMapCreated: _controller.complete,
+          styleString: "https://tiles.openfreemap.org/styles/liberty",
+          myLocationEnabled: _hasLocationPermission,
+          myLocationTrackingMode: _hasLocationPermission
+              ? MyLocationTrackingMode.tracking
+              : MyLocationTrackingMode.none,
+          myLocationRenderMode: _hasLocationPermission
+              ? MyLocationRenderMode.compass
+              : MyLocationRenderMode.normal,
+        ),
+        Positioned(
+          bottom: 30,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: _moveToCurrentLocation,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.blue,
+            elevation: 4,
+            shape: const CircleBorder(),
+            child: locationState.isLoading
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.blue,
+                    ),
+                  )
+                : const Icon(Icons.my_location),
+          ),
+        ),
+      ],
     );
   }
 }
