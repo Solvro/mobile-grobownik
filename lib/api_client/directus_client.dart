@@ -2,6 +2,7 @@ import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 import "../config/env.dart";
+import "../services/auth_interceptor.dart";
 
 part "directus_client.g.dart";
 
@@ -25,5 +26,8 @@ Dio directusClient(Ref ref) {
 }
 
 Dio getDirectusClient() {
-  return Dio(BaseOptions(baseUrl: DirectusConfig.apiFullUrl, headers: DirectusConfig.headers));
+  final dio = Dio(BaseOptions(baseUrl: DirectusConfig.apiFullUrl, headers: DirectusConfig.headers));
+  dio.interceptors.add(AuthInterceptor(dio));
+
+  return dio;
 }
