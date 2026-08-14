@@ -39,7 +39,7 @@ dev_dependencies:
   json_serializable: ^6.14.0
   riverpod_generator: ^4.0.4-dev.3
   auto_route_generator: ^10.5.0
-  flutter_gen_runner: ^5.14.1
+  flutter_gen_runner: ^5.15.0
   envied_generator: ^1.3.8
 
 # auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
