@@ -19,7 +19,7 @@ dependencies:
   riverpod_annotation: ^4.0.3
   flutter_svg: ^2.3.0
   dio: ^5.10.0
-  google_fonts: ^8.1.0
+  google_fonts: ^8.2.1
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
