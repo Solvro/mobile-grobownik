@@ -1,7 +1,7 @@
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../../../models/user_stats.dart";
-import "../../../../repository/visits_repository.dart";
+import "../../../visits/data/repositories/visits_repository.dart";
+import "../../data/models/user_stats.dart";
 
 part "user_stats_provider.g.dart";
 
