@@ -1,10 +1,10 @@
 import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../api_client/directus_client.dart";
-import "../models/location.dart";
+import "../../../../common/models/location.dart";
+import "../../../../common/network/directus_client.dart";
+import "../../../grave/data/repositories/graves_repository.dart";
 import "../models/visit_record.dart";
-import "graves_repository.dart";
 
 part "visits_repository.g.dart";
 

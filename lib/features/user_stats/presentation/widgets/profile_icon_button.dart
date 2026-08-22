@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
-import "../../l10n/app_localizations.dart";
-import "../../theme/app_theme.dart";
+import "../../../../app/l10n/app_localizations.dart";
+import "../../../../app/theme/app_theme.dart";
 
 class ProfileIconWidget extends StatelessWidget {
   @override

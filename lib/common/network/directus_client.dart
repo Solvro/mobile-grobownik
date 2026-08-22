@@ -1,7 +1,7 @@
 import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../config/env.dart";
+import "../../app/config/env.dart";
 
 part "directus_client.g.dart";
 

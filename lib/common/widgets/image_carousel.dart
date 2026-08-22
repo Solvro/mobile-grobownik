@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
-import "../gen/assets.gen.dart";
-import "../l10n/app_localizations.dart";
+import "../../app/l10n/app_localizations.dart";
+import "../../gen/assets.gen.dart";
 
 class ImageCarousel extends StatelessWidget {
   @override

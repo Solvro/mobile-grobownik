@@ -3,16 +3,16 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "../features/grave/presentation/providers/grave_details_provider.dart";
-import "../l10n/app_localizations.dart";
-import "../models/grave.dart";
-import "../theme/app_theme.dart";
-import "detail_views/bottom_sheet_handler.dart";
-import "detail_views/feedback_section.dart";
-import "detail_views/profile_icon_widget.dart";
+import "../../../../app/l10n/app_localizations.dart";
+import "../../../../app/theme/app_theme.dart";
+import "../../../../common/widgets/bottom_sheet_handler.dart";
+import "../../../../common/widgets/image_carousel.dart";
+import "../../../user_stats/presentation/widgets/profile_icon_button.dart";
+import "../../data/models/grave.dart";
+import "../providers/grave_details_provider.dart";
 import "details_section.dart";
+import "feedback_section.dart";
 import "grave_action_buttons.dart";
-import "image_carousel.dart";
 
 class MyDraggableSheet extends ConsumerStatefulWidget {
   const MyDraggableSheet({required this.graveId, super.key});
