@@ -1,7 +1,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 
+import "../../../../common/models/location.dart";
 import "achievement.dart";
-import "location.dart";
 import "subject.dart";
 
 part "grave.freezed.dart";

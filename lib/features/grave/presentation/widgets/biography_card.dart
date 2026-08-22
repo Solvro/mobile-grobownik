@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "../theme/app_theme.dart";
+import "../../../../app/theme/app_theme.dart";
 
 class BiographyCard extends StatelessWidget {
   final String date;

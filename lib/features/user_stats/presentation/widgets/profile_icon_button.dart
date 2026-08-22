@@ -1,8 +1,11 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
-import "../../l10n/app_localizations.dart";
-import "../../theme/app_theme.dart";
+import "../../../../app/l10n/app_localizations.dart";
+import "../../../../app/theme/app_theme.dart";
+import "../../../auth/data/auth_service.dart";
+import "../../../auth/presentation/screens/login_view.dart";
+import "../screens/user_stats_view.dart";
 
 class ProfileIconWidget extends StatelessWidget {
   @override
@@ -14,6 +17,15 @@ class ProfileIconWidget extends StatelessWidget {
         tooltip: AppLocalizations.of(context)!.profile,
         onPressed: () async {
           await HapticFeedback.selectionClick();
+
+          final loggedIn = await AuthService.isLoggedIn();
+          if (!context.mounted) return;
+
+          if (loggedIn) {
+            await Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const UserStatsPage()));
+          } else {
+            await Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const LoginScreen()));
+          }
         },
         icon: Icon(
           Icons.person_outline,

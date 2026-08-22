@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "core/providers/app_provider_observer.dart";
-import "l10n/app_localizations.dart";
-import "repository/graves_repository.dart";
-import "theme/app_theme.dart";
-import "widgets/bottom_sheet.dart";
-import "widgets/map_view.dart";
+import "app/l10n/app_localizations.dart";
+import "app/observers/app_provider_observer.dart";
+import "app/theme/app_theme.dart";
+import "features/grave/data/repositories/graves_repository.dart";
+import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
+import "features/map/presentation/widgets/map_view.dart";
 
 void main() {
   runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));

@@ -1,6 +1,6 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 
-import "visit_record.dart";
+import "../../../visits/data/models/visit_record.dart";
 
 part "user_stats.freezed.dart";
 part "user_stats.g.dart";

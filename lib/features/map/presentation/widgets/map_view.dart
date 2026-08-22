@@ -3,7 +3,7 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
 
-import "../services/location_permission_service.dart";
+import "../../../../common/services/location_permission_service.dart";
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
