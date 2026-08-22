@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "../theme/app_theme.dart";
+import "../../../../app/theme/app_theme.dart";
 import "biography_card.dart";
 
 class DetailsSection extends StatelessWidget {

@@ -1,7 +1,7 @@
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../../../models/grave.dart";
-import "../../../../repository/graves_repository.dart";
+import "../../data/models/grave.dart";
+import "../../data/repositories/graves_repository.dart";
 
 part "grave_details_provider.g.dart";
 
