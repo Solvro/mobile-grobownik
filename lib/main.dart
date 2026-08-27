@@ -15,6 +15,7 @@ import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
 import "features/map/presentation/widgets/map_view.dart";
 import "features/settings/presentation/providers/theme_mode_provider.dart";
 import "features/settings/presentation/widgets/settings_icon_button.dart";
+import "features/grave/data/models/grave.dart";
 
 void main() {
   runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));
@@ -40,8 +41,15 @@ class GrobownikApp extends ConsumerWidget {
   }
 }
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String? _selectedGraveId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -78,12 +78,6 @@ class _MapViewState extends ConsumerState<MapView> {
     unawaited(ref.read(locationStateProvider.notifier).refreshLocation());
   }
 
-  @override
-  void didUpdateWidget(covariant MapView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.graves != widget.graves) unawaited(_syncGraveMarkers());
-  }
-
   Future<void> _moveToCurrentLocation() async {
     final position = await ref.read(locationStateProvider.notifier).getPosition();
 
@@ -433,6 +427,206 @@ class _MapViewState extends ConsumerState<MapView> {
     }
 
     return counts;
+  }
+
+  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
+    if (_didFitCamera || graves.isEmpty) return;
+    _didFitCamera = true;
+
+    final first = graves.first.location;
+    var minLat = first.latitude;
+    var maxLat = first.latitude;
+    var minLng = first.longitude;
+    var maxLng = first.longitude;
+
+    for (final grave in graves.skip(1)) {
+      final lat = grave.location.latitude;
+      final lng = grave.location.longitude;
+      minLat = lat < minLat ? lat : minLat;
+      maxLat = lat > maxLat ? lat : maxLat;
+      minLng = lng < minLng ? lng : minLng;
+      maxLng = lng > maxLng ? lng : maxLng;
+    }
+
+    final samePoint = (maxLat - minLat).abs() < 1e-8 && (maxLng - minLng).abs() < 1e-8;
+    if (graves.length == 1 || samePoint) {
+      await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(minLat, minLng), 14));
+      return;
+    }
+
+    await controller.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(southwest: LatLng(minLat, minLng), northeast: LatLng(maxLat, maxLng)),
+        left: 48,
+        top: 48,
+        right: 48,
+        bottom: 48,
+      ),
+    );
+  }
+
+  void _onMapCreated(MapLibreMapController controller) {
+    _controller = controller;
+    controller.onSymbolTapped.add(_onSymbolTapped);
+  }
+
+  void _onSymbolTapped(Symbol symbol) {
+    final graveId = symbol.data?["id"] as String?;
+    if (graveId == null) return;
+
+    widget.onGraveSelected?.call(graveId);
+
+    final grave = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull;
+    final controller = _controller;
+    if (grave == null || controller == null) return;
+
+    unawaited(
+      controller.animateCamera(
+        CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude)),
+      ),
+    );
+  }
+
+  Future<void> _onStyleLoaded() async {
+    final controller = _controller;
+    if (controller == null) return;
+
+    final image = await rootBundle.load("assets/images/grave_pin.png");
+    if (!mounted) return;
+    await controller.addImage(_gravePinImage, image.buffer.asUint8List());
+    if (!mounted) return;
+
+    _styleLoaded = true;
+    await _syncGraveMarkers();
+  }
+
+  Future<void> _syncGraveMarkers() async {
+    final controller = _controller;
+    if (!_styleLoaded || controller == null) return;
+
+    final generation = ++_syncGeneration;
+    final graves = widget.graves.toList();
+
+    await controller.clearSymbols();
+    if (!mounted || generation != _syncGeneration) return;
+    if (graves.isEmpty) return;
+
+    await controller.addSymbols(
+      [
+        for (final grave in graves)
+          SymbolOptions(
+            geometry: LatLng(grave.location.latitude, grave.location.longitude),
+            iconImage: _gravePinImage,
+            iconAnchor: "bottom",
+          ),
+      ],
+      [
+        for (final grave in graves) {"id": grave.id},
+      ],
+    );
+    if (!mounted || generation != _syncGeneration) return;
+
+    await _fitCameraToGraves(controller, graves);
+  }
+
+  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
+    if (_didFitCamera || graves.isEmpty) return;
+    _didFitCamera = true;
+
+    final first = graves.first.location;
+    var minLat = first.latitude;
+    var maxLat = first.latitude;
+    var minLng = first.longitude;
+    var maxLng = first.longitude;
+
+    for (final grave in graves.skip(1)) {
+      final lat = grave.location.latitude;
+      final lng = grave.location.longitude;
+      minLat = lat < minLat ? lat : minLat;
+      maxLat = lat > maxLat ? lat : maxLat;
+      minLng = lng < minLng ? lng : minLng;
+      maxLng = lng > maxLng ? lng : maxLng;
+    }
+
+    final samePoint = (maxLat - minLat).abs() < 1e-8 && (maxLng - minLng).abs() < 1e-8;
+    if (graves.length == 1 || samePoint) {
+      await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(minLat, minLng), 14));
+      return;
+    }
+
+    await controller.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(southwest: LatLng(minLat, minLng), northeast: LatLng(maxLat, maxLng)),
+        left: 48,
+        top: 48,
+        right: 48,
+        bottom: 48,
+      ),
+    );
+  }
+
+  void _onMapCreated(MapLibreMapController controller) {
+    _controller = controller;
+    controller.onSymbolTapped.add(_onSymbolTapped);
+  }
+
+  void _onSymbolTapped(Symbol symbol) {
+    final graveId = symbol.data?["id"] as String?;
+    if (graveId == null) return;
+
+    widget.onGraveSelected?.call(graveId);
+
+    final grave = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull;
+    final controller = _controller;
+    if (grave == null || controller == null) return;
+
+    unawaited(
+      controller.animateCamera(
+        CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude)),
+      ),
+    );
+  }
+
+  Future<void> _onStyleLoaded() async {
+    final controller = _controller;
+    if (controller == null) return;
+
+    final image = await rootBundle.load("assets/images/grave_pin.png");
+    if (!mounted) return;
+    await controller.addImage(_gravePinImage, image.buffer.asUint8List());
+    if (!mounted) return;
+
+    _styleLoaded = true;
+    await _syncGraveMarkers();
+  }
+
+  Future<void> _syncGraveMarkers() async {
+    final controller = _controller;
+    if (!_styleLoaded || controller == null) return;
+
+    final generation = ++_syncGeneration;
+    final graves = widget.graves.toList();
+
+    await controller.clearSymbols();
+    if (!mounted || generation != _syncGeneration) return;
+    if (graves.isEmpty) return;
+
+    await controller.addSymbols(
+      [
+        for (final grave in graves)
+          SymbolOptions(
+            geometry: LatLng(grave.location.latitude, grave.location.longitude),
+            iconImage: _gravePinImage,
+            iconAnchor: "bottom",
+          ),
+      ],
+      [
+        for (final grave in graves) {"id": grave.id},
+      ],
+    );
+    if (!mounted || generation != _syncGeneration) return;
+
+    await _fitCameraToGraves(controller, graves);
   }
 
   Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
