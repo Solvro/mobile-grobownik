@@ -9,13 +9,13 @@ import "common/widgets/grave_search_bar.dart";
 import "features/cemetery/data/models/cemetery.dart";
 import "features/cemetery/data/repositories/cemeteries_repository.dart";
 import "features/grave/data/models/grave.dart";
+import "features/grave/data/models/grave.dart";
 import "features/grave/data/repositories/graves_repository.dart";
 import "features/grave/presentation/providers/selected_grave_provider.dart";
 import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
 import "features/map/presentation/widgets/map_view.dart";
 import "features/settings/presentation/providers/theme_mode_provider.dart";
 import "features/settings/presentation/widgets/settings_icon_button.dart";
-import "features/grave/data/models/grave.dart";
 
 void main() {
   runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));
