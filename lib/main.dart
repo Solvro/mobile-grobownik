@@ -1,3 +1,4 @@
+import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
@@ -7,6 +8,7 @@ import "app/theme/app_theme.dart";
 import "common/widgets/grave_search_bar.dart";
 import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
 import "features/map/presentation/widgets/map_view.dart";
+import "features/grave/data/models/grave.dart";
 
 void main() {
   runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));
@@ -29,17 +31,31 @@ class GrobownikApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String? _selectedGraveId;
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final graves = ref.watch(gravesRepositoryProvider).value ?? const IListConst<Grave>([]);
+    final selectedGraveId = _selectedGraveId ?? graves.firstOrNull?.id;
+
+    return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: MapView()),
-          Positioned(top: 0, left: 0, right: 0, child: SafeArea(bottom: false, child: GraveSearchBar())),
-          MyDraggableSheet(),
+          Positioned.fill(
+            child: MapView(
+              graves: graves,
+              onGraveSelected: (graveId) => setState(() => _selectedGraveId = graveId),
+            ),
+          ),
+          if (selectedGraveId != null) MyDraggableSheet(graveId: selectedGraveId),
         ],
       ),
     );
