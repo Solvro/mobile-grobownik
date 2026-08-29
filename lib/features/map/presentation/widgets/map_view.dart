@@ -2,7 +2,6 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
-import "../../../../common/services/location_permission_service.dart";
 import "../providers/location_provider.dart";
 
 class MapView extends ConsumerStatefulWidget {
@@ -14,20 +13,13 @@ class MapView extends ConsumerStatefulWidget {
 
 class _MapViewState extends ConsumerState<MapView> {
   final _controller = Completer<MapLibreMapController>();
+
   static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
 
-  var _hasLocationPermission = false;
-
   @override
-  void initState() {
-    super.initState();
-    unawaited(_requestLocation());
-  }
-
-  Future<void> _requestLocation() async {
-    final granted = await const LocationPermissionService().requestPermission();
-    if (!mounted) return;
-    setState(() => _hasLocationPermission = granted);
+  void dispose() {
+    _controller.future.then((controller) => controller.dispose());
+    super.dispose();
   }
 
   Future<void> _moveToCurrentLocation() async {
@@ -37,12 +29,18 @@ class _MapViewState extends ConsumerState<MapView> {
     if (position == null || !mounted) return;
 
     final controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(position.latitude, position.longitude), 16));
+    await controller.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(position.latitude, position.longitude),
+        16,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final locationState = ref.watch(locationStateProvider);
+    final hasPermission = ref.read(locationStateProvider.notifier).hasPermission;
 
     return Stack(
       children: [
@@ -50,11 +48,13 @@ class _MapViewState extends ConsumerState<MapView> {
           initialCameraPosition: _initial,
           onMapCreated: _controller.complete,
           styleString: "https://tiles.openfreemap.org/styles/liberty",
-          myLocationEnabled: _hasLocationPermission,
-          myLocationTrackingMode: _hasLocationPermission
+          myLocationEnabled: hasPermission,
+          myLocationTrackingMode: hasPermission
               ? MyLocationTrackingMode.tracking
               : MyLocationTrackingMode.none,
-          myLocationRenderMode: _hasLocationPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
+          myLocationRenderMode: hasPermission
+              ? MyLocationRenderMode.compass
+              : MyLocationRenderMode.normal,
         ),
         Positioned(
           bottom: 30,
@@ -69,7 +69,10 @@ class _MapViewState extends ConsumerState<MapView> {
                 ? const SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.blue,
+                    ),
                   )
                 : const Icon(Icons.my_location),
           ),
