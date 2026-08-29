@@ -1,5 +1,4 @@
 import "dart:async";
-
 import "package:geolocator/geolocator.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
@@ -8,14 +7,17 @@ part "location_provider.g.dart";
 
 @riverpod
 class LocationState extends _$LocationState {
+  bool _initialized = false;
   Position? _currentPosition;
-  var _hasPermission = false;
-  final _isLoading = false;
+  bool _hasPermission = false;
 
   @override
   AsyncValue<Position?> build() {
-    unawaited(_initLocation());
-    return const AsyncValue.data(null);
+    if (!_initialized) {
+      _initialized = true;
+      _initLocation();
+    }
+    return AsyncValue.data(_currentPosition);
   }
 
   Future<void> _initLocation() async {
@@ -39,11 +41,19 @@ class LocationState extends _$LocationState {
     if (!await Geolocator.isLocationServiceEnabled()) {
       return false;
     }
+
     var permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+      return false;
+    }
+
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    return permission == LocationPermission.always || permission == LocationPermission.whileInUse;
+
+    return permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse;
   }
 
   Future<Position?> getPosition() async {
@@ -78,5 +88,4 @@ class LocationState extends _$LocationState {
   }
 
   bool get hasPermission => _hasPermission;
-  bool get isLoading => _isLoading;
 }
