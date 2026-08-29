@@ -45,6 +45,7 @@ class LocationState extends _$LocationState {
     var permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.deniedForever) {
+      // TODO(permission): Handle permanently denied permission (e.g., surface state to UI and prompt to open app settings).
       return false;
     }
 
@@ -52,8 +53,7 @@ class LocationState extends _$LocationState {
       permission = await Geolocator.requestPermission();
     }
 
-    return permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse;
+    return permission == LocationPermission.always || permission == LocationPermission.whileInUse;
   }
 
   Future<Position?> getPosition() async {

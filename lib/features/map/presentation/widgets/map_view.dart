@@ -29,12 +29,7 @@ class _MapViewState extends ConsumerState<MapView> {
     if (position == null || !mounted) return;
 
     final controller = await _controller.future;
-    await controller.animateCamera(
-      CameraUpdate.newLatLngZoom(
-        LatLng(position.latitude, position.longitude),
-        16,
-      ),
-    );
+    await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(position.latitude, position.longitude), 16));
   }
 
   @override
@@ -49,12 +44,8 @@ class _MapViewState extends ConsumerState<MapView> {
           onMapCreated: _controller.complete,
           styleString: "https://tiles.openfreemap.org/styles/liberty",
           myLocationEnabled: hasPermission,
-          myLocationTrackingMode: hasPermission
-              ? MyLocationTrackingMode.tracking
-              : MyLocationTrackingMode.none,
-          myLocationRenderMode: hasPermission
-              ? MyLocationRenderMode.compass
-              : MyLocationRenderMode.normal,
+          myLocationTrackingMode: hasPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
+          myLocationRenderMode: hasPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
         ),
         Positioned(
           bottom: 30,
@@ -69,10 +60,7 @@ class _MapViewState extends ConsumerState<MapView> {
                 ? const SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.blue,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
                   )
                 : const Icon(Icons.my_location),
           ),
