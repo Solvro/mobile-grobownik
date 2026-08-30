@@ -18,7 +18,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
   @override
   void dispose() {
-    _controller.future.then((controller) => controller.dispose());
+    unawaited(_controller.future.then((controller) => controller.dispose()));
     super.dispose();
   }
 

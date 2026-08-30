@@ -7,15 +7,15 @@ part "location_provider.g.dart";
 
 @riverpod
 class LocationState extends _$LocationState {
-  bool _initialized = false;
+  var _initialized = false;
   Position? _currentPosition;
-  bool _hasPermission = false;
+  var _hasPermission = false;
 
   @override
   AsyncValue<Position?> build() {
     if (!_initialized) {
       _initialized = true;
-      _initLocation();
+      unawaited(_initLocation());
     }
     return AsyncValue.data(_currentPosition);
   }
