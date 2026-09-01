@@ -5,10 +5,10 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "app/l10n/app_localizations.dart";
 import "app/observers/app_provider_observer.dart";
 import "app/theme/app_theme.dart";
+import "features/grave/data/models/grave.dart";
 import "features/grave/data/repositories/graves_repository.dart";
 import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
 import "features/map/presentation/widgets/map_view.dart";
-import "features/grave/data/models/grave.dart";
 
 void main() {
   runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));
