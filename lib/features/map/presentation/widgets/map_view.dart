@@ -58,7 +58,9 @@ class _MapViewState extends ConsumerState<MapView> {
   @override
   void didUpdateWidget(covariant MapView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.graves != widget.graves) unawaited(_syncGraveMarkers());
+    if (oldWidget.graves != widget.graves || oldWidget.cemeteries != widget.cemeteries) {
+      unawaited(_syncMarkers());
+    }
     if (oldWidget.cemeteries != widget.cemeteries) unawaited(_syncCemeteryBorders());
   }
 
@@ -69,14 +71,6 @@ class _MapViewState extends ConsumerState<MapView> {
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(covariant MapView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.graves != widget.graves || oldWidget.cemeteries != widget.cemeteries) {
-      unawaited(_syncMarkers());
-    }
-    if (oldWidget.cemeteries != widget.cemeteries) unawaited(_syncCemeteryBorders());
-  }
 
   void _refreshAfterSettings() {
     final access = ref.read(locationStateProvider).value?.access;
@@ -472,168 +466,9 @@ class _MapViewState extends ConsumerState<MapView> {
     );
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
-    _controller = controller;
-    controller.onSymbolTapped.add(_onSymbolTapped);
-  }
 
-  void _onSymbolTapped(Symbol symbol) {
-    final graveId = symbol.data?["id"] as String?;
-    if (graveId == null) return;
 
-    widget.onGraveSelected?.call(graveId);
 
-    final grave = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull;
-    final controller = _controller;
-    if (grave == null || controller == null) return;
-
-    unawaited(
-      controller.animateCamera(
-        CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude)),
-      ),
-    );
-  }
-
-  Future<void> _onStyleLoaded() async {
-    final controller = _controller;
-    if (controller == null) return;
-
-    final image = await rootBundle.load("assets/images/grave_pin.png");
-    if (!mounted) return;
-    await controller.addImage(_gravePinImage, image.buffer.asUint8List());
-    if (!mounted) return;
-
-    _styleLoaded = true;
-    await _styleBasemapCemeteries();
-    if (!mounted) return;
-    await _syncGraveMarkers();
-    if (!mounted) return;
-    await _syncCemeteryBorders();
-  }
-
-  Future<void> _styleBasemapCemeteries() async {
-    final controller = _controller;
-    if (controller == null) return;
-
-    try {
-      final layerIds = await controller.getLayerIds();
-      for (final layerId in layerIds.whereType<String>()) {
-        if (!layerId.toLowerCase().contains("cemetery")) continue;
-        try {
-          await controller.setLayerProperties(
-            layerId,
-            FillLayerProperties(
-              fillColor: ColorsConsts.darkNavyBlue.hexString,
-              fillOpacity: 0.75,
-              fillOutlineColor: ColorsConsts.goldenYellow.hexString,
-            ),
-          );
-        } on Object {
-          continue;
-        }
-      }
-
-      await controller.addLineLayer(
-        "openmaptiles",
-        _cemeteryOutlineLayerId,
-        LineLayerProperties(lineColor: ColorsConsts.goldenYellow.hexString, lineWidth: 2, lineJoin: "round"),
-        sourceLayer: "landuse",
-        filter: [
-          "==",
-          ["get", "class"],
-          "cemetery",
-        ],
-        enableInteraction: false,
-      );
-    } on Object {
-      return;
-    }
-  }
-
-  Future<void> _syncCemeteryBorders() async {
-    final controller = _controller;
-    if (!_styleLoaded || controller == null) return;
-
-    final generation = ++_cemeterySyncGeneration;
-    final fills = _cemeteryFillOptions(widget.cemeteries);
-    final outlines = _cemeteryLineOptions(widget.cemeteries);
-
-    try {
-      if (fills.isEmpty && outlines.isEmpty) {
-        if (!_didAddCemeteryFills) return;
-        await controller.clearFills();
-        await controller.clearLines();
-        _didAddCemeteryFills = false;
-        return;
-      }
-
-      await controller.clearFills();
-      await controller.clearLines();
-      if (!mounted || generation != _cemeterySyncGeneration) return;
-
-      if (fills.isNotEmpty) await controller.addFills(fills);
-      if (!mounted || generation != _cemeterySyncGeneration) return;
-      if (outlines.isNotEmpty) await controller.addLines(outlines);
-      _didAddCemeteryFills = true;
-    } on Object {
-      return;
-    }
-  }
-
-  List<FillOptions> _cemeteryFillOptions(IList<Cemetery> cemeteries) {
-    final options = <FillOptions>[];
-
-    for (final cemetery in cemeteries) {
-      for (final polygon in cemetery.boundary.polygons) {
-        final rings = <List<LatLng>>[];
-        for (final ring in polygon) {
-          final points = [
-            for (final point in ring)
-              if (point.length >= 2) LatLng(point[1], point[0]),
-          ];
-          if (points.length >= 3) rings.add(points);
-        }
-        if (rings.isEmpty) continue;
-
-        options.add(
-          FillOptions(
-            geometry: rings,
-            fillColor: ColorsConsts.darkNavyBlue.hexString,
-            fillOpacity: 0.75,
-            fillOutlineColor: ColorsConsts.goldenYellow.hexString,
-          ),
-        );
-      }
-    }
-
-    return options;
-  }
-
-  List<LineOptions> _cemeteryLineOptions(IList<Cemetery> cemeteries) {
-    final options = <LineOptions>[];
-
-    for (final cemetery in cemeteries) {
-      for (final polygon in cemetery.boundary.polygons) {
-        if (polygon.isEmpty) continue;
-        final points = [
-          for (final point in polygon.first)
-            if (point.length >= 2) LatLng(point[1], point[0]),
-        ];
-        if (points.length < 2) continue;
-
-        options.add(
-          LineOptions(
-            geometry: points,
-            lineColor: ColorsConsts.goldenYellow.hexString,
-            lineWidth: 2.5,
-            lineJoin: "round",
-          ),
-        );
-      }
-    }
-
-    return options;
-  }
 
   Future<void> _syncGraveMarkers() async {
     final controller = _controller;
@@ -643,288 +478,39 @@ class _MapViewState extends ConsumerState<MapView> {
     final graves = widget.graves.toList();
 
     await controller.clearSymbols();
-    if (!mounted || generation != _syncGeneration) return;
-    if (graves.isEmpty) return;
-
-    await controller.addSymbols(
-      [
-        for (final grave in graves)
-          SymbolOptions(
-            geometry: LatLng(grave.location.latitude, grave.location.longitude),
-            iconImage: _gravePinImage,
-            iconAnchor: "bottom",
-          ),
-      ],
-      [
-        for (final grave in graves) {"id": grave.id},
-      ],
-    );
+    await controller.clearCircles();
     if (!mounted || generation != _syncGeneration) return;
 
-    await _fitCameraToGraves(controller, graves);
-  }
-
-  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
-    if (_didFitCamera || graves.isEmpty) return;
-    _didFitCamera = true;
-
-    final first = graves.first.location;
-    var minLat = first.latitude;
-    var maxLat = first.latitude;
-    var minLng = first.longitude;
-    var maxLng = first.longitude;
-
-    for (final grave in graves.skip(1)) {
-      final lat = grave.location.latitude;
-      final lng = grave.location.longitude;
-      minLat = lat < minLat ? lat : minLat;
-      maxLat = lat > maxLat ? lat : maxLat;
-      minLng = lng < minLng ? lng : minLng;
-      maxLng = lng > maxLng ? lng : maxLng;
-    }
-
-    final samePoint = (maxLat - minLat).abs() < 1e-8 && (maxLng - minLng).abs() < 1e-8;
-    if (graves.length == 1 || samePoint) {
-      await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(minLat, minLng), 14));
-      return;
-    }
-
-    await controller.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        LatLngBounds(southwest: LatLng(minLat, minLng), northeast: LatLng(maxLat, maxLng)),
-        left: 48,
-        top: 48,
-        right: 48,
-        bottom: 48,
-      ),
-    );
-  }
-
-  void _onMapCreated(MapLibreMapController controller) {
-    _controller = controller;
-    controller.onSymbolTapped.add(_onSymbolTapped);
-  }
-
-  void _onSymbolTapped(Symbol symbol) {
-    final graveId = symbol.data?["id"] as String?;
-    if (graveId == null) return;
-
-    widget.onGraveSelected?.call(graveId);
-
-    final grave = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull;
-    final controller = _controller;
-    if (grave == null || controller == null) return;
-
-    unawaited(
-      controller.animateCamera(CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude))),
-    );
-  }
-
-  Future<void> _onStyleLoaded() async {
-    final controller = _controller;
-    if (controller == null) return;
-
-    final image = await rootBundle.load("assets/images/grave_pin.png");
-    if (!mounted) return;
-    await controller.addImage(_gravePinImage, image.buffer.asUint8List());
-    if (!mounted) return;
-
-    _styleLoaded = true;
-    await _styleBasemapCemeteries();
-    if (!mounted) return;
-    await _syncGraveMarkers();
-    if (!mounted) return;
-    await _syncCemeteryBorders();
-  }
-
-  Future<void> _styleBasemapCemeteries() async {
-    final controller = _controller;
-    if (controller == null) return;
-
-    try {
-      final layerIds = await controller.getLayerIds();
-      for (final layerId in layerIds.whereType<String>()) {
-        if (!layerId.toLowerCase().contains("cemetery")) continue;
-        try {
-          await controller.setLayerProperties(
-            layerId,
-            FillLayerProperties(
-              fillColor: ColorsConsts.darkNavyBlue.hexString,
-              fillOpacity: 0.75,
-              fillOutlineColor: ColorsConsts.goldenYellow.hexString,
-            ),
-          );
-        } on Object {
-          continue;
-        }
-      }
-
-      await controller.addLineLayer(
-        "openmaptiles",
-        _cemeteryOutlineLayerId,
-        LineLayerProperties(lineColor: ColorsConsts.goldenYellow.hexString, lineWidth: 2, lineJoin: "round"),
-        sourceLayer: "landuse",
-        filter: [
-          "==",
-          ["get", "class"],
-          "cemetery",
-        ],
-        enableInteraction: false,
-      );
-    } on Object {
-      return;
-    }
-  }
-
-  Future<void> _syncCemeteryBorders() async {
-    final controller = _controller;
-    if (!_styleLoaded || controller == null) return;
-
-    final generation = ++_cemeterySyncGeneration;
-    final fills = _cemeteryFillOptions(widget.cemeteries);
-    final outlines = _cemeteryLineOptions(widget.cemeteries);
-
-    try {
-      if (fills.isEmpty && outlines.isEmpty) {
-        if (!_didAddCemeteryFills) return;
-        await controller.clearFills();
-        await controller.clearLines();
-        _didAddCemeteryFills = false;
+    if (_showGravePins) {
+      if (graves.isEmpty) {
+        await _fitCameraToGraves(controller, graves);
         return;
       }
 
-      await controller.clearFills();
-      await controller.clearLines();
-      if (!mounted || generation != _cemeterySyncGeneration) return;
-
-      if (fills.isNotEmpty) await controller.addFills(fills);
-      if (!mounted || generation != _cemeterySyncGeneration) return;
-      if (outlines.isNotEmpty) await controller.addLines(outlines);
-      _didAddCemeteryFills = true;
-    } on Object {
-      return;
-    }
-  }
-
-  List<FillOptions> _cemeteryFillOptions(IList<Cemetery> cemeteries) {
-    final options = <FillOptions>[];
-
-    for (final cemetery in cemeteries) {
-      for (final polygon in cemetery.boundary.polygons) {
-        final rings = <List<LatLng>>[];
-        for (final ring in polygon) {
-          final points = [
-            for (final point in ring)
-              if (point.length >= 2) LatLng(point[1], point[0]),
-          ];
-          if (points.length >= 3) rings.add(points);
-        }
-        if (rings.isEmpty) continue;
-
-        options.add(
-          FillOptions(
-            geometry: rings,
-            fillColor: ColorsConsts.darkNavyBlue.hexString,
-            fillOpacity: 0.75,
-            fillOutlineColor: ColorsConsts.goldenYellow.hexString,
-          ),
-        );
-      }
+      await controller.addSymbols(
+        [
+          for (final grave in graves)
+            SymbolOptions(
+              geometry: LatLng(grave.location.latitude, grave.location.longitude),
+              iconImage: _gravePinImage,
+              iconAnchor: "bottom",
+            ),
+        ],
+        [
+          for (final grave in graves) {"id": grave.id},
+        ],
+      );
+    } else {
+      final labels = _cemeteryCountSymbols();
+      if (labels.circles.isNotEmpty) await controller.addCircles(labels.circles);
+      if (!mounted || generation != _syncGeneration) return;
+      if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
     }
 
-    return options;
-  }
-
-  List<LineOptions> _cemeteryLineOptions(IList<Cemetery> cemeteries) {
-    final options = <LineOptions>[];
-
-    for (final cemetery in cemeteries) {
-      for (final polygon in cemetery.boundary.polygons) {
-        if (polygon.isEmpty) continue;
-        final points = [
-          for (final point in polygon.first)
-            if (point.length >= 2) LatLng(point[1], point[0]),
-        ];
-        if (points.length < 2) continue;
-
-        options.add(
-          LineOptions(
-            geometry: points,
-            lineColor: ColorsConsts.goldenYellow.hexString,
-            lineWidth: 2.5,
-            lineJoin: "round",
-          ),
-        );
-      }
-    }
-
-    return options;
-  }
-
-  Future<void> _syncGraveMarkers() async {
-    final controller = _controller;
-    if (!_styleLoaded || controller == null) return;
-
-    final generation = ++_syncGeneration;
-    final graves = widget.graves.toList();
-
-    await controller.clearSymbols();
     if (!mounted || generation != _syncGeneration) return;
-    if (graves.isEmpty) return;
-
-    await controller.addSymbols(
-      [
-        for (final grave in graves)
-          SymbolOptions(
-            geometry: LatLng(grave.location.latitude, grave.location.longitude),
-            iconImage: _gravePinImage,
-            iconAnchor: "bottom",
-          ),
-      ],
-      [
-        for (final grave in graves) {"id": grave.id},
-      ],
-    );
-    if (!mounted || generation != _syncGeneration) return;
-
     await _fitCameraToGraves(controller, graves);
   }
 
-  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
-    if (_didFitCamera || graves.isEmpty) return;
-    _didFitCamera = true;
-
-    final first = graves.first.location;
-    var minLat = first.latitude;
-    var maxLat = first.latitude;
-    var minLng = first.longitude;
-    var maxLng = first.longitude;
-
-    for (final grave in graves.skip(1)) {
-      final lat = grave.location.latitude;
-      final lng = grave.location.longitude;
-      minLat = lat < minLat ? lat : minLat;
-      maxLat = lat > maxLat ? lat : maxLat;
-      minLng = lng < minLng ? lng : minLng;
-      maxLng = lng > maxLng ? lng : maxLng;
-    }
-
-    final samePoint = (maxLat - minLat).abs() < 1e-8 && (maxLng - minLng).abs() < 1e-8;
-    if (graves.length == 1 || samePoint) {
-      await controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(minLat, minLng), 14));
-      return;
-    }
-
-    await controller.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        LatLngBounds(southwest: LatLng(minLat, minLng), northeast: LatLng(maxLat, maxLng)),
-        left: 48,
-        top: 48,
-        right: 48,
-        bottom: 48,
-      ),
-    );
-  }
 
     @override
   Widget build(BuildContext context) {
