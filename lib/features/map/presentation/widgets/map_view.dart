@@ -5,13 +5,16 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
 
+import "../../../../app/theme/colors.dart";
 import "../../../../common/services/location_permission_service.dart";
+import "../../../cemetery/data/models/cemetery.dart";
 import "../../../grave/data/models/grave.dart";
 
 class MapView extends StatefulWidget {
-  const MapView({required this.graves, this.onGraveSelected, super.key});
+  const MapView({required this.graves, required this.cemeteries, this.onGraveSelected, super.key});
 
   final IList<Grave> graves;
+  final IList<Cemetery> cemeteries;
   final ValueChanged<String>? onGraveSelected;
 
   @override
@@ -20,13 +23,17 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   static const _gravePinImage = "grave-pin";
+  static const _cemeteryOutlineLayerId = "landuse-cemetery-outline";
   static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
 
   MapLibreMapController? _controller;
   var _hasLocationPermission = false;
   var _styleLoaded = false;
+  var _hasLayout = false;
   var _didFitCamera = false;
+  var _didAddCemeteryFills = false;
   var _syncGeneration = 0;
+  var _cemeterySyncGeneration = 0;
 
   @override
   void initState() {
@@ -38,6 +45,7 @@ class _MapViewState extends State<MapView> {
   void didUpdateWidget(covariant MapView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.graves != widget.graves) unawaited(_syncGraveMarkers());
+    if (oldWidget.cemeteries != widget.cemeteries) unawaited(_syncCemeteryBorders());
   }
 
   @override
@@ -68,9 +76,7 @@ class _MapViewState extends State<MapView> {
     if (grave == null || controller == null) return;
 
     unawaited(
-      controller.animateCamera(
-        CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude)),
-      ),
+      controller.animateCamera(CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude))),
     );
   }
 
@@ -84,7 +90,135 @@ class _MapViewState extends State<MapView> {
     if (!mounted) return;
 
     _styleLoaded = true;
+    await _styleBasemapCemeteries();
+    if (!mounted) return;
     await _syncGraveMarkers();
+    if (!mounted) return;
+    await _syncCemeteryBorders();
+  }
+
+  Future<void> _styleBasemapCemeteries() async {
+    final controller = _controller;
+    if (controller == null) return;
+
+    try {
+      final layerIds = await controller.getLayerIds();
+      for (final layerId in layerIds.whereType<String>()) {
+        if (!layerId.toLowerCase().contains("cemetery")) continue;
+        try {
+          await controller.setLayerProperties(
+            layerId,
+            FillLayerProperties(
+              fillColor: ColorsConsts.darkNavyBlue.hexString,
+              fillOpacity: 0.75,
+              fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+            ),
+          );
+        } on Object {
+          continue;
+        }
+      }
+
+      await controller.addLineLayer(
+        "openmaptiles",
+        _cemeteryOutlineLayerId,
+        LineLayerProperties(lineColor: ColorsConsts.goldenYellow.hexString, lineWidth: 2, lineJoin: "round"),
+        sourceLayer: "landuse",
+        filter: [
+          "==",
+          ["get", "class"],
+          "cemetery",
+        ],
+        enableInteraction: false,
+      );
+    } on Object {
+      return;
+    }
+  }
+
+  Future<void> _syncCemeteryBorders() async {
+    final controller = _controller;
+    if (!_styleLoaded || controller == null) return;
+
+    final generation = ++_cemeterySyncGeneration;
+    final fills = _cemeteryFillOptions(widget.cemeteries);
+    final outlines = _cemeteryLineOptions(widget.cemeteries);
+
+    try {
+      if (fills.isEmpty && outlines.isEmpty) {
+        if (!_didAddCemeteryFills) return;
+        await controller.clearFills();
+        await controller.clearLines();
+        _didAddCemeteryFills = false;
+        return;
+      }
+
+      await controller.clearFills();
+      await controller.clearLines();
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+
+      if (fills.isNotEmpty) await controller.addFills(fills);
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+      if (outlines.isNotEmpty) await controller.addLines(outlines);
+      _didAddCemeteryFills = true;
+    } on Object {
+      return;
+    }
+  }
+
+  List<FillOptions> _cemeteryFillOptions(IList<Cemetery> cemeteries) {
+    final options = <FillOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        final rings = <List<LatLng>>[];
+        for (final ring in polygon) {
+          final points = [
+            for (final point in ring)
+              if (point.length >= 2) LatLng(point[1], point[0]),
+          ];
+          if (points.length >= 3) rings.add(points);
+        }
+        if (rings.isEmpty) continue;
+
+        options.add(
+          FillOptions(
+            geometry: rings,
+            fillColor: ColorsConsts.darkNavyBlue.hexString,
+            fillOpacity: 0.75,
+            fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+          ),
+        );
+      }
+    }
+
+    return options;
+  }
+
+  List<LineOptions> _cemeteryLineOptions(IList<Cemetery> cemeteries) {
+    final options = <LineOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        if (polygon.isEmpty) continue;
+        final points = [
+          for (final point in polygon.first)
+            if (point.length >= 2) LatLng(point[1], point[0]),
+        ];
+        if (points.length < 2) continue;
+
+        options.add(
+          LineOptions(
+            geometry: points,
+            lineColor: ColorsConsts.goldenYellow.hexString,
+            lineWidth: 2.5,
+            lineJoin: "round",
+          ),
+        );
+      }
+    }
+
+    return options;
   }
 
   Future<void> _syncGraveMarkers() async {
@@ -154,14 +288,28 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    return MapLibreMap(
-      initialCameraPosition: _initial,
-      onMapCreated: _onMapCreated,
-      onStyleLoadedCallback: _onStyleLoaded,
-      styleString: "https://tiles.openfreemap.org/styles/liberty",
-      myLocationEnabled: _hasLocationPermission,
-      myLocationTrackingMode: _hasLocationPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
-      myLocationRenderMode: _hasLocationPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final hasSize = constraints.maxWidth >= 1 && constraints.maxHeight >= 1;
+        if (hasSize && !_hasLayout) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _hasLayout = true);
+          });
+        }
+        if (!_hasLayout) return const SizedBox.expand();
+
+        return MapLibreMap(
+          initialCameraPosition: _initial,
+          onMapCreated: _onMapCreated,
+          onStyleLoadedCallback: _onStyleLoaded,
+          styleString: "https://tiles.openfreemap.org/styles/liberty",
+          myLocationEnabled: _hasLocationPermission,
+          myLocationTrackingMode: _hasLocationPermission
+              ? MyLocationTrackingMode.tracking
+              : MyLocationTrackingMode.none,
+          myLocationRenderMode: _hasLocationPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
+        );
+      },
     );
   }
 }
