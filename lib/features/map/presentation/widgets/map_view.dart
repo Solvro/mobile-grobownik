@@ -52,7 +52,14 @@ class _MapViewState extends ConsumerState<MapView> {
   @override
   void initState() {
     super.initState();
-    _lifecycle = AppLifecycleListener(onResume: _refreshAfterSettings);
+    unawaited(_requestLocation());
+  }
+
+  @override
+  void didUpdateWidget(covariant MapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.graves != widget.graves) unawaited(_syncGraveMarkers());
+    if (oldWidget.cemeteries != widget.cemeteries) unawaited(_syncCemeteryBorders());
   }
 
   @override
@@ -497,7 +504,135 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!mounted) return;
 
     _styleLoaded = true;
+    await _styleBasemapCemeteries();
+    if (!mounted) return;
     await _syncGraveMarkers();
+    if (!mounted) return;
+    await _syncCemeteryBorders();
+  }
+
+  Future<void> _styleBasemapCemeteries() async {
+    final controller = _controller;
+    if (controller == null) return;
+
+    try {
+      final layerIds = await controller.getLayerIds();
+      for (final layerId in layerIds.whereType<String>()) {
+        if (!layerId.toLowerCase().contains("cemetery")) continue;
+        try {
+          await controller.setLayerProperties(
+            layerId,
+            FillLayerProperties(
+              fillColor: ColorsConsts.darkNavyBlue.hexString,
+              fillOpacity: 0.75,
+              fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+            ),
+          );
+        } on Object {
+          continue;
+        }
+      }
+
+      await controller.addLineLayer(
+        "openmaptiles",
+        _cemeteryOutlineLayerId,
+        LineLayerProperties(lineColor: ColorsConsts.goldenYellow.hexString, lineWidth: 2, lineJoin: "round"),
+        sourceLayer: "landuse",
+        filter: [
+          "==",
+          ["get", "class"],
+          "cemetery",
+        ],
+        enableInteraction: false,
+      );
+    } on Object {
+      return;
+    }
+  }
+
+  Future<void> _syncCemeteryBorders() async {
+    final controller = _controller;
+    if (!_styleLoaded || controller == null) return;
+
+    final generation = ++_cemeterySyncGeneration;
+    final fills = _cemeteryFillOptions(widget.cemeteries);
+    final outlines = _cemeteryLineOptions(widget.cemeteries);
+
+    try {
+      if (fills.isEmpty && outlines.isEmpty) {
+        if (!_didAddCemeteryFills) return;
+        await controller.clearFills();
+        await controller.clearLines();
+        _didAddCemeteryFills = false;
+        return;
+      }
+
+      await controller.clearFills();
+      await controller.clearLines();
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+
+      if (fills.isNotEmpty) await controller.addFills(fills);
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+      if (outlines.isNotEmpty) await controller.addLines(outlines);
+      _didAddCemeteryFills = true;
+    } on Object {
+      return;
+    }
+  }
+
+  List<FillOptions> _cemeteryFillOptions(IList<Cemetery> cemeteries) {
+    final options = <FillOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        final rings = <List<LatLng>>[];
+        for (final ring in polygon) {
+          final points = [
+            for (final point in ring)
+              if (point.length >= 2) LatLng(point[1], point[0]),
+          ];
+          if (points.length >= 3) rings.add(points);
+        }
+        if (rings.isEmpty) continue;
+
+        options.add(
+          FillOptions(
+            geometry: rings,
+            fillColor: ColorsConsts.darkNavyBlue.hexString,
+            fillOpacity: 0.75,
+            fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+          ),
+        );
+      }
+    }
+
+    return options;
+  }
+
+  List<LineOptions> _cemeteryLineOptions(IList<Cemetery> cemeteries) {
+    final options = <LineOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        if (polygon.isEmpty) continue;
+        final points = [
+          for (final point in polygon.first)
+            if (point.length >= 2) LatLng(point[1], point[0]),
+        ];
+        if (points.length < 2) continue;
+
+        options.add(
+          LineOptions(
+            geometry: points,
+            lineColor: ColorsConsts.goldenYellow.hexString,
+            lineWidth: 2.5,
+            lineJoin: "round",
+          ),
+        );
+      }
+    }
+
+    return options;
   }
 
   Future<void> _syncGraveMarkers() async {
@@ -581,9 +716,7 @@ class _MapViewState extends ConsumerState<MapView> {
     if (grave == null || controller == null) return;
 
     unawaited(
-      controller.animateCamera(
-        CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude)),
-      ),
+      controller.animateCamera(CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude))),
     );
   }
 
@@ -597,7 +730,135 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!mounted) return;
 
     _styleLoaded = true;
+    await _styleBasemapCemeteries();
+    if (!mounted) return;
     await _syncGraveMarkers();
+    if (!mounted) return;
+    await _syncCemeteryBorders();
+  }
+
+  Future<void> _styleBasemapCemeteries() async {
+    final controller = _controller;
+    if (controller == null) return;
+
+    try {
+      final layerIds = await controller.getLayerIds();
+      for (final layerId in layerIds.whereType<String>()) {
+        if (!layerId.toLowerCase().contains("cemetery")) continue;
+        try {
+          await controller.setLayerProperties(
+            layerId,
+            FillLayerProperties(
+              fillColor: ColorsConsts.darkNavyBlue.hexString,
+              fillOpacity: 0.75,
+              fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+            ),
+          );
+        } on Object {
+          continue;
+        }
+      }
+
+      await controller.addLineLayer(
+        "openmaptiles",
+        _cemeteryOutlineLayerId,
+        LineLayerProperties(lineColor: ColorsConsts.goldenYellow.hexString, lineWidth: 2, lineJoin: "round"),
+        sourceLayer: "landuse",
+        filter: [
+          "==",
+          ["get", "class"],
+          "cemetery",
+        ],
+        enableInteraction: false,
+      );
+    } on Object {
+      return;
+    }
+  }
+
+  Future<void> _syncCemeteryBorders() async {
+    final controller = _controller;
+    if (!_styleLoaded || controller == null) return;
+
+    final generation = ++_cemeterySyncGeneration;
+    final fills = _cemeteryFillOptions(widget.cemeteries);
+    final outlines = _cemeteryLineOptions(widget.cemeteries);
+
+    try {
+      if (fills.isEmpty && outlines.isEmpty) {
+        if (!_didAddCemeteryFills) return;
+        await controller.clearFills();
+        await controller.clearLines();
+        _didAddCemeteryFills = false;
+        return;
+      }
+
+      await controller.clearFills();
+      await controller.clearLines();
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+
+      if (fills.isNotEmpty) await controller.addFills(fills);
+      if (!mounted || generation != _cemeterySyncGeneration) return;
+      if (outlines.isNotEmpty) await controller.addLines(outlines);
+      _didAddCemeteryFills = true;
+    } on Object {
+      return;
+    }
+  }
+
+  List<FillOptions> _cemeteryFillOptions(IList<Cemetery> cemeteries) {
+    final options = <FillOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        final rings = <List<LatLng>>[];
+        for (final ring in polygon) {
+          final points = [
+            for (final point in ring)
+              if (point.length >= 2) LatLng(point[1], point[0]),
+          ];
+          if (points.length >= 3) rings.add(points);
+        }
+        if (rings.isEmpty) continue;
+
+        options.add(
+          FillOptions(
+            geometry: rings,
+            fillColor: ColorsConsts.darkNavyBlue.hexString,
+            fillOpacity: 0.75,
+            fillOutlineColor: ColorsConsts.goldenYellow.hexString,
+          ),
+        );
+      }
+    }
+
+    return options;
+  }
+
+  List<LineOptions> _cemeteryLineOptions(IList<Cemetery> cemeteries) {
+    final options = <LineOptions>[];
+
+    for (final cemetery in cemeteries) {
+      for (final polygon in cemetery.boundary.polygons) {
+        if (polygon.isEmpty) continue;
+        final points = [
+          for (final point in polygon.first)
+            if (point.length >= 2) LatLng(point[1], point[0]),
+        ];
+        if (points.length < 2) continue;
+
+        options.add(
+          LineOptions(
+            geometry: points,
+            lineColor: ColorsConsts.goldenYellow.hexString,
+            lineWidth: 2.5,
+            lineJoin: "round",
+          ),
+        );
+      }
+    }
+
+    return options;
   }
 
   Future<void> _syncGraveMarkers() async {
