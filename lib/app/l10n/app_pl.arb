@@ -51,5 +51,25 @@
   "loading_error": "Nie udało się wczytać danych",
   "@loading_error": {
     "description": "Shown when grave details could not be fetched"
+  },
+  "graves_nearby": "Groby w pobliżu",
+  "@graves_nearby": {
+    "description": "Title of the list of nearby graves shown in the bottom sheet"
+  },
+  "no_graves_found": "Nie znaleziono żadnych grobów",
+  "@no_graves_found": {
+    "description": "Shown when the list of graves is empty"
+  },
+  "back_to_list": "Wróć do listy grobów",
+  "@back_to_list": {
+    "description": "Tooltip/semantic label for the back arrow that returns from grave details to the list"
+  },
+    "search_graves_hint": "Szukaj",
+  "@search_graves_hint": {
+    "description": "Placeholder text in the graves search bar"
+  },
+  "clear_search": "Wyczyść wyszukiwanie",
+  "@clear_search": {
+    "description": "Tooltip for the button that clears the graves search bar"
   }
-} 
+}

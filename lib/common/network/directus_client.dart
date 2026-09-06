@@ -11,12 +11,8 @@ abstract class DirectusConfig {
   static const itemsEndpoint = "/items";
   static String get apiFullUrl => rootUrl + itemsEndpoint;
 
-  static final headers = {
-    "Accept": "application/json",
-    "Accept-Encoding": "gzip",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer ${Env.directusStaticToken}",
-  };
+  static const headers = {"Accept": "application/json", "Accept-Encoding": "gzip", "Content-Type": "application/json"};
+  static String assetUrl(String fileId) => "${rootUrl.replaceAll(RegExp(r"/+$"), "")}/assets/$fileId";
 }
 
 @riverpod

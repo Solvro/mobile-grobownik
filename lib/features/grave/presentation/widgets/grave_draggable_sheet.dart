@@ -2,22 +2,25 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
+import "../../../../common/providers/user_location_provider.dart";
+import "../../../../common/utils/distance.dart";
 import "../../../../common/widgets/bottom_sheet_handler.dart";
 import "../../../../common/widgets/image_carousel.dart";
 import "../../../user_stats/presentation/widgets/profile_icon_button.dart";
 import "../../data/models/grave.dart";
 import "../providers/grave_details_provider.dart";
+import "../providers/selected_grave_provider.dart";
 import "details_section.dart";
 import "feedback_section.dart";
 import "grave_action_buttons.dart";
+import "grave_list_sheet.dart";
 
 class MyDraggableSheet extends ConsumerStatefulWidget {
-  const MyDraggableSheet({required this.graveId, super.key});
-
-  final String graveId;
+  const MyDraggableSheet({super.key});
 
   @override
   ConsumerState<MyDraggableSheet> createState() => _MyDraggableSheetState();
@@ -55,7 +58,7 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final graveState = ref.watch(graveDetailsProvider(widget.graveId));
+    final selectedGraveId = ref.watch(selectedGraveIdProvider);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -83,17 +86,9 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
                           SliverPadding(
                             padding: const EdgeInsets.only(top: 29, left: 16, right: 16, bottom: 16),
                             sliver: SliverToBoxAdapter(
-                              child: graveState.when(
-                                loading: () => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 40),
-                                  child: Center(child: CircularProgressIndicator()),
-                                ),
-                                error: (error, stackTrace) => Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 40),
-                                  child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
-                                ),
-                                data: (grave) => _GraveDetails(grave: grave),
-                              ),
+                              child: selectedGraveId == null
+                                  ? const GraveListSheet()
+                                  : _GraveDetailsLoader(graveId: selectedGraveId),
                             ),
                           ),
                         ],
@@ -110,16 +105,58 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
   }
 }
 
-class _GraveDetails extends StatelessWidget {
-  const _GraveDetails({required this.grave});
+class _GraveDetailsLoader extends ConsumerWidget {
+  const _GraveDetailsLoader({required this.graveId});
 
-  final Grave grave;
+  final String graveId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final graveState = ref.watch(graveDetailsProvider(graveId));
+
+    return graveState.when(
+      loading: () => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stackTrace) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 40),
+        child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
+      ),
+      data: (grave) {
+        final position = ref.watch(userLocationProvider).value;
+        final distanceMeters = distanceToLocation(position, grave.location);
+
+        return _GraveDetails(grave: grave, distanceMeters: distanceMeters);
+      },
+    );
+  }
+}
+
+class _GraveDetails extends ConsumerWidget {
+  const _GraveDetails({required this.grave, required this.distanceMeters});
+
+  final Grave grave;
+  final double? distanceMeters;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dateFormat = DateFormat("dd.MM.yyyy");
+    final birthDate = grave.birthDate != null ? dateFormat.format(grave.birthDate!) : "?";
+    final deathDate = grave.deathDate != null ? dateFormat.format(grave.deathDate!) : "?";
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: AppLocalizations.of(context)!.back_to_list,
+            onPressed: () => ref.read(selectedGraveIdProvider.notifier).clear(),
+          ),
+        ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -129,7 +166,7 @@ class _GraveDetails extends StatelessWidget {
                 Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
                 const SizedBox(height: 8),
 
-                Text(AppLocalizations.of(context)!.birth_death_dates, style: context.textTheme.bodyLarge),
+                Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
               ],
             ),
 
@@ -137,13 +174,17 @@ class _GraveDetails extends StatelessWidget {
           ],
         ),
 
+        const SizedBox(height: 8),
+
+        Text(formatDistance(distanceMeters), style: context.textTheme.bodyMedium),
+
         const SizedBox(height: 16),
 
         GraveActionButtons(),
 
         const SizedBox(height: 16),
 
-        ImageCarousel(),
+        ImageCarousel(photoIds: grave.photoIds),
         const SizedBox(height: 16),
 
         DetailsSection(biography: grave.biography ?? ""),
