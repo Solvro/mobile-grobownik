@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
+import "../../../../app/theme/app_theme.dart";
 import "../../../auth/data/auth_service.dart";
 import "../../../auth/presentation/screens/login_view.dart";
 import "../providers/user_stats_provider.dart";
@@ -42,7 +43,7 @@ class UserStatsPage extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, color: Colors.red, size: 48, semanticLabel: "Error"),
+                Icon(Icons.error_outline, color: context.colorScheme.error, size: 48, semanticLabel: "Error"),
                 const SizedBox(height: 16),
                 Text("Error loading stats:\n$err", textAlign: TextAlign.center),
                 const SizedBox(height: 16),
