@@ -9,8 +9,6 @@ part "directus_client.g.dart";
 abstract class DirectusConfig {
   static const gravesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
-  static const itemsEndpoint = "/items";
-  static String get apiFullUrl => rootUrl + itemsEndpoint;
 
   static final headers = {
     "Accept": "application/json",
@@ -26,7 +24,7 @@ Dio directusClient(Ref ref) {
 }
 
 Dio getDirectusClient() {
-  final dio = Dio(BaseOptions(baseUrl: DirectusConfig.apiFullUrl, headers: DirectusConfig.headers));
+  final dio = Dio(BaseOptions(baseUrl: DirectusConfig.rootUrl, headers: DirectusConfig.headers));
   dio.interceptors.add(AuthInterceptor(dio));
 
   return dio;

@@ -37,7 +37,7 @@ class VisitsRepository extends _$VisitsRepository {
 
     try {
       final response = await dioClient.post<Map<String, dynamic>>(
-        "/Visits",
+        "/items/Visits",
         data: {
           "grave": graveId,
           "submit_location": {
@@ -63,7 +63,7 @@ class VisitsRepository extends _$VisitsRepository {
 
     try {
       final response = await dioClient.get<Map<String, dynamic>>(
-        "/Visits",
+        "/items/Visits",
         queryParameters: {"filter[user][_eq]": r"$CURRENT_USER", "sort": "-date_created"},
       );
 
