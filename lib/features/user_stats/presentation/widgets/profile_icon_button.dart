@@ -7,7 +7,6 @@ import "../../../../common/services/auth_service.dart";
 import "../../../grave/presentation/widgets/login_view.dart";
 import "../../../grave/presentation/widgets/user_stats_view.dart";
 
-
 class ProfileIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

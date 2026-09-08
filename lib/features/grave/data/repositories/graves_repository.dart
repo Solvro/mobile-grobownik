@@ -50,7 +50,10 @@ extension DioFetchGravesX on Dio {
 
   Future<Grave> fetchGrave(String graveId) async {
     try {
-      final response = await get<Map<String, dynamic>>("/items/Graves/$graveId", queryParameters: {"fields": _graveFields});
+      final response = await get<Map<String, dynamic>>(
+        "/items/Graves/$graveId",
+        queryParameters: {"fields": _graveFields},
+      );
 
       return _parseGrave(response.data?["data"] as Map);
     } on DioException catch (e, stackTrace) {
