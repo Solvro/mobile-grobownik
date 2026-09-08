@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 import "package:shared_preferences/shared_preferences.dart";
-import "../config/env.dart";
+
+import "../../app/config/env.dart";
 
 class AuthService {
   static final rootUrl = Env.directusUrl;

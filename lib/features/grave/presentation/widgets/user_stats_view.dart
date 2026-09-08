@@ -2,8 +2,9 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "../features/user_stats/presentation/providers/user_stats_provider.dart";
-import "../services/auth_service.dart";
+import "../../../../app/theme/app_theme.dart";
+import "../../../../common/services/auth_service.dart";
+import "../../../user_stats/presentation/providers/user_stats_provider.dart";
 import "login_view.dart";
 
 class UserStatsPage extends ConsumerWidget {

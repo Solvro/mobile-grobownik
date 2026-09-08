@@ -4,7 +4,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 import "../../../../common/models/location.dart";
 import "../../../../common/network/directus_client.dart";
 import "../../../grave/data/repositories/graves_repository.dart";
-import "../models/user_stats.dart";
+import "../../../user_stats/data/models/user_stats.dart";
 import "../models/visit_record.dart";
 
 part "visits_repository.g.dart";

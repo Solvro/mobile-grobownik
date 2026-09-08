@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "../services/auth_service.dart";
+import "../../../../common/services/auth_service.dart";
 import "user_stats_view.dart";
 
 class LoginScreen extends StatefulWidget {
