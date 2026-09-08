@@ -43,7 +43,7 @@ class UserStatsPage extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, color: Colors.red, size: 48, semanticLabel: "Error"),
+                Icon(Icons.error_outline, color: context.colorScheme.error, size: 48, semanticLabel: "Error"),
                 const SizedBox(height: 16),
                 Text("Error loading stats:\n$err", textAlign: TextAlign.center),
                 const SizedBox(height: 16),
