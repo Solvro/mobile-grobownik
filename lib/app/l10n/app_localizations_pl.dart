@@ -45,5 +45,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get image_carousel_semantic_label => 'Zgłoś poprawkę dotyczącą informacji o grobie';
 
   @override
+  String get current_location => 'Moja lokalizacja';
+
+  @override
+  String get current_location_semantic_label => 'Wyśrodkuj mapę na mojej lokalizacji';
+
+  @override
+  String get location_service_disabled => 'Usługi lokalizacji są wyłączone';
+
+  @override
+  String get location_permission_blocked => 'Dostęp do lokalizacji jest zablokowany';
+
+  @override
+  String get location_permission_denied => 'Bez zgody na lokalizację nie pokażemy Twojej pozycji';
+
+  @override
+  String get location_unavailable => 'Nie udało się pobrać lokalizacji';
+
+  @override
+  String get open_settings => 'Ustawienia';
+
+  @override
   String get loading_error => 'Nie udało się wczytać danych';
 }

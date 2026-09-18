@@ -48,6 +48,34 @@
   "@image_carousel_semantic_label": {
     "description": "Semantic label for image caroudel images"
   },
+  "current_location": "Moja lokalizacja",
+  "@current_location": {
+    "description": "Tooltip for the button centering the map on the user's location"
+  },
+  "current_location_semantic_label": "Wyśrodkuj mapę na mojej lokalizacji",
+  "@current_location_semantic_label": {
+    "description": "Semantic label for the button centering the map on the user's location"
+  },
+  "location_service_disabled": "Usługi lokalizacji są wyłączone",
+  "@location_service_disabled": {
+    "description": "Shown when location services are turned off device-wide"
+  },
+  "location_permission_blocked": "Dostęp do lokalizacji jest zablokowany",
+  "@location_permission_blocked": {
+    "description": "Shown when the location permission was denied permanently"
+  },
+  "location_permission_denied": "Bez zgody na lokalizację nie pokażemy Twojej pozycji",
+  "@location_permission_denied": {
+    "description": "Shown when the user refused the location permission"
+  },
+  "location_unavailable": "Nie udało się pobrać lokalizacji",
+  "@location_unavailable": {
+    "description": "Shown when reading the device location failed"
+  },
+  "open_settings": "Ustawienia",
+  "@open_settings": {
+    "description": "Snack bar action opening the system settings screen"
+  },
   "loading_error": "Nie udało się wczytać danych",
   "@loading_error": {
     "description": "Shown when grave details could not be fetched"
