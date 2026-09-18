@@ -78,14 +78,15 @@ class _MapViewState extends ConsumerState<MapView> {
         content: Text(message),
         action: openSettings == null
             ? null
-            : SnackBarAction(label: l10n.open_settings, onPressed: () => unawaited(_openSettings(openSettings))),
+            : SnackBarAction(
+                label: l10n.open_settings,
+                onPressed: () async {
+                  await HapticFeedback.selectionClick();
+                  await openSettings();
+                },
+              ),
       ),
     );
-  }
-
-  Future<void> _openSettings(Future<bool> Function() open) async {
-    await HapticFeedback.selectionClick();
-    await open();
   }
 
   @override
