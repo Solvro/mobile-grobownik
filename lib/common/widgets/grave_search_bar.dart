@@ -26,11 +26,11 @@ class GraveSearchBar extends HookConsumerWidget {
           style: context.textTheme.bodyLarge,
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.search_graves_hint,
-            prefixIcon: const Icon(Icons.search),
+            prefixIcon: Icon(Icons.search, semanticLabel: AppLocalizations.of(context)!.search_graves_hint),
             suffixIcon: query.isEmpty
                 ? null
                 : IconButton(
-                    icon: const Icon(Icons.clear),
+                    icon: Icon(Icons.clear, semanticLabel: AppLocalizations.of(context)!.clear_search),
                     tooltip: AppLocalizations.of(context)!.clear_search,
                     onPressed: () {
                       controller.clear();

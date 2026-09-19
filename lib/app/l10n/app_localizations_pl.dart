@@ -82,4 +82,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get clear_search => 'Wyczyść wyszukiwanie';
+
+  @override
+  String get grave_photo_semantic_label => 'Zdjęcie grobu';
+
+  @override
+  String get no_grave_photo_semantic_label => 'Brak zdjęcia grobu';
 }

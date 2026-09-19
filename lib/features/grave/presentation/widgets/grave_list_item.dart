@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 
+import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
 import "../../../../common/network/directus_client.dart";
 import "../../../../common/utils/distance.dart";
@@ -31,6 +32,7 @@ class GraveListItem extends StatelessWidget {
                       width: 56,
                       height: 56,
                       fit: BoxFit.cover,
+                      semanticLabel: AppLocalizations.of(context)!.grave_photo_semantic_label,
                       errorBuilder: (context, error, stackTrace) => const _GravePhotoPlaceholder(),
                     )
                   : const _GravePhotoPlaceholder(),
@@ -63,7 +65,11 @@ class _GravePhotoPlaceholder extends StatelessWidget {
       width: 56,
       height: 56,
       color: context.colorScheme.secondary,
-      child: Icon(Icons.image_not_supported_outlined, color: context.colorScheme.onSurfaceVariant),
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        color: context.colorScheme.onSurfaceVariant,
+        semanticLabel: AppLocalizations.of(context)!.no_grave_photo_semantic_label,
+      ),
     );
   }
 }

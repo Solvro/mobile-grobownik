@@ -174,7 +174,7 @@ class _GraveDetails extends ConsumerWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back, semanticLabel: AppLocalizations.of(context)!.back_to_list),
             tooltip: AppLocalizations.of(context)!.back_to_list,
             onPressed: () => ref.read(selectedGraveIdProvider.notifier).clear(),
           ),

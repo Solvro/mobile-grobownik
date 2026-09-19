@@ -92,12 +92,20 @@
   "@back_to_list": {
     "description": "Tooltip/semantic label for the back arrow that returns from grave details to the list"
   },
-    "search_graves_hint": "Szukaj",
+  "search_graves_hint": "Szukaj",
   "@search_graves_hint": {
     "description": "Placeholder text in the graves search bar"
   },
   "clear_search": "Wyczyść wyszukiwanie",
   "@clear_search": {
     "description": "Tooltip for the button that clears the graves search bar"
+  },
+  "grave_photo_semantic_label": "Zdjęcie grobu",
+  "@grave_photo_semantic_label": {
+    "description": "Semantic label for the grave thumbnail in the list of graves"
+  },
+  "no_grave_photo_semantic_label": "Brak zdjęcia grobu",
+  "@no_grave_photo_semantic_label": {
+    "description": "Semantic label for the placeholder shown when a grave has no photo"
   }
 }

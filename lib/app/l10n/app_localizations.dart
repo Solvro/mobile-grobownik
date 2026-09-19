@@ -240,6 +240,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Wyczyść wyszukiwanie'**
   String get clear_search;
+
+  /// Semantic label for the grave thumbnail in the list of graves
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjęcie grobu'**
+  String get grave_photo_semantic_label;
+
+  /// Semantic label for the placeholder shown when a grave has no photo
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak zdjęcia grobu'**
+  String get no_grave_photo_semantic_label;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
