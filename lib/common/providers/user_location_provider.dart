@@ -1,14 +1,14 @@
 import "package:geolocator/geolocator.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../services/location_permission_service.dart";
+import "../../features/map/presentation/providers/location_provider.dart";
 
 part "user_location_provider.g.dart";
 
 @riverpod
 Stream<Position?> userLocation(Ref ref) async* {
-  final granted = await const LocationPermissionService().requestPermission();
-  if (!granted) {
+  final access = ref.watch(locationStateProvider).value?.access;
+  if (access == null || !access.isGranted) {
     yield null;
     return;
   }

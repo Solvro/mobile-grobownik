@@ -163,6 +163,48 @@ abstract class AppLocalizations {
   /// **'Zgłoś poprawkę dotyczącą informacji o grobie'**
   String get image_carousel_semantic_label;
 
+  /// Tooltip for the button centering the map on the user's location
+  ///
+  /// In pl, this message translates to:
+  /// **'Moja lokalizacja'**
+  String get current_location;
+
+  /// Semantic label for the button centering the map on the user's location
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyśrodkuj mapę na mojej lokalizacji'**
+  String get current_location_semantic_label;
+
+  /// Shown when location services are turned off device-wide
+  ///
+  /// In pl, this message translates to:
+  /// **'Usługi lokalizacji są wyłączone'**
+  String get location_service_disabled;
+
+  /// Shown when the location permission was denied permanently
+  ///
+  /// In pl, this message translates to:
+  /// **'Dostęp do lokalizacji jest zablokowany'**
+  String get location_permission_blocked;
+
+  /// Shown when the user refused the location permission
+  ///
+  /// In pl, this message translates to:
+  /// **'Bez zgody na lokalizację nie pokażemy Twojej pozycji'**
+  String get location_permission_denied;
+
+  /// Shown when reading the device location failed
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się pobrać lokalizacji'**
+  String get location_unavailable;
+
+  /// Snack bar action opening the system settings screen
+  ///
+  /// In pl, this message translates to:
+  /// **'Ustawienia'**
+  String get open_settings;
+
   /// Shown when grave details could not be fetched
   ///
   /// In pl, this message translates to:

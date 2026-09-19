@@ -1,11 +1,13 @@
 import "dart:async";
 
 import "package:flutter/material.dart";
+import "package:flutter/scheduler.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
+import "../../../../common/providers/bottom_sheet_extent_provider.dart";
 import "../../../../common/providers/user_location_provider.dart";
 import "../../../../common/utils/distance.dart";
 import "../../../../common/widgets/bottom_sheet_handler.dart";
@@ -30,15 +32,33 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
   final _sheet = GlobalKey();
   final _controller = DraggableScrollableController();
 
+  late final BottomSheetExtent _extent = ref.read(bottomSheetExtentProvider.notifier);
+
   @override
   void initState() {
     super.initState();
     _controller.addListener(_onChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _publishExtent());
   }
 
   void _onChanged() {
     final currentSize = _controller.size;
     if (currentSize <= 0.05) _collapse();
+    _publishExtent();
+  }
+
+  void _publishExtent() {
+    if (!mounted || !_controller.isAttached) return;
+
+    final pixels = _controller.pixels;
+
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _publishExtent());
+
+      return;
+    }
+
+    _extent.update(pixels);
   }
 
   void _collapse() {
@@ -52,7 +72,10 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
 
   @override
   void dispose() {
+    _controller.removeListener(_onChanged);
     _controller.dispose();
+    final extent = _extent;
+    WidgetsBinding.instance.addPostFrameCallback((_) => extent.update(0));
     super.dispose();
   }
 

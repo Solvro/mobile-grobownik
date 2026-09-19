@@ -39,7 +39,7 @@ Future<Grave> graveRepository(Ref ref, String graveId) {
 extension DioFetchGravesX on Dio {
   Future<List<Grave>> fetchGraves() async {
     try {
-      final response = await get<Map<String, dynamic>>("/Graves", queryParameters: {"fields": _graveFields});
+      final response = await get<Map<String, dynamic>>("/items/Graves", queryParameters: {"fields": _graveFields});
       final graves = response.data?["data"] as List? ?? [];
 
       return graves.map((dynamic item) => _parseGrave(item as Map)).toList();
@@ -50,7 +50,10 @@ extension DioFetchGravesX on Dio {
 
   Future<Grave> fetchGrave(String graveId) async {
     try {
-      final response = await get<Map<String, dynamic>>("/Graves/$graveId", queryParameters: {"fields": _graveFields});
+      final response = await get<Map<String, dynamic>>(
+        "/items/Graves/$graveId",
+        queryParameters: {"fields": _graveFields},
+      );
 
       return _parseGrave(response.data?["data"] as Map);
     } on DioException catch (e, stackTrace) {
@@ -60,7 +63,7 @@ extension DioFetchGravesX on Dio {
 
   Future<void> updateGraveStatus(String graveId, String newStatus) async {
     try {
-      await patch<Map<String, dynamic>>("/Graves/$graveId", data: {"status": newStatus});
+      await patch<Map<String, dynamic>>("/items/Graves/$graveId", data: {"status": newStatus});
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
