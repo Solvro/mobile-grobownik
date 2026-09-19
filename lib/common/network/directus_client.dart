@@ -10,12 +10,8 @@ abstract class DirectusConfig {
   static const gravesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
 
-  static final headers = {
-    "Accept": "application/json",
-    "Accept-Encoding": "gzip",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer ${Env.directusStaticToken}",
-  };
+  static const headers = {"Accept": "application/json", "Accept-Encoding": "gzip", "Content-Type": "application/json"};
+  static String assetUrl(String fileId) => "${rootUrl.replaceAll(RegExp(r"/+$"), "")}/assets/$fileId";
 }
 
 @riverpod

@@ -67,4 +67,25 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get loading_error => 'Nie udało się wczytać danych';
+
+  @override
+  String get graves_nearby => 'Groby w pobliżu';
+
+  @override
+  String get no_graves_found => 'Nie znaleziono żadnych grobów';
+
+  @override
+  String get back_to_list => 'Wróć do listy grobów';
+
+  @override
+  String get search_graves_hint => 'Szukaj';
+
+  @override
+  String get clear_search => 'Wyczyść wyszukiwanie';
+
+  @override
+  String get grave_photo_semantic_label => 'Zdjęcie grobu';
+
+  @override
+  String get no_grave_photo_semantic_label => 'Brak zdjęcia grobu';
 }

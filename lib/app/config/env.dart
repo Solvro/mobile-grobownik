@@ -6,6 +6,4 @@ part "env.g.dart";
 abstract class Env {
   @EnviedField()
   static final String directusUrl = _Env.directusUrl;
-  @EnviedField()
-  static final String directusStaticToken = _Env.directusStaticToken;
 }

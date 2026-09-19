@@ -210,6 +210,48 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Nie udało się wczytać danych'**
   String get loading_error;
+
+  /// Title of the list of nearby graves shown in the bottom sheet
+  ///
+  /// In pl, this message translates to:
+  /// **'Groby w pobliżu'**
+  String get graves_nearby;
+
+  /// Shown when the list of graves is empty
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie znaleziono żadnych grobów'**
+  String get no_graves_found;
+
+  /// Tooltip/semantic label for the back arrow that returns from grave details to the list
+  ///
+  /// In pl, this message translates to:
+  /// **'Wróć do listy grobów'**
+  String get back_to_list;
+
+  /// Placeholder text in the graves search bar
+  ///
+  /// In pl, this message translates to:
+  /// **'Szukaj'**
+  String get search_graves_hint;
+
+  /// Tooltip for the button that clears the graves search bar
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyczyść wyszukiwanie'**
+  String get clear_search;
+
+  /// Semantic label for the grave thumbnail in the list of graves
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjęcie grobu'**
+  String get grave_photo_semantic_label;
+
+  /// Semantic label for the placeholder shown when a grave has no photo
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak zdjęcia grobu'**
+  String get no_grave_photo_semantic_label;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
