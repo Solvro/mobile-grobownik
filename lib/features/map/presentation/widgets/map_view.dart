@@ -317,7 +317,7 @@ class _MapViewState extends State<MapView> {
         SymbolOptions(
           geometry: LatLng(anchor.latitude, anchor.longitude),
           iconImage: _cemeteryCountImage,
-          iconSize: count < 10 ? 0.6 : 0.65,
+          iconSize: count < 10 ? 0.7 : 0.75,
           iconAnchor: "center",
           iconOpacity: 1,
           textField: "$count",
