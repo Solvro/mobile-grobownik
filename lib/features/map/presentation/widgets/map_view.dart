@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:ui" as ui;
 
 import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:flutter/material.dart";
@@ -23,8 +24,10 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   static const _gravePinImage = "grave-pin";
+  static const _cemeteryCountImage = "cemetery-count-bg";
+  static const _cemeteryCountIconPx = 72;
   static const _cemeteryOutlineLayerId = "landuse-cemetery-outline";
-  static const _gravePinsMinZoom = 16.0;
+  static const _gravePinsMinZoom = 12.0;
   static const _cemeteryFocusZoom = 16.5;
   static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
 
@@ -120,6 +123,8 @@ class _MapViewState extends State<MapView> {
     final image = await rootBundle.load("assets/images/grave_pin.png");
     if (!mounted) return;
     await controller.addImage(_gravePinImage, image.buffer.asUint8List());
+    if (!mounted) return;
+    await controller.addImage(_cemeteryCountImage, await _cemeteryCountBackground());
     if (!mounted) return;
 
     _styleLoaded = true;
@@ -290,8 +295,6 @@ class _MapViewState extends State<MapView> {
       );
     } else {
       final labels = _cemeteryCountSymbols();
-      if (labels.circles.isNotEmpty) await controller.addCircles(labels.circles);
-      if (!mounted || generation != _syncGeneration) return;
       if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
     }
 
@@ -299,11 +302,9 @@ class _MapViewState extends State<MapView> {
     await _fitCameraToGraves(controller, graves);
   }
 
-  ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data, List<CircleOptions> circles})
-  _cemeteryCountSymbols() {
+  ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data}) _cemeteryCountSymbols() {
     final options = <SymbolOptions>[];
     final data = <Map<dynamic, dynamic>>[];
-    final circles = <CircleOptions>[];
     final counts = _graveCountsByCemetery();
 
     for (final cemetery in widget.cemeteries) {
@@ -312,24 +313,16 @@ class _MapViewState extends State<MapView> {
       final anchor = cemetery.labelAnchor;
       if (anchor == null) continue;
 
-      final position = LatLng(anchor.latitude, anchor.longitude);
-      circles.add(
-        CircleOptions(
-          geometry: position,
-          circleRadius: count < 10 ? 16 : 18,
-          circleColor: ColorsConsts.goldenYellow.hexString,
-          circleStrokeColor: ColorsConsts.midnightNavy.hexString,
-          circleStrokeWidth: 2,
-        ),
-      );
       options.add(
         SymbolOptions(
-          geometry: position,
+          geometry: LatLng(anchor.latitude, anchor.longitude),
+          iconImage: _cemeteryCountImage,
+          iconSize: count < 10 ? 0.6 : 0.65,
+          iconAnchor: "center",
+          iconOpacity: 1,
           textField: "$count",
-          textSize: 16,
+          textSize: 12,
           textColor: ColorsConsts.midnightNavy.hexString,
-          textHaloColor: ColorsConsts.goldenYellow.hexString,
-          textHaloWidth: 0.8,
           textAnchor: "center",
           fontNames: const ["Noto Sans Bold"],
         ),
@@ -337,7 +330,38 @@ class _MapViewState extends State<MapView> {
       data.add({"cemeteryId": cemetery.id});
     }
 
-    return (options: options, data: data, circles: circles);
+    return (options: options, data: data);
+  }
+
+  Future<Uint8List> _cemeteryCountBackground() async {
+    const size = _cemeteryCountIconPx;
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final center = Offset(size / 2, size / 2);
+    const strokeWidth = 4.0;
+    final radius = size / 2 - strokeWidth;
+
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..color = ColorsConsts.goldenYellow
+        ..style = PaintingStyle.fill
+        ..isAntiAlias = true,
+    );
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..color = ColorsConsts.midnightNavy
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth
+        ..isAntiAlias = true,
+    );
+
+    final image = await recorder.endRecording().toImage(size, size);
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+    return bytes!.buffer.asUint8List();
   }
 
   Map<String, int> _graveCountsByCemetery() {
@@ -407,6 +431,12 @@ class _MapViewState extends State<MapView> {
           onMapCreated: _onMapCreated,
           onStyleLoadedCallback: _onStyleLoaded,
           styleString: "https://tiles.openfreemap.org/styles/liberty",
+          annotationOrder: const [
+            AnnotationType.fill,
+            AnnotationType.line,
+            AnnotationType.circle,
+            AnnotationType.symbol,
+          ],
           trackCameraPosition: true,
           onCameraIdle: _onCameraIdle,
           myLocationEnabled: _hasLocationPermission,
