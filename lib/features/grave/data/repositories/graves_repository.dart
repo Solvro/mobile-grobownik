@@ -1,10 +1,12 @@
 import "dart:async";
+
+import "package:connectivity_plus/connectivity_plus.dart";
 import "package:dio/dio.dart";
 import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../../../common/extensions/ref_extensions.dart";
 import "../../../../common/network/directus_client.dart";
+import "../../../../common/services/graves_cache.dart";
 import "../models/grave.dart";
 
 part "graves_repository.g.dart";
@@ -23,17 +25,57 @@ class DirectusOfflineException implements Exception {
 @riverpod
 Future<IList<Grave>> gravesRepository(Ref ref) async {
   final restClient = ref.watch(directusClientProvider);
-  ref.setRefresh(DirectusConfig.gravesRefreshInterval);
-  final gravesList = await restClient.fetchGraves();
-  return gravesList.toIList();
+  final cache = await GravesCache.open();
+  return _fetchWithCache(
+    ref,
+    fetch: () async => (await restClient.fetchGraves()).toIList(),
+    save: cache.saveAll,
+    restore: cache.readAll,
+  );
 }
 
 @riverpod
-Future<Grave> graveRepository(Ref ref, String graveId) {
+Future<Grave> graveRepository(Ref ref, String graveId) async {
   final restClient = ref.watch(directusClientProvider);
-  ref.setRefresh(DirectusConfig.gravesRefreshInterval);
+  final cache = await GravesCache.open();
+  return _fetchWithCache(
+    ref,
+    fetch: () => restClient.fetchGrave(graveId),
+    save: cache.save,
+    restore: () => cache.read(graveId),
+  );
+}
 
-  return restClient.fetchGrave(graveId);
+Future<T> _fetchWithCache<T extends Object>(
+  Ref ref, {
+  required Future<T> Function() fetch,
+  required Future<void> Function(T) save,
+  required T? Function() restore,
+}) async {
+  try {
+    final value = await fetch();
+    await save(value);
+    return value;
+  } on DirectusOfflineException {
+    await _invalidateWhenOnline(ref);
+    final cached = restore();
+    if (cached == null) rethrow;
+    return cached;
+  }
+}
+
+Future<void> _invalidateWhenOnline(Ref ref) async {
+  final connectivity = Connectivity();
+  final current = await connectivity.checkConnectivity();
+  if (!current.contains(ConnectivityResult.none)) return;
+  late StreamSubscription<List<ConnectivityResult>> sub;
+  sub = connectivity.onConnectivityChanged.listen((result) {
+    if (!result.contains(ConnectivityResult.none)) {
+      unawaited(sub.cancel());
+      ref.invalidateSelf();
+    }
+  });
+  ref.onDispose(() => unawaited(sub.cancel()));
 }
 
 extension DioFetchGravesX on Dio {

@@ -7,7 +7,6 @@ import "../services/auth_interceptor.dart";
 part "directus_client.g.dart";
 
 abstract class DirectusConfig {
-  static const gravesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
 
   static const headers = {"Accept": "application/json", "Accept-Encoding": "gzip", "Content-Type": "application/json"};
