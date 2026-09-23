@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
@@ -27,8 +28,8 @@ class GraveListItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: photoId != null
-                  ? Image.network(
-                      DirectusConfig.assetUrl(photoId),
+                  ? Image(
+                      image: CachedNetworkImageProvider(DirectusConfig.assetUrl(photoId)),
                       width: 56,
                       height: 56,
                       fit: BoxFit.cover,

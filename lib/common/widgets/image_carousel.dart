@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 
 import "../../app/l10n/app_localizations.dart";
@@ -17,8 +18,8 @@ class ImageCarousel extends StatelessWidget {
         ? [Assets.images.grave.image(fit: BoxFit.cover, semanticLabel: label)]
         : [
             for (var i = 0; i < photoIds.length; i++)
-              Image.network(
-                DirectusConfig.assetUrl(photoIds[i]),
+              Image(
+                image: CachedNetworkImageProvider(DirectusConfig.assetUrl(photoIds[i])),
                 fit: BoxFit.cover,
                 semanticLabel: "$label ${i + 1}",
                 errorBuilder: (context, error, stackTrace) =>
