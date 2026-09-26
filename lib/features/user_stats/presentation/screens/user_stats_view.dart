@@ -2,9 +2,11 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
+import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
 import "../../../auth/data/auth_service.dart";
 import "../../../auth/presentation/screens/login_view.dart";
+import "../../../settings/presentation/widgets/settings_icon_button.dart";
 import "../providers/user_stats_provider.dart";
 
 class UserStatsPage extends ConsumerWidget {
@@ -16,8 +18,9 @@ class UserStatsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile & History"),
+        title: Text(AppLocalizations.of(context)!.profile),
         actions: [
+          const SettingsIconButton(),
           IconButton(
             icon: const Icon(Icons.logout, semanticLabel: "Log out of your account"),
             tooltip: "Log out",

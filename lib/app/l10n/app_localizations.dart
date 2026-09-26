@@ -252,6 +252,114 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Brak zdjęcia grobu'**
   String get no_grave_photo_semantic_label;
+
+  /// Title of the settings screen
+  ///
+  /// In pl, this message translates to:
+  /// **'Ustawienia'**
+  String get settings;
+
+  /// Semantic label for the settings button
+  ///
+  /// In pl, this message translates to:
+  /// **'Otwórz ustawienia aplikacji'**
+  String get settings_semantic_label;
+
+  /// Section header for appearance settings
+  ///
+  /// In pl, this message translates to:
+  /// **'Wygląd'**
+  String get settings_appearance;
+
+  /// Label for the dark mode toggle
+  ///
+  /// In pl, this message translates to:
+  /// **'Tryb ciemny'**
+  String get settings_dark_mode;
+
+  /// Subtitle explaining the dark mode toggle
+  ///
+  /// In pl, this message translates to:
+  /// **'Przełącz między jasnym a ciemnym motywem'**
+  String get settings_dark_mode_subtitle;
+
+  /// Section header for about / app info settings
+  ///
+  /// In pl, this message translates to:
+  /// **'O aplikacji'**
+  String get settings_about;
+
+  /// Label for the app info / version tile
+  ///
+  /// In pl, this message translates to:
+  /// **'Informacje o aplikacji'**
+  String get settings_app_info;
+
+  /// Label for opening open-source licenses
+  ///
+  /// In pl, this message translates to:
+  /// **'Licencje'**
+  String get settings_licenses;
+
+  /// Subtitle for the licenses tile
+  ///
+  /// In pl, this message translates to:
+  /// **'Biblioteki open source użyte w aplikacji'**
+  String get settings_licenses_subtitle;
+
+  /// Short legalese shown on the licenses page
+  ///
+  /// In pl, this message translates to:
+  /// **'© KN Solvro. Aplikacja Grobownik.'**
+  String get settings_app_legalese;
+
+  /// App version label with version and build number
+  ///
+  /// In pl, this message translates to:
+  /// **'Wersja {version} ({buildNumber})'**
+  String settings_version(String version, String buildNumber);
+
+  /// Shown while app version is still loading
+  ///
+  /// In pl, this message translates to:
+  /// **'Nieznana wersja'**
+  String get settings_version_unknown;
+
+  /// Label for the team info screen
+  ///
+  /// In pl, this message translates to:
+  /// **'Zespół'**
+  String get settings_team;
+
+  /// Subtitle for the team info tile
+  ///
+  /// In pl, this message translates to:
+  /// **'Poznaj twórców aplikacji'**
+  String get settings_team_subtitle;
+
+  /// Section header listing team members
+  ///
+  /// In pl, this message translates to:
+  /// **'Skład'**
+  String get settings_team_members;
+
+  /// Section header for team-related external links
+  ///
+  /// In pl, this message translates to:
+  /// **'Linki'**
+  String get settings_team_links;
+
+  /// Label for opening the Solvro website
+  ///
+  /// In pl, this message translates to:
+  /// **'Strona Solvro'**
+  String get settings_team_website;
+
+  /// Label for opening the project GitHub repository
+  ///
+  /// In pl, this message translates to:
+  /// **'Repozytorium GitHub'**
+  String get settings_team_github;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

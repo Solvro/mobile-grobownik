@@ -107,5 +107,85 @@
   "no_grave_photo_semantic_label": "Brak zdjęcia grobu",
   "@no_grave_photo_semantic_label": {
     "description": "Semantic label for the placeholder shown when a grave has no photo"
+  },
+  "settings": "Ustawienia",
+  "@settings": {
+    "description": "Title of the settings screen"
+  },
+  "settings_semantic_label": "Otwórz ustawienia aplikacji",
+  "@settings_semantic_label": {
+    "description": "Semantic label for the settings button"
+  },
+  "settings_appearance": "Wygląd",
+  "@settings_appearance": {
+    "description": "Section header for appearance settings"
+  },
+  "settings_dark_mode": "Tryb ciemny",
+  "@settings_dark_mode": {
+    "description": "Label for the dark mode toggle"
+  },
+  "settings_dark_mode_subtitle": "Przełącz między jasnym a ciemnym motywem",
+  "@settings_dark_mode_subtitle": {
+    "description": "Subtitle explaining the dark mode toggle"
+  },
+  "settings_about": "O aplikacji",
+  "@settings_about": {
+    "description": "Section header for about / app info settings"
+  },
+  "settings_app_info": "Informacje o aplikacji",
+  "@settings_app_info": {
+    "description": "Label for the app info / version tile"
+  },
+  "settings_licenses": "Licencje",
+  "@settings_licenses": {
+    "description": "Label for opening open-source licenses"
+  },
+  "settings_licenses_subtitle": "Biblioteki open source użyte w aplikacji",
+  "@settings_licenses_subtitle": {
+    "description": "Subtitle for the licenses tile"
+  },
+  "settings_app_legalese": "© KN Solvro. Aplikacja Grobownik.",
+  "@settings_app_legalese": {
+    "description": "Short legalese shown on the licenses page"
+  },
+  "settings_version": "Wersja {version} ({buildNumber})",
+  "@settings_version": {
+    "description": "App version label with version and build number",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "buildNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_version_unknown": "Nieznana wersja",
+  "@settings_version_unknown": {
+    "description": "Shown while app version is still loading"
+  },
+  "settings_team": "Zespół",
+  "@settings_team": {
+    "description": "Label for the team info screen"
+  },
+  "settings_team_subtitle": "Poznaj twórców aplikacji",
+  "@settings_team_subtitle": {
+    "description": "Subtitle for the team info tile"
+  },
+  "settings_team_members": "Skład",
+  "@settings_team_members": {
+    "description": "Section header listing team members"
+  },
+  "settings_team_links": "Linki",
+  "@settings_team_links": {
+    "description": "Section header for team-related external links"
+  },
+  "settings_team_website": "Strona Solvro",
+  "@settings_team_website": {
+    "description": "Label for opening the Solvro website"
+  },
+  "settings_team_github": "Repozytorium GitHub",
+  "@settings_team_github": {
+    "description": "Label for opening the project GitHub repository"
   }
 }

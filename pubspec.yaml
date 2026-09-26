@@ -6,7 +6,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.11.1
-  flutter: 3.44.4
+  flutter: ^3.44.4
 
 dependencies:
   flutter:
@@ -33,6 +33,8 @@ dependencies:
   connectivity_plus: ^7.3.1
   cached_network_image: ^4.0.2
   flutter_cache_manager: ^3.4.5
+  package_info_plus: ^9.0.0
+  url_launcher: ^6.3.2
 
   flutter_riverpod: any # TODO: Select a specific version constraint
 dev_dependencies:
