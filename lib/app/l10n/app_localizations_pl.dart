@@ -88,4 +88,60 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get no_grave_photo_semantic_label => 'Brak zdjęcia grobu';
+
+  @override
+  String get settings => 'Ustawienia';
+
+  @override
+  String get settings_semantic_label => 'Otwórz ustawienia aplikacji';
+
+  @override
+  String get settings_appearance => 'Wygląd';
+
+  @override
+  String get settings_dark_mode => 'Tryb ciemny';
+
+  @override
+  String get settings_dark_mode_subtitle => 'Przełącz między jasnym a ciemnym motywem';
+
+  @override
+  String get settings_about => 'O aplikacji';
+
+  @override
+  String get settings_app_info => 'Informacje o aplikacji';
+
+  @override
+  String get settings_licenses => 'Licencje';
+
+  @override
+  String get settings_licenses_subtitle => 'Biblioteki open source użyte w aplikacji';
+
+  @override
+  String get settings_app_legalese => '© KN Solvro. Aplikacja Grobownik.';
+
+  @override
+  String settings_version(String version, String buildNumber) {
+    return 'Wersja $version ($buildNumber)';
+  }
+
+  @override
+  String get settings_version_unknown => 'Nieznana wersja';
+
+  @override
+  String get settings_team => 'Zespół';
+
+  @override
+  String get settings_team_subtitle => 'Poznaj twórców aplikacji';
+
+  @override
+  String get settings_team_members => 'Skład';
+
+  @override
+  String get settings_team_links => 'Linki';
+
+  @override
+  String get settings_team_website => 'Strona Solvro';
+
+  @override
+  String get settings_team_github => 'Repozytorium GitHub';
 }

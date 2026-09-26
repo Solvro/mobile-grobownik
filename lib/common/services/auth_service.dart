@@ -51,6 +51,9 @@ class AuthService {
 
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    await prefs.remove("email");
+    await prefs.remove("password");
+    await prefs.remove("access_token");
+    await prefs.remove("refresh_token");
   }
 }
