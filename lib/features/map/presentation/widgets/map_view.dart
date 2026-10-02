@@ -32,6 +32,8 @@ class MapView extends ConsumerStatefulWidget {
 class _MapViewState extends ConsumerState<MapView> {
   static const _gravePinImage = "grave-pin";
   static const _cemeteryOutlineLayerId = "landuse-cemetery-outline";
+  static const _gravePinsMinZoom = 16.0;
+  static const _cemeteryFocusZoom = 16.5;
   late final AppLifecycleListener _lifecycle;
   static const _initial = CameraPosition(target: LatLng(51.1079, 17.0385), zoom: 14);
 
@@ -40,6 +42,7 @@ class _MapViewState extends ConsumerState<MapView> {
   var _hasLayout = false;
   var _didFitCamera = false;
   var _didAddCemeteryFills = false;
+  var _showGravePins = false;
   var _syncGeneration = 0;
   var _cemeterySyncGeneration = 0;
 
@@ -59,7 +62,9 @@ class _MapViewState extends ConsumerState<MapView> {
   @override
   void didUpdateWidget(covariant MapView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.graves != widget.graves) unawaited(_syncGraveMarkers());
+    if (oldWidget.graves != widget.graves || oldWidget.cemeteries != widget.cemeteries) {
+      unawaited(_syncMarkers());
+    }
     if (oldWidget.cemeteries != widget.cemeteries) unawaited(_syncCemeteryBorders());
   }
 
@@ -117,6 +122,12 @@ class _MapViewState extends ConsumerState<MapView> {
   }
 
   void _onSymbolTapped(Symbol symbol) {
+    final cemeteryId = symbol.data?["cemeteryId"] as String?;
+    if (cemeteryId != null) {
+      unawaited(_focusCemetery(cemeteryId));
+      return;
+    }
+
     final graveId = symbol.data?["id"] as String?;
     if (graveId == null) return;
 
@@ -131,6 +142,28 @@ class _MapViewState extends ConsumerState<MapView> {
     );
   }
 
+  Future<void> _focusCemetery(String cemeteryId) async {
+    final cemetery = widget.cemeteries.where((candidate) => candidate.id == cemeteryId).firstOrNull;
+    final anchor = cemetery?.labelAnchor;
+    final controller = _controller;
+    if (anchor == null || controller == null) return;
+
+    await controller.animateCamera(
+      CameraUpdate.newLatLngZoom(LatLng(anchor.latitude, anchor.longitude), _cemeteryFocusZoom),
+    );
+  }
+
+  void _onCameraIdle() {
+    final zoom = _controller?.cameraPosition?.zoom;
+    if (zoom == null) return;
+
+    final showPins = zoom >= _gravePinsMinZoom;
+    if (showPins == _showGravePins) return;
+
+    _showGravePins = showPins;
+    unawaited(_syncMarkers());
+  }
+
   Future<void> _onStyleLoaded() async {
     final controller = _controller;
     if (controller == null) return;
@@ -141,9 +174,13 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!mounted) return;
 
     _styleLoaded = true;
+    await controller.setSymbolTextAllowOverlap(true);
+    await controller.setSymbolTextIgnorePlacement(true);
+    await controller.setSymbolIconAllowOverlap(true);
+    if (!mounted) return;
     await _styleBasemapCemeteries();
     if (!mounted) return;
-    await _syncGraveMarkers();
+    await _syncMarkers();
     if (!mounted) return;
     await _syncCemeteryBorders();
   }
@@ -272,7 +309,7 @@ class _MapViewState extends ConsumerState<MapView> {
     return options;
   }
 
-  Future<void> _syncGraveMarkers() async {
+  Future<void> _syncMarkers() async {
     final controller = _controller;
     if (!_styleLoaded || controller == null) return;
 
@@ -280,25 +317,92 @@ class _MapViewState extends ConsumerState<MapView> {
     final graves = widget.graves.toList();
 
     await controller.clearSymbols();
-    if (!mounted || generation != _syncGeneration) return;
-    if (graves.isEmpty) return;
-
-    await controller.addSymbols(
-      [
-        for (final grave in graves)
-          SymbolOptions(
-            geometry: LatLng(grave.location.latitude, grave.location.longitude),
-            iconImage: _gravePinImage,
-            iconAnchor: "bottom",
-          ),
-      ],
-      [
-        for (final grave in graves) {"id": grave.id},
-      ],
-    );
+    await controller.clearCircles();
     if (!mounted || generation != _syncGeneration) return;
 
+    if (_showGravePins) {
+      if (graves.isEmpty) {
+        await _fitCameraToGraves(controller, graves);
+        return;
+      }
+
+      await controller.addSymbols(
+        [
+          for (final grave in graves)
+            SymbolOptions(
+              geometry: LatLng(grave.location.latitude, grave.location.longitude),
+              iconImage: _gravePinImage,
+              iconAnchor: "bottom",
+            ),
+        ],
+        [
+          for (final grave in graves) {"id": grave.id},
+        ],
+      );
+    } else {
+      final labels = _cemeteryCountSymbols();
+      if (labels.circles.isNotEmpty) await controller.addCircles(labels.circles);
+      if (!mounted || generation != _syncGeneration) return;
+      if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
+    }
+
+    if (!mounted || generation != _syncGeneration) return;
     await _fitCameraToGraves(controller, graves);
+  }
+
+  ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data, List<CircleOptions> circles})
+  _cemeteryCountSymbols() {
+    final options = <SymbolOptions>[];
+    final data = <Map<dynamic, dynamic>>[];
+    final circles = <CircleOptions>[];
+    final counts = _graveCountsByCemetery();
+
+    for (final cemetery in widget.cemeteries) {
+      final count = counts[cemetery.id] ?? 0;
+      if (count <= 0) continue;
+      final anchor = cemetery.labelAnchor;
+      if (anchor == null) continue;
+
+      final position = LatLng(anchor.latitude, anchor.longitude);
+      circles.add(
+        CircleOptions(
+          geometry: position,
+          circleRadius: count < 10 ? 16 : 18,
+          circleColor: ColorsConsts.goldenYellow.hexString,
+          circleStrokeColor: ColorsConsts.midnightNavy.hexString,
+          circleStrokeWidth: 2,
+        ),
+      );
+      options.add(
+        SymbolOptions(
+          geometry: position,
+          textField: "$count",
+          textSize: 16,
+          textColor: ColorsConsts.midnightNavy.hexString,
+          textHaloColor: ColorsConsts.goldenYellow.hexString,
+          textHaloWidth: 0.8,
+          textAnchor: "center",
+          fontNames: const ["Noto Sans Bold"],
+        ),
+      );
+      data.add({"cemeteryId": cemetery.id});
+    }
+
+    return (options: options, data: data, circles: circles);
+  }
+
+  Map<String, int> _graveCountsByCemetery() {
+    final counts = {for (final cemetery in widget.cemeteries) cemetery.id: 0};
+
+    for (final grave in widget.graves) {
+      for (final cemetery in widget.cemeteries) {
+        if (!cemetery.contains(grave.location.longitude, grave.location.latitude)) continue;
+        counts[cemetery.id] = (counts[cemetery.id] ?? 0) + 1;
+        break;
+      }
+    }
+
+    return counts;
   }
 
   Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
@@ -358,6 +462,8 @@ class _MapViewState extends ConsumerState<MapView> {
               onMapCreated: _onMapCreated,
               onStyleLoadedCallback: _onStyleLoaded,
               styleString: "https://tiles.openfreemap.org/styles/liberty",
+              trackCameraPosition: true,
+              onCameraIdle: _onCameraIdle,
               myLocationEnabled: hasPermission,
               myLocationTrackingMode: hasPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
               myLocationRenderMode: hasPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
