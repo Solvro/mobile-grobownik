@@ -388,9 +388,9 @@ class _MapViewState extends ConsumerState<MapView> {
     const size = _cemeteryCountIconPx;
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    final center = Offset(size / 2, size / 2);
+    const center = Offset(size / 2, size / 2);
     const strokeWidth = 4.0;
-    final radius = size / 2 - strokeWidth;
+    const radius = size / 2 - strokeWidth;
 
     canvas.drawCircle(
       center,
