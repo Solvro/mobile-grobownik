@@ -5,6 +5,8 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "app/l10n/app_localizations.dart";
 import "app/observers/app_provider_observer.dart";
 import "app/theme/app_theme.dart";
+import "features/cemetery/data/models/cemetery.dart";
+import "features/cemetery/data/repositories/cemeteries_repository.dart";
 import "features/grave/data/models/grave.dart";
 import "features/grave/data/repositories/graves_repository.dart";
 import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
@@ -44,6 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final graves = ref.watch(gravesRepositoryProvider).value ?? const IListConst<Grave>([]);
+    final cemeteries = ref.watch(cemeteriesRepositoryProvider).value ?? const IListConst<Cemetery>([]);
     final selectedGraveId = _selectedGraveId ?? graves.firstOrNull?.id;
 
     return Scaffold(
@@ -52,6 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Positioned.fill(
             child: MapView(
               graves: graves,
+              cemeteries: cemeteries,
               onGraveSelected: (graveId) => setState(() => _selectedGraveId = graveId),
             ),
           ),

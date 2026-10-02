@@ -6,8 +6,18 @@ import "../services/auth_interceptor.dart";
 
 part "directus_client.g.dart";
 
+class DirectusOfflineException implements Exception {
+  const DirectusOfflineException(this.cause);
+
+  final DioException cause;
+
+  @override
+  String toString() => "DirectusOfflineException: ${cause.message ?? cause.type.name}";
+}
+
 abstract class DirectusConfig {
   static const gravesRefreshInterval = Duration(seconds: 15);
+  static const cemeteriesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
 
   static const headers = {"Accept": "application/json", "Accept-Encoding": "gzip", "Content-Type": "application/json"};

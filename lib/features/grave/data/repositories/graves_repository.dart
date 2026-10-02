@@ -11,15 +11,6 @@ part "graves_repository.g.dart";
 
 const _graveFields = "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id";
 
-class DirectusOfflineException implements Exception {
-  const DirectusOfflineException(this.cause);
-
-  final DioException cause;
-
-  @override
-  String toString() => "DirectusOfflineException: ${cause.message ?? cause.type.name}";
-}
-
 @riverpod
 Future<IList<Grave>> gravesRepository(Ref ref) async {
   final restClient = ref.watch(directusClientProvider);
