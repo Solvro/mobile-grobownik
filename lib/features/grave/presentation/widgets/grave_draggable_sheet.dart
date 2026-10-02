@@ -22,7 +22,7 @@ import "grave_action_buttons.dart";
 import "grave_list_sheet.dart";
 
 class MyDraggableSheet extends ConsumerStatefulWidget {
-  const MyDraggableSheet({super.key});
+  const MyDraggableSheet({super.key, required graveId});
 
   @override
   ConsumerState<MyDraggableSheet> createState() => _MyDraggableSheetState();
