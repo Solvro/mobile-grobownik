@@ -6,6 +6,8 @@ import "app/l10n/app_localizations.dart";
 import "app/observers/app_provider_observer.dart";
 import "app/theme/app_theme.dart";
 import "common/widgets/grave_search_bar.dart";
+import "features/cemetery/data/models/cemetery.dart";
+import "features/cemetery/data/repositories/cemeteries_repository.dart";
 import "features/grave/data/models/grave.dart";
 import "features/grave/data/repositories/graves_repository.dart";
 import "features/grave/presentation/providers/selected_grave_provider.dart";
@@ -44,6 +46,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final graves = ref.watch(gravesRepositoryProvider).value ?? const IListConst<Grave>([]);
+    final cemeteries = ref.watch(cemeteriesRepositoryProvider).value ?? const IListConst<Cemetery>([]);
+    final selectedGraveId = _selectedGraveId ?? graves.firstOrNull?.id;
 
     return Scaffold(
       body: Stack(
@@ -51,6 +55,7 @@ class HomeScreen extends ConsumerWidget {
           Positioned.fill(
             child: MapView(
               graves: graves,
+              cemeteries: cemeteries,
               onGraveSelected: (graveId) => ref.read(selectedGraveIdProvider.notifier).select(graveId),
             ),
           ),
