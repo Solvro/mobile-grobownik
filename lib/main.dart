@@ -59,7 +59,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onGraveSelected: (graveId) => setState(() => _selectedGraveId = graveId),
             ),
           ),
-          if (selectedGraveId != null) MyDraggableSheet(graveId: selectedGraveId),
+          if (selectedGraveId != null) MyDraggableSheet(),
         ],
       ),
     );
