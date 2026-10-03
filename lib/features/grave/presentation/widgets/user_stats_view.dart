@@ -1,12 +1,15 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
+import "../../../../common/network/directus_client.dart";
 import "../../../../common/services/auth_service.dart";
 import "../../../settings/presentation/widgets/settings_icon_button.dart";
 import "../../../user_stats/presentation/providers/user_stats_provider.dart";
+import "../providers/selected_grave_provider.dart";
 import "login_view.dart";
 
 class UserStatsPage extends ConsumerWidget {
@@ -119,18 +122,25 @@ class UserStatsPage extends ConsumerWidget {
                     final dateStr = visit.visitedAt != null
                         ? "${visit.visitedAt!.day}.${visit.visitedAt!.month}.${visit.visitedAt!.year}"
                         : "Unknown date";
+                    final photoId = visit.grave.photoIds.isNotEmpty ? visit.grave.photoIds.first : null;
 
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
+                        onTap: () async {
+                          await HapticFeedback.selectionClick();
+                          ref.read(selectedGraveIdProvider.notifier).select(visit.graveId);
+                          if (!context.mounted) return;
+                          Navigator.of(context).pop();
+                        },
                         leading: CircleAvatar(
                           backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                          child: const Icon(Icons.place, semanticLabel: "Place"),
+                          backgroundImage: photoId != null
+                              ? CachedNetworkImageProvider(DirectusConfig.assetUrl(photoId))
+                              : null,
+                          child: photoId == null ? const Icon(Icons.place, semanticLabel: "Place") : null,
                         ),
-                        title: Text("Grave ID: ${visit.graveId}"),
-                        subtitle: Text(
-                          "Location: ${visit.location.latitude.toStringAsFixed(4)}, ${visit.location.longitude.toStringAsFixed(4)}",
-                        ),
+                        title: Text(visit.grave.displayName),
                         trailing: Text(dateStr, style: Theme.of(context).textTheme.bodySmall),
                       ),
                     );

@@ -64,7 +64,11 @@ class VisitsRepository extends _$VisitsRepository {
     try {
       final response = await dioClient.get<Map<String, dynamic>>(
         "/items/Visits",
-        queryParameters: {"filter[user][_eq]": r"$CURRENT_USER", "sort": "-date_created"},
+        queryParameters: {
+          "filter[user][_eq]": r"$CURRENT_USER",
+          "sort": "-date_created",
+          "fields": "*,grave.id,grave.firstName,grave.lastName,grave.photos.directus_files_id",
+        },
       );
 
       final rawDataList = (response.data?["data"] as List<dynamic>?) ?? [];
