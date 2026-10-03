@@ -360,6 +360,102 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Repozytorium GitHub'**
   String get settings_team_github;
+
+  /// label for logout
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyloguj'**
+  String get logout;
+
+  /// Error message shown when statistics fail to load
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd ładowania statystyk:\n{err}'**
+  String stats_loading_error(String err);
+
+  /// General error title
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd'**
+  String get error_title;
+
+  /// Label for retry button
+  ///
+  /// In pl, this message translates to:
+  /// **'Spróbuj ponownie'**
+  String get action_retry;
+
+  /// Label for city location
+  ///
+  /// In pl, this message translates to:
+  /// **'Miasto'**
+  String get location_city;
+
+  /// Label for total graves visited statistic
+  ///
+  /// In pl, this message translates to:
+  /// **'Łącznie odwiedzonych grobów'**
+  String get stats_total_graves_visited;
+
+  /// Title for visit history screen
+  ///
+  /// In pl, this message translates to:
+  /// **'Historia wizyt'**
+  String get visit_history;
+
+  /// Message shown when there are no visit records
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak zarejestrowanych wizyt.'**
+  String get visits_empty;
+
+  /// Fallback text when visit date is unknown
+  ///
+  /// In pl, this message translates to:
+  /// **'Nieznana data'**
+  String get visit_date_unknown;
+
+  /// Label for place location
+  ///
+  /// In pl, this message translates to:
+  /// **'Miejsce'**
+  String get location_place;
+
+  /// Label displaying the grave identifier for a visit
+  ///
+  /// In pl, this message translates to:
+  /// **'ID grobu: {graveId}'**
+  String visit_grave_id(String graveId);
+
+  /// Coordinates displaying latitude and longitude for a visit location
+  ///
+  /// In pl, this message translates to:
+  /// **'Lokalizacja: {latitude}, {longitude}'**
+  String visit_location_coords(String latitude, String longitude);
+
+  /// Error message for failed authentication
+  ///
+  /// In pl, this message translates to:
+  /// **'Logowanie nie powiodło się. Sprawdź login i hasło.'**
+  String get login_failed;
+
+  /// Label for login
+  ///
+  /// In pl, this message translates to:
+  /// **'Zaloguj'**
+  String get login;
+
+  /// Label for email
+  ///
+  /// In pl, this message translates to:
+  /// **'E-mail'**
+  String get email;
+
+  /// Label for password
+  ///
+  /// In pl, this message translates to:
+  /// **'Hasło'**
+  String get password;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

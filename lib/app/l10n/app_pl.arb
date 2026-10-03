@@ -187,5 +187,87 @@
   "settings_team_github": "Repozytorium GitHub",
   "@settings_team_github": {
     "description": "Label for opening the project GitHub repository"
+  },
+  "logout": "Wyloguj",
+  "@logout": {
+    "description": "label for logout"
+  },
+  "stats_loading_error": "Błąd ładowania statystyk:\n{err}",
+  "@stats_loading_error": {
+    "description": "Error message shown when statistics fail to load",
+    "placeholders": {
+      "err": {
+        "type": "String"
+      }
+    }
+  },
+  "error_title": "Błąd",
+  "@error_title": {
+    "description": "General error title"
+  },
+  "action_retry": "Spróbuj ponownie",
+  "@action_retry": {
+    "description": "Label for retry button"
+  },
+  "location_city": "Miasto",
+  "@location_city": {
+    "description": "Label for city location"
+  },
+  "stats_total_graves_visited": "Łącznie odwiedzonych grobów",
+  "@stats_total_graves_visited": {
+    "description": "Label for total graves visited statistic"
+  },
+  "visit_history": "Historia wizyt",
+  "@visit_history": {
+    "description": "Title for visit history screen"
+  },
+  "visits_empty": "Brak zarejestrowanych wizyt.",
+  "@visits_empty": {
+    "description": "Message shown when there are no visit records"
+  },
+  "visit_date_unknown": "Nieznana data",
+  "@visit_date_unknown": {
+    "description": "Fallback text when visit date is unknown"
+  },
+  "location_place": "Miejsce",
+  "@location_place": {
+    "description": "Label for place location"
+  },
+  "visit_grave_id": "ID grobu: {graveId}",
+  "@visit_grave_id": {
+    "description": "Label displaying the grave identifier for a visit",
+    "placeholders": {
+      "graveId": {
+        "type": "String"
+      }
+    }
+  },
+  "visit_location_coords": "Lokalizacja: {latitude}, {longitude}",
+  "@visit_location_coords": {
+    "description": "Coordinates displaying latitude and longitude for a visit location",
+    "placeholders": {
+      "latitude": {
+        "type": "String"
+      },
+      "longitude": {
+        "type": "String"
+      }
+    }
+  },
+  "login_failed": "Logowanie nie powiodło się. Sprawdź login i hasło.",
+  "@login_failed": {
+    "description": "Error message for failed authentication"
+  },
+  "login": "Zaloguj",
+  "@login": {
+    "description": "Label for login"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "Label for email"
+  },
+  "password": "Hasło",
+  "@password": {
+    "description": "Label for password"
   }
 }
