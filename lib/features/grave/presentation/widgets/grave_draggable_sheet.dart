@@ -83,47 +83,54 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
   Widget build(BuildContext context) {
     final selectedGraveId = ref.watch(selectedGraveIdProvider);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final minSize = 200 / constraints.maxHeight;
+    return PopScope(
+      canPop: selectedGraveId == null,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        ref.read(selectedGraveIdProvider.notifier).clear();
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final minSize = 200 / constraints.maxHeight;
 
-        return DraggableScrollableSheet(
-          key: _sheet,
-          minChildSize: minSize,
-          snap: true,
-          snapSizes: [minSize, 0.5],
-          controller: _controller,
-          builder: (BuildContext context, ScrollController scrollController) {
-            return DefaultTabController(
-              length: 2,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: context.colorScheme.surface),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-                  child: Stack(
-                    children: [
-                      BottomSheetHandler(),
-                      CustomScrollView(
-                        controller: scrollController,
-                        slivers: [
-                          SliverPadding(
-                            padding: const EdgeInsets.only(top: 29, left: 16, right: 16, bottom: 16),
-                            sliver: SliverToBoxAdapter(
-                              child: selectedGraveId == null
-                                  ? const GraveListSheet()
-                                  : _GraveDetailsLoader(graveId: selectedGraveId),
+          return DraggableScrollableSheet(
+            key: _sheet,
+            minChildSize: minSize,
+            snap: true,
+            snapSizes: [minSize, 0.5],
+            controller: _controller,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return DefaultTabController(
+                length: 2,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: context.colorScheme.surface),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                    child: Stack(
+                      children: [
+                        BottomSheetHandler(),
+                        CustomScrollView(
+                          controller: scrollController,
+                          slivers: [
+                            SliverPadding(
+                              padding: const EdgeInsets.only(top: 29, left: 16, right: 16, bottom: 16),
+                              sliver: SliverToBoxAdapter(
+                                child: selectedGraveId == null
+                                    ? const GraveListSheet()
+                                    : _GraveDetailsLoader(graveId: selectedGraveId),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
