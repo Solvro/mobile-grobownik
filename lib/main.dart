@@ -64,7 +64,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: MapView(
               graves: graves,
               cemeteries: cemeteries,
-              onGraveSelected: (graveId) => ref.read(selectedGraveIdProvider.notifier).select(graveId),
+              onGraveSelected: (graveId) {
+                setState(() => _selectedGraveId = graveId);
+                ref.read(selectedGraveIdProvider.notifier).select(graveId);
+              },
             ),
           ),
           Positioned(
@@ -90,7 +93,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          const MyDraggableSheet(),
+          const const MyDraggableSheet(),
         ],
       ),
     );

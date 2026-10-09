@@ -19,7 +19,7 @@ Future<IList<Cemetery>> cemeteriesRepository(Ref ref) async {
 extension DioFetchCemeteriesX on Dio {
   Future<List<Cemetery>> fetchCemeteries() async {
     try {
-      final response = await get<Map<String, dynamic>>("/Cemeteries");
+      final response = await get<Map<String, dynamic>>("/items/Cemeteries");
       final cemeteries = response.data?["data"] as List? ?? [];
 
       return cemeteries.map((dynamic item) => _parseCemetery(item as Map<dynamic, dynamic>)).toList();

@@ -32,7 +32,6 @@ class MapView extends ConsumerStatefulWidget {
 
 class _MapViewState extends ConsumerState<MapView> {
   static const _gravePinImage = "grave-pin";
-  static const _cemeteryCountImage = "cemetery-count-bg";
   static const _cemeteryCountIconPx = 72;
   static const _cemeteryOutlineLayerId = "landuse-cemetery-outline";
   static const _gravePinsMinZoom = 12.0;
@@ -46,6 +45,7 @@ class _MapViewState extends ConsumerState<MapView> {
   var _didFitCamera = false;
   var _didAddCemeteryFills = false;
   var _showGravePins = false;
+  final _loadedCountIcons = <String>{};
   var _syncGeneration = 0;
   var _cemeterySyncGeneration = 0;
 
@@ -176,9 +176,8 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!mounted) return;
     await controller.addImage(_gravePinImage, image.buffer.asUint8List());
     if (!mounted) return;
-    await controller.addImage(_cemeteryCountImage, await _cemeteryCountBackground());
-    if (!mounted) return;
 
+    _loadedCountIcons.clear();
     _styleLoaded = true;
     await controller.setSymbolTextAllowOverlap(true);
     await controller.setSymbolTextIgnorePlacement(true);
@@ -347,6 +346,8 @@ class _MapViewState extends ConsumerState<MapView> {
       );
     } else {
       final labels = _cemeteryCountSymbols();
+      await _ensureCountIcons(controller, labels.counts);
+      if (!mounted || generation != _syncGeneration) return;
       if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
     }
 
@@ -354,9 +355,10 @@ class _MapViewState extends ConsumerState<MapView> {
     await _fitCameraToGraves(controller, graves);
   }
 
-  ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data}) _cemeteryCountSymbols() {
+  ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data, Set<int> counts}) _cemeteryCountSymbols() {
     final options = <SymbolOptions>[];
     final data = <Map<dynamic, dynamic>>[];
+    final usedCounts = <int>{};
     final counts = _graveCountsByCemetery();
 
     for (final cemetery in widget.cemeteries) {
@@ -365,33 +367,42 @@ class _MapViewState extends ConsumerState<MapView> {
       final anchor = cemetery.labelAnchor;
       if (anchor == null) continue;
 
+      usedCounts.add(count);
       options.add(
         SymbolOptions(
           geometry: LatLng(anchor.latitude, anchor.longitude),
-          iconImage: _cemeteryCountImage,
+          iconImage: _countIconId(count),
           iconSize: count < 10 ? 0.7 : 0.75,
           iconAnchor: "center",
           iconOpacity: 1,
-          textField: "$count",
-          textSize: 12,
-          textColor: ColorsConsts.midnightNavy.hexString,
-          textAnchor: "center",
-          fontNames: const ["Noto Sans Bold"],
         ),
       );
       data.add({"cemeteryId": cemetery.id});
     }
 
-    return (options: options, data: data);
+    return (options: options, data: data, counts: usedCounts);
   }
 
-  Future<Uint8List> _cemeteryCountBackground() async {
+  String _countIconId(int count) => "cemetery-count-$count";
+
+  Future<void> _ensureCountIcons(MapLibreMapController controller, Set<int> counts) async {
+    for (final count in counts) {
+      final id = _countIconId(count);
+      if (_loadedCountIcons.contains(id)) continue;
+      await controller.addImage(id, await _paintCountIcon(count));
+      if (!mounted) return;
+      _loadedCountIcons.add(id);
+    }
+  }
+
+  Future<Uint8List> _paintCountIcon(int count) async {
     const size = _cemeteryCountIconPx;
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     const center = Offset(size / 2, size / 2);
     const strokeWidth = 4.0;
     const radius = size / 2 - strokeWidth;
+    final label = "$count";
 
     canvas.drawCircle(
       center,
@@ -410,6 +421,20 @@ class _MapViewState extends ConsumerState<MapView> {
         ..strokeWidth = strokeWidth
         ..isAntiAlias = true,
     );
+
+    final painter = TextPainter(
+      text: TextSpan(
+        text: label,
+        style: TextStyle(
+          color: ColorsConsts.midnightNavy,
+          fontSize: label.length < 2 ? 36 : 30,
+          fontWeight: FontWeight.w700,
+          height: 1,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(canvas, Offset((size - painter.width) / 2, (size - painter.height) / 2));
 
     final image = await recorder.endRecording().toImage(size, size);
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
