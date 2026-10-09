@@ -1,8 +1,9 @@
+import "dart:async";
+
 import "package:dio/dio.dart";
 import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../../../common/extensions/ref_extensions.dart";
 import "../../../../common/network/directus_client.dart";
 import "../models/cemetery.dart";
 
@@ -11,7 +12,10 @@ part "cemeteries_repository.g.dart";
 @riverpod
 Future<IList<Cemetery>> cemeteriesRepository(Ref ref) async {
   final restClient = ref.watch(directusClientProvider);
-  ref.setRefresh(DirectusConfig.cemeteriesRefreshInterval);
+  final timer = Timer.periodic(DirectusConfig.cemeteriesRefreshInterval, (_) {
+    if (ref.mounted) ref.invalidateSelf();
+  });
+  ref.onDispose(timer.cancel);
   final cemeteries = await restClient.fetchCemeteries();
   return cemeteries.toIList();
 }

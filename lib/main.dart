@@ -9,7 +9,6 @@ import "common/widgets/grave_search_bar.dart";
 import "features/cemetery/data/models/cemetery.dart";
 import "features/cemetery/data/repositories/cemeteries_repository.dart";
 import "features/grave/data/models/grave.dart";
-import "features/grave/data/models/grave.dart";
 import "features/grave/data/repositories/graves_repository.dart";
 import "features/grave/presentation/providers/selected_grave_provider.dart";
 import "features/grave/presentation/widgets/grave_draggable_sheet.dart";
@@ -52,7 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String? _selectedGraveId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final graves = ref.watch(gravesRepositoryProvider).value ?? const IListConst<Grave>([]);
     final cemeteries = ref.watch(cemeteriesRepositoryProvider).value ?? const IListConst<Cemetery>([]);
     final selectedGraveId = _selectedGraveId ?? graves.firstOrNull?.id;
@@ -93,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          const const MyDraggableSheet(),
+          const MyDraggableSheet(),
         ],
       ),
     );

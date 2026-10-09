@@ -52,7 +52,7 @@ class _MapViewState extends ConsumerState<MapView> {
   @override
   void initState() {
     super.initState();
-    unawaited(_requestLocation());
+    _lifecycle = AppLifecycleListener(onResume: _refreshAfterSettings);
   }
 
   @override
@@ -73,6 +73,8 @@ class _MapViewState extends ConsumerState<MapView> {
 
 
   void _refreshAfterSettings() {
+    if (!mounted) return;
+
     final access = ref.read(locationStateProvider).value?.access;
     if (access != LocationAccess.deniedForever && access != LocationAccess.serviceDisabled) return;
 
@@ -491,53 +493,7 @@ class _MapViewState extends ConsumerState<MapView> {
     );
   }
 
-
-
-
-
-  Future<void> _syncGraveMarkers() async {
-    final controller = _controller;
-    if (!_styleLoaded || controller == null) return;
-
-    final generation = ++_syncGeneration;
-    final graves = widget.graves.toList();
-
-    await controller.clearSymbols();
-    await controller.clearCircles();
-    if (!mounted || generation != _syncGeneration) return;
-
-    if (_showGravePins) {
-      if (graves.isEmpty) {
-        await _fitCameraToGraves(controller, graves);
-        return;
-      }
-
-      await controller.addSymbols(
-        [
-          for (final grave in graves)
-            SymbolOptions(
-              geometry: LatLng(grave.location.latitude, grave.location.longitude),
-              iconImage: _gravePinImage,
-              iconAnchor: "bottom",
-            ),
-        ],
-        [
-          for (final grave in graves) {"id": grave.id},
-        ],
-      );
-    } else {
-      final labels = _cemeteryCountSymbols();
-      if (labels.circles.isNotEmpty) await controller.addCircles(labels.circles);
-      if (!mounted || generation != _syncGeneration) return;
-      if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
-    }
-
-    if (!mounted || generation != _syncGeneration) return;
-    await _fitCameraToGraves(controller, graves);
-  }
-
-
-    @override
+  @override
   Widget build(BuildContext context) {
     final hasPermission = ref.watch(locationStateProvider.select((state) => state.value?.access.isGranted ?? false));
 
@@ -611,5 +567,4 @@ class _CurrentLocationButton extends ConsumerWidget {
       ),
     );
   }
-}
 }

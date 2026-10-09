@@ -3,10 +3,9 @@ import "dart:async";
 import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:geolocator/geolocator.dart";
 import "package:maplibre_gl/maplibre_gl.dart";
-
-import "../models/grave.dart";
-import "../services/location_permission_service.dart";
+import "../features/grave/data/models/grave.dart";
 
 class MapView extends StatefulWidget {
   const MapView({required this.graves, this.onGraveSelected, super.key});
@@ -47,9 +46,15 @@ class _MapViewState extends State<MapView> {
   }
 
   Future<void> _requestLocation() async {
-    final granted = await const LocationPermissionService().requestPermission();
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
     if (!mounted) return;
-    setState(() => _hasLocationPermission = granted);
+    setState(
+      () => _hasLocationPermission =
+          permission == LocationPermission.always || permission == LocationPermission.whileInUse,
+    );
   }
 
   void _onMapCreated(MapLibreMapController controller) {
