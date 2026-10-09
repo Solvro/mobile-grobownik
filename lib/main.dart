@@ -40,21 +40,13 @@ class GrobownikApp extends ConsumerWidget {
   }
 }
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  String? _selectedGraveId;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final graves = ref.watch(gravesRepositoryProvider).value ?? const IListConst<Grave>([]);
     final cemeteries = ref.watch(cemeteriesRepositoryProvider).value ?? const IListConst<Cemetery>([]);
-    final selectedGraveId = _selectedGraveId ?? graves.firstOrNull?.id;
 
     return Scaffold(
       body: Stack(
@@ -64,7 +56,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               graves: graves,
               cemeteries: cemeteries,
               onGraveSelected: (graveId) {
-                setState(() => _selectedGraveId = graveId);
                 ref.read(selectedGraveIdProvider.notifier).select(graveId);
               },
             ),
