@@ -31,14 +31,14 @@ class GraveListSheet extends ConsumerWidget {
     // list the user is already looking at.
     if (gravesAsync.hasError && !gravesAsync.hasValue) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: 40),
+        padding: const EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
       );
     }
 
     if (entries.isEmpty) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: 40),
+        padding: const EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.no_graves_found)),
       );
     }
