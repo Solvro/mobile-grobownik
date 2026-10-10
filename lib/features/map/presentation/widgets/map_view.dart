@@ -127,7 +127,7 @@ class _CurrentLocationButton extends ConsumerWidget {
         onPressed: () async {
           await HapticFeedback.lightImpact();
           await HapticFeedback.selectionClick();
-          await openSettings();
+          await onPressed();
         },
         backgroundColor: context.colorScheme.surface,
         foregroundColor: context.colorScheme.primary,
