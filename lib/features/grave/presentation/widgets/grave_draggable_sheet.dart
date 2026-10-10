@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
+import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 
@@ -176,10 +177,12 @@ class _GraveDetails extends ConsumerWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back, semanticLabel: AppLocalizations.of(context)!.back_to_list),
             tooltip: AppLocalizations.of(context)!.back_to_list,
-            onPressed: () => ref.read(selectedGraveIdProvider.notifier).clear(),
+            onPressed: () async {
+              await HapticFeedback.lightImpact();
+              ref.read(selectedGraveIdProvider.notifier).clear();
+            },
           ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -188,34 +191,22 @@ class _GraveDetails extends ConsumerWidget {
               children: [
                 Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
                 const SizedBox(height: 8),
-
                 Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
               ],
             ),
-
             ProfileIconWidget(),
           ],
         ),
-
         const SizedBox(height: 8),
-
         Text(formatDistance(distanceMeters), style: context.textTheme.bodyMedium),
-
         const SizedBox(height: 16),
-
         GraveActionButtons(),
-
         const SizedBox(height: 16),
-
         ImageCarousel(photoIds: grave.photoIds),
         const SizedBox(height: 16),
-
         DetailsSection(biography: grave.biography ?? ""),
-
         const SizedBox(height: 8),
-
         FeedbackSection(),
-
         const SizedBox(height: 32),
       ],
     );

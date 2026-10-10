@@ -2,7 +2,7 @@ import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 import "../../app/config/env.dart";
-import "../services/auth_interceptor.dart";
+import "../../features/auth/data/auth_interceptor.dart";
 
 part "directus_client.g.dart";
 
