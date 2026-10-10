@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
-import "package:flutter/services.dart"; 
+import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 
@@ -144,7 +144,7 @@ class _GraveDetailsLoader extends ConsumerWidget {
         child: Center(child: CircularProgressIndicator()),
       ),
       error: (error, stackTrace) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
+        padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
       ),
       data: (grave) {
@@ -178,11 +178,11 @@ class _GraveDetails extends ConsumerWidget {
             icon: Icon(Icons.arrow_back, semanticLabel: AppLocalizations.of(context)!.back_to_list),
             tooltip: AppLocalizations.of(context)!.back_to_list,
             onPressed: () async {
-  await HapticFeedback.lightImpact();
-  ref.read(selectedGraveIdProvider.notifier).clear();
-},
+              await HapticFeedback.lightImpact();
+              ref.read(selectedGraveIdProvider.notifier).clear();
+            },
+          ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -191,34 +191,22 @@ class _GraveDetails extends ConsumerWidget {
               children: [
                 Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
                 const SizedBox(height: 8),
-
                 Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
               ],
             ),
-
-            ProfileIconWidget(),
+            const ProfileIconWidget(),
           ],
         ),
-
         const SizedBox(height: 8),
-
         Text(formatDistance(distanceMeters), style: context.textTheme.bodyMedium),
-
         const SizedBox(height: 16),
-
-        GraveActionButtons(),
-
+        const GraveActionButtons(),
         const SizedBox(height: 16),
-
         ImageCarousel(photoIds: grave.photoIds),
         const SizedBox(height: 16),
-
         DetailsSection(biography: grave.biography ?? ""),
-
         const SizedBox(height: 8),
-
-        FeedbackSection(),
-
+        const FeedbackSection(),
         const SizedBox(height: 32),
       ],
     );
