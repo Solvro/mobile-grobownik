@@ -187,5 +187,61 @@
   "settings_team_github": "Repozytorium GitHub",
   "@settings_team_github": {
     "description": "Label for opening the project GitHub repository"
+  },
+  "sync_in_progress": "Synchronizacja…",
+  "@sync_in_progress": {
+    "description": "Shown above the list of graves while data is being downloaded"
+  },
+  "sync_synced_at": "Zsynchronizowano: {time}",
+  "@sync_synced_at": {
+    "description": "Shown above the list of graves after a successful synchronization",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sync_data_from": "Dane z: {time}",
+  "@sync_data_from": {
+    "description": "Shown above the list of graves when no synchronization has run yet in this session",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sync_offline_with_data": "Brak połączenia. Dane z: {time}",
+  "@sync_offline_with_data": {
+    "description": "Shown when synchronization failed because there is no connection and older data is available",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sync_offline_no_data": "Brak połączenia. Brak zapisanych danych",
+  "@sync_offline_no_data": {
+    "description": "Shown when synchronization failed because there is no connection and nothing is stored yet"
+  },
+  "sync_failed_with_data": "Błąd synchronizacji. Dane z: {time}",
+  "@sync_failed_with_data": {
+    "description": "Shown when synchronization failed for a reason other than missing connection and older data is available",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sync_failed_no_data": "Błąd synchronizacji. Brak zapisanych danych",
+  "@sync_failed_no_data": {
+    "description": "Shown when synchronization failed for a reason other than missing connection and nothing is stored yet"
+  },
+  "sync_refresh": "Odśwież dane",
+  "@sync_refresh": {
+    "description": "Tooltip for the button that starts a synchronization by hand"
+  },
+  "sync_refresh_semantic_label": "Odśwież listę grobów z serwera",
+  "@sync_refresh_semantic_label": {
+    "description": "Semantic label for the button that starts a synchronization by hand"
   }
 }

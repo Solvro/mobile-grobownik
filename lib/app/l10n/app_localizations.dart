@@ -360,6 +360,60 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Repozytorium GitHub'**
   String get settings_team_github;
+
+  /// Shown above the list of graves while data is being downloaded
+  ///
+  /// In pl, this message translates to:
+  /// **'Synchronizacja…'**
+  String get sync_in_progress;
+
+  /// Shown above the list of graves after a successful synchronization
+  ///
+  /// In pl, this message translates to:
+  /// **'Zsynchronizowano: {time}'**
+  String sync_synced_at(String time);
+
+  /// Shown above the list of graves when no synchronization has run yet in this session
+  ///
+  /// In pl, this message translates to:
+  /// **'Dane z: {time}'**
+  String sync_data_from(String time);
+
+  /// Shown when synchronization failed because there is no connection and older data is available
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia. Dane z: {time}'**
+  String sync_offline_with_data(String time);
+
+  /// Shown when synchronization failed because there is no connection and nothing is stored yet
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia. Brak zapisanych danych'**
+  String get sync_offline_no_data;
+
+  /// Shown when synchronization failed for a reason other than missing connection and older data is available
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd synchronizacji. Dane z: {time}'**
+  String sync_failed_with_data(String time);
+
+  /// Shown when synchronization failed for a reason other than missing connection and nothing is stored yet
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd synchronizacji. Brak zapisanych danych'**
+  String get sync_failed_no_data;
+
+  /// Tooltip for the button that starts a synchronization by hand
+  ///
+  /// In pl, this message translates to:
+  /// **'Odśwież dane'**
+  String get sync_refresh;
+
+  /// Semantic label for the button that starts a synchronization by hand
+  ///
+  /// In pl, this message translates to:
+  /// **'Odśwież listę grobów z serwera'**
+  String get sync_refresh_semantic_label;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
