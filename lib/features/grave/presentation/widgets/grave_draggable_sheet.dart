@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
+import "package:flutter/services.dart"; 
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 
@@ -176,8 +177,10 @@ class _GraveDetails extends ConsumerWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back, semanticLabel: AppLocalizations.of(context)!.back_to_list),
             tooltip: AppLocalizations.of(context)!.back_to_list,
-            onPressed: () => ref.read(selectedGraveIdProvider.notifier).clear(),
-          ),
+            onPressed: () async {
+  await HapticFeedback.lightImpact();
+  ref.read(selectedGraveIdProvider.notifier).clear();
+},
         ),
 
         Row(

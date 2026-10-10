@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
@@ -30,14 +31,14 @@ class GraveListSheet extends ConsumerWidget {
     // list the user is already looking at.
     if (gravesAsync.hasError && !gravesAsync.hasValue) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
+        padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
       );
     }
 
     if (entries.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
+        padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.no_graves_found)),
       );
     }
@@ -49,7 +50,10 @@ class GraveListSheet extends ConsumerWidget {
           GraveListItem(
             grave: entry.grave,
             distanceMeters: entry.distanceMeters,
-            onTap: () => ref.read(selectedGraveIdProvider.notifier).select(entry.grave.id),
+            onTap: () async {
+              await HapticFeedback.lightImpact();
+              ref.read(selectedGraveIdProvider.notifier).select(entry.grave.id);
+            },
           ),
       ],
     );
