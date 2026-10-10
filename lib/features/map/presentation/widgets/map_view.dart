@@ -103,7 +103,12 @@ class _MapViewState extends ConsumerState<MapView> {
           myLocationTrackingMode: hasPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
           myLocationRenderMode: hasPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
         ),
-        _CurrentLocationButton(onPressed: _moveToCurrentLocation),
+        _CurrentLocationButton(
+          onPressed: () async {
+            await HapticFeedback.lightImpact();
+            await _moveToCurrentLocation();
+          },
+        ),
       ],
     );
   }
