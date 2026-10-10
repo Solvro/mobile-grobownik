@@ -125,9 +125,9 @@ class _CurrentLocationButton extends ConsumerWidget {
       child: FloatingActionButton(
         tooltip: AppLocalizations.of(context)!.current_location,
         onPressed: () async {
-          HapticFeedback.lightImpact();
-          await HapticFeedback.selectionClick();
-          await onPressed();
+        unawaited(HapticFeedback.lightImpact()); 
+        await HapticFeedback.selectionClick();
+        await onPressed();
         },
         backgroundColor: context.colorScheme.surface,
         foregroundColor: context.colorScheme.primary,
