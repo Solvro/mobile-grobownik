@@ -143,7 +143,7 @@ class _GraveDetailsLoader extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (error, stackTrace) => Padding(
+      error: (error, stackTrace) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
       ),
