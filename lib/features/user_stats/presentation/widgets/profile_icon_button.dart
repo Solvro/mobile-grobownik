@@ -3,9 +3,9 @@ import "package:flutter/services.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
-import 'package:mobile_grobownik/features/auth/data/auth_service.dart';
-import 'package:mobile_grobownik/features/auth/presentation/screens/login_view.dart';
-import 'package:mobile_grobownik/features/user_stats/presentation/screens/user_stats_view.dart';
+import "../../../auth/data/auth_service.dart";
+import "../../../auth/presentation/screens/login_view.dart";
+import "../screens/user_stats_view.dart";
 
 class ProfileIconWidget extends StatelessWidget {
   @override

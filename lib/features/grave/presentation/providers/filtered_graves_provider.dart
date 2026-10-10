@@ -7,14 +7,14 @@ import "graves_with_distance_provider.dart";
 part "filtered_graves_provider.g.dart";
 
 String _normalizeText(String text) {
-  const polishMap = {'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'};
+  const polishMap = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ź": "z", "ż": "z"};
 
   var normalized = text.toLowerCase();
   polishMap.forEach((polishChar, latinChar) {
     normalized = normalized.replaceAll(polishChar, latinChar);
   });
 
-  return normalized.replaceAll(RegExp(r'\s+'), ' ').trim();
+  return normalized.replaceAll(RegExp(r"\s+"), " ").trim();
 }
 
 @riverpod
@@ -25,7 +25,7 @@ IList<GraveWithDistance> filteredGravesWithDistance(Ref ref) {
   final normalizedQuery = _normalizeText(rawQuery);
   if (normalizedQuery.isEmpty) return entries;
 
-  final queryWords = normalizedQuery.split(' ').where((word) => word.isNotEmpty).toList();
+  final queryWords = normalizedQuery.split(" ").where((word) => word.isNotEmpty).toList();
 
   if (queryWords.isEmpty) return entries;
 
@@ -35,6 +35,6 @@ IList<GraveWithDistance> filteredGravesWithDistance(Ref ref) {
     final fullName = "${grave.firstName} ${grave.lastName}";
     final normalizedTarget = _normalizeText(fullName);
 
-    return queryWords.every((word) => normalizedTarget.contains(word));
+    return queryWords.every(normalizedTarget.contains);
   }).toIList();
 }
