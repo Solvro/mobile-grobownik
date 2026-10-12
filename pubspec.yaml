@@ -35,6 +35,8 @@ dependencies:
   flutter_cache_manager: ^3.4.5
   package_info_plus: ^9.0.0
   url_launcher: ^6.3.2
+  drift: ">=2.34.0 <2.35.0"
+  drift_flutter: ^0.3.1
 
   flutter_riverpod: any # TODO: Select a specific version constraint
 dev_dependencies:
@@ -48,6 +50,7 @@ dev_dependencies:
   auto_route_generator: ^10.5.0
   flutter_gen_runner: ^5.14.1
   envied_generator: ^1.3.8
+  drift_dev: 2.34.0
 
 # auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
 # the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.

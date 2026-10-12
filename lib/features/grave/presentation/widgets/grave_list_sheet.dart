@@ -3,44 +3,58 @@ import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
+import "../../../../common/sync/sync_controller.dart";
+import "../../../../common/sync/sync_status.dart";
 import "../../data/repositories/graves_repository.dart";
 import "../providers/filtered_graves_provider.dart";
 import "../providers/selected_grave_provider.dart";
 import "grave_list_item.dart";
+import "sync_status_header.dart";
 
-class GraveListSheet extends ConsumerWidget {
+class GraveListSheet extends StatelessWidget {
   const GraveListSheet({super.key});
 
   @override
+  Widget build(BuildContext context) {
+    return const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [SyncStatusHeader(), _GraveList()]);
+  }
+}
+
+class _GraveList extends ConsumerWidget {
+  const _GraveList();
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final gravesAsync = ref.watch(gravesRepositoryProvider);
     final entries = ref.watch(filteredGravesWithDistanceProvider);
+    final syncStatus = ref.watch(syncControllerProvider);
 
-    // Spinner only while graves have never been fetched even once (e.g. cold
-    // app start). Any later background refresh keeps the already-known list
-    // on screen instead of flashing a loading indicator.
+    // The graves come from the local database. The spinner is only for the
+    // very first read of the database.
     if (gravesAsync.isLoading && !gravesAsync.hasValue) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 40),
-        child: Center(child: CircularProgressIndicator()),
-      );
+      return const _CenteredMessage(child: CircularProgressIndicator());
     }
 
-    // Likewise, only show the error state if we have never managed to load
-    // any graves at all - a transient refresh failure shouldn't wipe out a
-    // list the user is already looking at.
     if (gravesAsync.hasError && !gravesAsync.hasValue) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
-      );
+      return _CenteredMessage(child: Text(l10n.loading_error));
     }
 
     if (entries.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Center(child: Text(AppLocalizations.of(context)!.no_graves_found)),
-      );
+      final databaseIsEmpty = (gravesAsync.value?.length ?? 0) == 0;
+
+      // An empty database is not "no graves found" until a sync has actually
+      // finished: before that we are still waiting for the first download
+      // (or it failed, e.g. first launch without internet).
+      if (databaseIsEmpty) {
+        return switch (syncStatus) {
+          SyncIdle() || SyncInProgress() => const _CenteredMessage(child: CircularProgressIndicator()),
+          SyncFailure() => _CenteredMessage(child: Text(l10n.loading_error)),
+          SyncSuccess() => _CenteredMessage(child: Text(l10n.no_graves_found)),
+        };
+      }
+
+      return _CenteredMessage(child: Text(l10n.no_graves_found));
     }
 
     return Column(
@@ -56,6 +70,20 @@ class GraveListSheet extends ConsumerWidget {
             },
           ),
       ],
+    );
+  }
+}
+
+class _CenteredMessage extends StatelessWidget {
+  const _CenteredMessage({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 40),
+      child: Center(child: child),
     );
   }
 }

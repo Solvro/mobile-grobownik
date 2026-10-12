@@ -13,7 +13,7 @@ abstract class DirectusConfig {
   static String assetUrl(String fileId) => "${rootUrl.replaceAll(RegExp(r"/+$"), "")}/assets/$fileId";
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Dio directusClient(Ref ref) {
   return getDirectusClient();
 }

@@ -146,6 +146,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settings_team_github => 'Repozytorium GitHub';
 
   @override
+  String get sync_in_progress => 'Synchronizacja…';
+
+  @override
+  String sync_synced_at(String time) {
+    return 'Zsynchronizowano: $time';
+  }
+
+  @override
+  String sync_data_from(String time) {
+    return 'Dane z: $time';
+  }
+
+  @override
+  String sync_offline_with_data(String time) {
+    return 'Brak połączenia. Dane z: $time';
+  }
+
+  @override
+  String get sync_offline_no_data => 'Brak połączenia. Brak zapisanych danych';
+
+  @override
+  String sync_failed_with_data(String time) {
+    return 'Błąd synchronizacji. Dane z: $time';
+  }
+
+  @override
+  String get sync_failed_no_data => 'Błąd synchronizacji. Brak zapisanych danych';
+
+  @override
+  String get sync_refresh => 'Odśwież dane';
+
+  @override
+  String get sync_refresh_semantic_label => 'Odśwież listę grobów z serwera';
   String get logout => 'Wyloguj';
 
   @override
