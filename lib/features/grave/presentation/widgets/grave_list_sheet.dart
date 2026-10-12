@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
@@ -63,7 +64,10 @@ class _GraveList extends ConsumerWidget {
           GraveListItem(
             grave: entry.grave,
             distanceMeters: entry.distanceMeters,
-            onTap: () => ref.read(selectedGraveIdProvider.notifier).select(entry.grave.id),
+            onTap: () async {
+              await HapticFeedback.lightImpact();
+              ref.read(selectedGraveIdProvider.notifier).select(entry.grave.id);
+            },
           ),
       ],
     );
