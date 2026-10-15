@@ -42,7 +42,13 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
       return;
     }
 
-    final refreshResult = await _refreshToken(refreshToken, request);
+    final _RefreshResult? refreshResult;
+    try {
+      refreshResult = await _refreshToken(refreshToken, request);
+    } on DioException catch (refreshError) {
+      handler.next(refreshError);
+      return;
+    }
 
     if (refreshResult == null) {
       await prefs.remove("access_token");
@@ -92,8 +98,12 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
       }
 
       return _RefreshResult(accessToken: accessToken, refreshToken: newRefreshToken);
-    } on DioException {
-      return null;
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status == 400 || status == 401 || status == 403) {
+        return null;
+      }
+      rethrow;
     }
   }
 
