@@ -16,7 +16,6 @@ class DirectusOfflineException implements Exception {
 }
 
 abstract class DirectusConfig {
-  static const gravesRefreshInterval = Duration(seconds: 15);
   static const cemeteriesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
 
