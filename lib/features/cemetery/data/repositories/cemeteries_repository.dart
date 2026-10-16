@@ -12,10 +12,6 @@ part "cemeteries_repository.g.dart";
 @riverpod
 Future<IList<Cemetery>> cemeteriesRepository(Ref ref) async {
   final restClient = ref.watch(directusClientProvider);
-  final timer = Timer.periodic(DirectusConfig.cemeteriesRefreshInterval, (_) {
-    if (ref.mounted) ref.invalidateSelf();
-  });
-  ref.onDispose(timer.cancel);
   final cemeteries = await restClient.fetchCemeteries();
   return cemeteries.toIList();
 }

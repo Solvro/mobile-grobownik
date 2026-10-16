@@ -16,7 +16,6 @@ class DirectusOfflineException implements Exception {
 }
 
 abstract class DirectusConfig {
-  static const cemeteriesRefreshInterval = Duration(seconds: 15);
   static final rootUrl = Env.directusUrl;
 
   static const headers = {"Accept": "application/json", "Accept-Encoding": "gzip", "Content-Type": "application/json"};
