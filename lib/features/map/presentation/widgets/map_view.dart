@@ -71,7 +71,6 @@ class _MapViewState extends ConsumerState<MapView> {
     super.dispose();
   }
 
-
   void _refreshAfterSettings() {
     if (!mounted) return;
 

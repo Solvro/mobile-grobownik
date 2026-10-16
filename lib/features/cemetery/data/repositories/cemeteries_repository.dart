@@ -22,21 +22,27 @@ extension DioFetchCemeteriesX on Dio {
       final response = await get<Map<String, dynamic>>("/items/Cemeteries");
       final cemeteries = response.data?["data"] as List? ?? [];
 
-      return cemeteries.map((dynamic item) => _parseCemetery(item as Map<dynamic, dynamic>)).toList();
+      return cemeteries.map(_parseCemetery).whereType<Cemetery>().toList();
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
   }
 }
 
-Cemetery _parseCemetery(Map<dynamic, dynamic> raw) {
-  final map = Map<String, dynamic>.from(raw);
-  final boundary = map["boundary"];
-  if (boundary is Map<String, dynamic>) {
-    map["boundary"] = boundary;
-  } else if (boundary is Map<dynamic, dynamic>) {
-    map["boundary"] = Map<String, dynamic>.from(boundary);
-  }
+Cemetery? _parseCemetery(dynamic raw) {
+  if (raw is! Map) return null;
 
-  return Cemetery.fromJson(map);
+  try {
+    final map = Map<String, dynamic>.from(raw);
+    final boundary = map["boundary"];
+    if (boundary is Map<String, dynamic>) {
+      map["boundary"] = boundary;
+    } else if (boundary is Map) {
+      map["boundary"] = Map<String, dynamic>.from(boundary);
+    }
+
+    return Cemetery.fromJson(map);
+  } on Exception {
+    return null;
+  }
 }
