@@ -2,8 +2,8 @@ import "package:geolocator/geolocator.dart";
 
 import "../models/location.dart";
 
-double? distanceToLocation(Position? userPosition, Location graveLocation) {
-  if (userPosition == null) return null;
+double? distanceToLocation(Position? userPosition, Location? graveLocation) {
+  if (userPosition == null || graveLocation == null) return null;
 
   return Geolocator.distanceBetween(
     userPosition.latitude,

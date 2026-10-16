@@ -414,6 +414,7 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Odśwież listę grobów z serwera'**
   String get sync_refresh_semantic_label;
+
   /// label for logout
   ///
   /// In pl, this message translates to:
@@ -509,6 +510,168 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Hasło'**
   String get password;
+
+  /// Tab with location and directions in grave details
+  ///
+  /// In pl, this message translates to:
+  /// **'Wskazówki dojścia'**
+  String get grave_tab_directions;
+
+  /// Tab with biography in grave details
+  ///
+  /// In pl, this message translates to:
+  /// **'Życiorys'**
+  String get grave_tab_biography;
+
+  /// Title of the biography card
+  ///
+  /// In pl, this message translates to:
+  /// **'Życiorys'**
+  String get grave_biography_title;
+
+  /// Shown when a grave has no biography
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak życiorysu'**
+  String get grave_biography_empty;
+
+  /// Label for the cemetery a grave is in
+  ///
+  /// In pl, this message translates to:
+  /// **'Cmentarz'**
+  String get grave_cemetery;
+
+  /// Label for the field / row / grave number
+  ///
+  /// In pl, this message translates to:
+  /// **'Kwatera'**
+  String get grave_plot;
+
+  /// Label for on-site hints on finding the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Jak dojść'**
+  String get grave_directions;
+
+  /// Pin points at the grave itself
+  ///
+  /// In pl, this message translates to:
+  /// **'Dokładne miejsce grobu'**
+  String get grave_location_precision_grave;
+
+  /// Pin points at the middle of the cemetery field, not the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Przybliżona lokalizacja – środek kwatery'**
+  String get grave_location_precision_field;
+
+  /// Location precision is not known
+  ///
+  /// In pl, this message translates to:
+  /// **'Dokładność lokalizacji nieznana'**
+  String get grave_location_precision_unknown;
+
+  /// Shown when a grave has no coordinates
+  ///
+  /// In pl, this message translates to:
+  /// **'Lokalizacja grobu nie jest jeszcze znana'**
+  String get grave_location_missing;
+
+  /// Shown when a grave has no cemetery, plot or directions
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak dodatkowych informacji o położeniu grobu'**
+  String get grave_no_location_details;
+
+  /// Button opening the record the location was taken from
+  ///
+  /// In pl, this message translates to:
+  /// **'Źródło: {source}'**
+  String grave_location_source_open(String source);
+
+  /// Location source without a link
+  ///
+  /// In pl, this message translates to:
+  /// **'Źródło lokalizacji: {source}'**
+  String grave_location_source_label(String source);
+
+  /// Name of the grobonet.com source
+  ///
+  /// In pl, this message translates to:
+  /// **'Grobonet'**
+  String get location_source_grobonet;
+
+  /// Name of the mogily.pl source
+  ///
+  /// In pl, this message translates to:
+  /// **'mogily.pl'**
+  String get location_source_mogily;
+
+  /// Name of the groby.cui.wroclaw.pl source
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyszukiwarka grobów CUI Wrocław'**
+  String get location_source_cui;
+
+  /// Location taken from the university's list
+  ///
+  /// In pl, this message translates to:
+  /// **'Wykaz Politechniki Wrocławskiej'**
+  String get location_source_spreadsheet;
+
+  /// Any other location source
+  ///
+  /// In pl, this message translates to:
+  /// **'Inne źródło'**
+  String get location_source_other;
+
+  /// Label for the person's education
+  ///
+  /// In pl, this message translates to:
+  /// **'Wykształcenie'**
+  String get grave_education;
+
+  /// Label for subjects the person taught
+  ///
+  /// In pl, this message translates to:
+  /// **'Przedmioty'**
+  String get grave_subjects;
+
+  /// Label for the person's achievements
+  ///
+  /// In pl, this message translates to:
+  /// **'Osiągnięcia'**
+  String get grave_achievements;
+
+  /// Expandable section with notes from the CMS
+  ///
+  /// In pl, this message translates to:
+  /// **'Notatki'**
+  String get grave_notes;
+
+  /// Label for the grave's GPS coordinates
+  ///
+  /// In pl, this message translates to:
+  /// **'Współrzędne'**
+  String get grave_coordinates;
+
+  /// Distance between the user and the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'{distance} od Ciebie'**
+  String grave_distance_from_you(String distance);
+
+  /// Location measured on site by a volunteer (Directus value: volunteer)
+  ///
+  /// In pl, this message translates to:
+  /// **'Pomiar wolontariusza w terenie'**
+  String get location_source_volunteer;
+
+  /// Screen reader label of an external link icon
+  ///
+  /// In pl, this message translates to:
+  /// **'Otwórz link'**
+  String get action_open_link;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
