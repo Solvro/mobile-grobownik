@@ -1,3 +1,4 @@
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:geolocator/geolocator.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
@@ -7,8 +8,8 @@ part "user_location_provider.g.dart";
 
 @riverpod
 Stream<Position?> userLocation(Ref ref) async* {
-  final access = ref.watch(locationStateProvider).value?.access;
-  if (access == null || !access.isGranted) {
+  final granted = ref.watch(locationStateProvider.select((state) => state.value?.access.isGranted ?? false));
+  if (!granted) {
     yield null;
     return;
   }
