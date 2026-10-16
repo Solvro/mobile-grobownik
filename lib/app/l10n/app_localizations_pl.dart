@@ -320,4 +320,19 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get action_open_link => 'Otwórz link';
+
+  @override
+  String get auth_status_in_progress => 'logowanie…';
+
+  @override
+  String get auth_status_logged_in => 'zalogowano';
+
+  @override
+  String get auth_status_failed => 'logowanie nie powiodło się';
+
+  @override
+  String get auth_status_offline => 'brak połączenia, zalogujemy po jego odzyskaniu';
+
+  @override
+  String get login_offline => 'Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.';
 }
