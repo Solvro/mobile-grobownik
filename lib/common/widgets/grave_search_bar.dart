@@ -1,11 +1,12 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart"; // <-- Добавили импорт
+import "package:flutter/services.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../app/l10n/app_localizations.dart";
 import "../../app/theme/app_theme.dart";
 import "../providers/search_query_provider.dart";
+import "map_top_bar.dart";
 
 class GraveSearchBar extends HookConsumerWidget {
   const GraveSearchBar({super.key});
@@ -15,8 +16,8 @@ class GraveSearchBar extends HookConsumerWidget {
     final controller = useTextEditingController();
     final query = ref.watch(searchQueryProvider);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return SizedBox(
+      height: mapTopBarHeight,
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(28),
