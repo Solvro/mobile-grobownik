@@ -393,4 +393,134 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get action_cancel => 'Anuluj';
+
+  @override
+  String get add_photos => 'Dodaj zdjęcia';
+
+  @override
+  String get correction_intro =>
+      'Zmień tylko to, co wymaga poprawy. Zgłoszenie sprawdzi moderator, zanim zmiany pojawią się w aplikacji.';
+
+  @override
+  String get photo_intro => 'Dodaj zdjęcia grobu. Pojawią się w aplikacji po sprawdzeniu przez moderatora.';
+
+  @override
+  String get correction_section_person => 'Osoba';
+
+  @override
+  String get correction_section_place => 'Miejsce';
+
+  @override
+  String get correction_section_photos => 'Zdjęcia';
+
+  @override
+  String get field_first_name => 'Imię';
+
+  @override
+  String get field_last_name => 'Nazwisko';
+
+  @override
+  String get field_birth_date => 'Data urodzenia';
+
+  @override
+  String get field_death_date => 'Data śmierci';
+
+  @override
+  String get correction_clear => 'Wyczyść';
+
+  @override
+  String get correction_cemetery_none => 'Nie wiem / brak';
+
+  @override
+  String get correction_photo_camera => 'Zrób zdjęcie';
+
+  @override
+  String get correction_photo_gallery => 'Wybierz z galerii';
+
+  @override
+  String get correction_photo_remove => 'Usuń zdjęcie';
+
+  @override
+  String correction_photos_limit(String count) {
+    return 'Możesz dodać maksymalnie $count zdjęć.';
+  }
+
+  @override
+  String get correction_comment => 'Komentarz lub źródło informacji';
+
+  @override
+  String get correction_submit => 'Wyślij zgłoszenie';
+
+  @override
+  String correction_uploading(String done, String total) {
+    return 'Wysyłanie zdjęć $done/$total…';
+  }
+
+  @override
+  String get correction_nothing_changed => 'Nic nie zostało zmienione.';
+
+  @override
+  String get correction_no_photos => 'Dodaj przynajmniej jedno zdjęcie.';
+
+  @override
+  String get correction_sent => 'Dziękujemy! Zgłoszenie trafiło do moderacji.';
+
+  @override
+  String get correction_failed => 'Nie udało się wysłać zgłoszenia. Spróbuj ponownie.';
+
+  @override
+  String get correction_discard_title => 'Odrzucić zmiany?';
+
+  @override
+  String get correction_discard_body => 'Wprowadzone zmiany nie zostaną wysłane.';
+
+  @override
+  String get correction_discard_confirm => 'Odrzuć';
+
+  @override
+  String get location_picker_title => 'Wskaż lokalizację grobu';
+
+  @override
+  String get location_picker_hint => 'Przesuń mapę tak, aby pinezka wskazywała dokładnie grób.';
+
+  @override
+  String get location_picker_confirm => 'Wybierz tę lokalizację';
+
+  @override
+  String get location_picker_satellite => 'Widok satelitarny';
+
+  @override
+  String get location_picker_map => 'Zwykła mapa';
+
+  @override
+  String get location_picker_show_me => 'Pokaż moją lokalizację';
+
+  @override
+  String get location_picker_hide_me => 'Ukryj moją lokalizację';
+
+  @override
+  String get location_picker_go_to_me => 'Przejdź do mojej lokalizacji';
+
+  @override
+  String get location_picker_current => 'Obecna lokalizacja w aplikacji';
+
+  @override
+  String get correction_location_title => 'Lokalizacja grobu';
+
+  @override
+  String get correction_location_unchanged => 'Bez zmian';
+
+  @override
+  String correction_location_picked(String coordinates) {
+    return 'Nowa: $coordinates';
+  }
+
+  @override
+  String get correction_location_pick => 'Wskaż na mapie';
+
+  @override
+  String get correction_photo_preview => 'Dodane zdjęcie';
+
+  @override
+  String get location_picker_pin => 'Wybrany punkt';
 }
