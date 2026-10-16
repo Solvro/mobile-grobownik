@@ -179,6 +179,8 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get sync_refresh_semantic_label => 'Odśwież listę grobów z serwera';
+
+  @override
   String get logout => 'Wyloguj';
 
   @override
@@ -231,4 +233,91 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get password => 'Hasło';
+
+  @override
+  String get grave_tab_directions => 'Wskazówki dojścia';
+
+  @override
+  String get grave_tab_biography => 'Życiorys';
+
+  @override
+  String get grave_biography_title => 'Życiorys';
+
+  @override
+  String get grave_biography_empty => 'Brak życiorysu';
+
+  @override
+  String get grave_cemetery => 'Cmentarz';
+
+  @override
+  String get grave_plot => 'Kwatera';
+
+  @override
+  String get grave_directions => 'Jak dojść';
+
+  @override
+  String get grave_location_precision_grave => 'Dokładne miejsce grobu';
+
+  @override
+  String get grave_location_precision_field => 'Przybliżona lokalizacja – środek kwatery';
+
+  @override
+  String get grave_location_precision_unknown => 'Dokładność lokalizacji nieznana';
+
+  @override
+  String get grave_location_missing => 'Lokalizacja grobu nie jest jeszcze znana';
+
+  @override
+  String get grave_no_location_details => 'Brak dodatkowych informacji o położeniu grobu';
+
+  @override
+  String grave_location_source_open(String source) {
+    return 'Źródło: $source';
+  }
+
+  @override
+  String grave_location_source_label(String source) {
+    return 'Źródło lokalizacji: $source';
+  }
+
+  @override
+  String get location_source_grobonet => 'Grobonet';
+
+  @override
+  String get location_source_mogily => 'mogily.pl';
+
+  @override
+  String get location_source_cui => 'Wyszukiwarka grobów CUI Wrocław';
+
+  @override
+  String get location_source_spreadsheet => 'Wykaz Politechniki Wrocławskiej';
+
+  @override
+  String get location_source_other => 'Inne źródło';
+
+  @override
+  String get grave_education => 'Wykształcenie';
+
+  @override
+  String get grave_subjects => 'Przedmioty';
+
+  @override
+  String get grave_achievements => 'Osiągnięcia';
+
+  @override
+  String get grave_notes => 'Notatki';
+
+  @override
+  String get grave_coordinates => 'Współrzędne';
+
+  @override
+  String grave_distance_from_you(String distance) {
+    return '$distance od Ciebie';
+  }
+
+  @override
+  String get location_source_volunteer => 'Pomiar wolontariusza w terenie';
+
+  @override
+  String get action_open_link => 'Otwórz link';
 }

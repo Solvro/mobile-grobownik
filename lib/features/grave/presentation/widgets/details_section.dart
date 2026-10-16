@@ -1,23 +1,28 @@
 import "package:flutter/material.dart";
 
-import "../../../../app/theme/app_theme.dart";
+import "../../../../app/l10n/app_localizations.dart";
+import "../../data/models/grave.dart";
 import "biography_card.dart";
+import "grave_location_card.dart";
+import "grave_notes_card.dart";
 
 class DetailsSection extends StatelessWidget {
-  final String biography; // <-- Передаем биографию из модели могилы
+  const DetailsSection({required this.grave, super.key});
 
-  const DetailsSection({required this.biography, super.key});
+  final Grave grave;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       children: [
-        const TabBar(
+        TabBar(
           isScrollable: true,
           tabAlignment: TabAlignment.center,
           tabs: [
-            Tab(text: "Wskazówki dojścia"), // Исправлено: "Wskazówki" вместо "Wzkazówki" :)
-            Tab(text: "Życiorys"),
+            Tab(text: l10n.grave_tab_directions),
+            Tab(text: l10n.grave_tab_biography),
           ],
         ),
         const SizedBox(height: 16),
@@ -28,22 +33,16 @@ class DetailsSection extends StatelessWidget {
             return AnimatedBuilder(
               animation: tabController,
               builder: (context, child) {
-                if (tabController.index == 0) {
-                  return Card(
-                    color: context.colorScheme.secondary,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                      ),
-                    ),
-                  );
-                } else {
-                  // Отображаем полученную биографию в карточке
-                  return BiographyCard("Życiorys", "Informacje", biography);
-                }
+                return switch (tabController.index) {
+                  0 => Column(
+                    children: [
+                      GraveLocationCard(grave: grave),
+                      const SizedBox(height: 8),
+                      GraveNotesCard(grave: grave),
+                    ],
+                  ),
+                  _ => BiographyCard(grave: grave),
+                };
               },
             );
           },
