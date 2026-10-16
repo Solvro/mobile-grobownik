@@ -1050,6 +1050,30 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Wybrany punkt'**
   String get location_picker_pin;
+
+  /// Screen reader label of the synced icon
+  ///
+  /// In pl, this message translates to:
+  /// **'Dane aktualne'**
+  String get sync_icon_done;
+
+  /// Screen reader label of the offline icon
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia'**
+  String get sync_icon_offline;
+
+  /// Screen reader label of the sync error icon
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd synchronizacji'**
+  String get sync_icon_failed;
+
+  /// Screen reader label of the idle sync icon
+  ///
+  /// In pl, this message translates to:
+  /// **'Dane zapisane w telefonie'**
+  String get sync_icon_idle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

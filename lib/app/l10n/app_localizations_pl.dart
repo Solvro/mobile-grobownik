@@ -523,4 +523,16 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get location_picker_pin => 'Wybrany punkt';
+
+  @override
+  String get sync_icon_done => 'Dane aktualne';
+
+  @override
+  String get sync_icon_offline => 'Brak połączenia';
+
+  @override
+  String get sync_icon_failed => 'Błąd synchronizacji';
+
+  @override
+  String get sync_icon_idle => 'Dane zapisane w telefonie';
 }
