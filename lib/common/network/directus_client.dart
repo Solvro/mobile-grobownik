@@ -2,7 +2,7 @@ import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 import "../../app/config/env.dart";
-import "../services/auth_interceptor.dart";
+import "../../features/auth/data/auth_interceptor.dart";
 
 part "directus_client.g.dart";
 
@@ -22,7 +22,7 @@ abstract class DirectusConfig {
   static String assetUrl(String fileId) => "${rootUrl.replaceAll(RegExp(r"/+$"), "")}/assets/$fileId";
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Dio directusClient(Ref ref) {
   return getDirectusClient();
 }

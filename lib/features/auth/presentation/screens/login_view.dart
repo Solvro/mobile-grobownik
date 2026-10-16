@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "../../../../app/l10n/app_localizations.dart";
 import "../../../user_stats/presentation/screens/user_stats_view.dart";
 import "../../data/auth_service.dart";
 
@@ -46,9 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (success) {
         await Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const UserStatsPage()));
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text("Login failed. Check your credentials.")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.login_failed)));
       }
     }
   }
@@ -56,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.login)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -64,13 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.email),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.password),
               obscureText: true,
             ),
             const SizedBox(height: 32),
@@ -82,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   await HapticFeedback.selectionClick();
                   await _handleLogin(_emailController.text.trim(), _passwordController.text.trim());
                 },
-                child: const Text("Login"),
+                child: Text(AppLocalizations.of(context)!.login),
               ),
           ],
         ),

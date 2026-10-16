@@ -5,6 +5,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "app/l10n/app_localizations.dart";
 import "app/observers/app_provider_observer.dart";
 import "app/theme/app_theme.dart";
+import "common/sync/sync_controller.dart";
 import "common/widgets/grave_search_bar.dart";
 import "features/cemetery/data/models/cemetery.dart";
 import "features/cemetery/data/repositories/cemeteries_repository.dart";
@@ -17,7 +18,14 @@ import "features/settings/presentation/providers/theme_mode_provider.dart";
 import "features/settings/presentation/widgets/settings_icon_button.dart";
 
 void main() {
-  runApp(const ProviderScope(observers: [AppProviderObserver()], child: GrobownikApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final container = ProviderContainer(observers: [const AppProviderObserver()]);
+
+  // Reading the provider starts the first sync right at app start.
+  container.read(syncControllerProvider);
+
+  runApp(UncontrolledProviderScope(container: container, child: const GrobownikApp()));
 }
 
 class GrobownikApp extends ConsumerWidget {
