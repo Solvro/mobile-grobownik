@@ -216,7 +216,7 @@ class _GraveDetails extends ConsumerWidget {
         const SizedBox(height: 16),
         DetailsSection(grave: grave),
         const SizedBox(height: 8),
-        FeedbackSection(),
+        FeedbackSection(grave: grave),
         const SizedBox(height: 32),
       ],
     );
