@@ -144,4 +144,93 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settings_team_github => 'Repozytorium GitHub';
+
+  @override
+  String get sync_in_progress => 'Synchronizacja…';
+
+  @override
+  String sync_synced_at(String time) {
+    return 'Zsynchronizowano: $time';
+  }
+
+  @override
+  String sync_data_from(String time) {
+    return 'Dane z: $time';
+  }
+
+  @override
+  String sync_offline_with_data(String time) {
+    return 'Brak połączenia. Dane z: $time';
+  }
+
+  @override
+  String get sync_offline_no_data => 'Brak połączenia. Brak zapisanych danych';
+
+  @override
+  String sync_failed_with_data(String time) {
+    return 'Błąd synchronizacji. Dane z: $time';
+  }
+
+  @override
+  String get sync_failed_no_data => 'Błąd synchronizacji. Brak zapisanych danych';
+
+  @override
+  String get sync_refresh => 'Odśwież dane';
+
+  @override
+  String get sync_refresh_semantic_label => 'Odśwież listę grobów z serwera';
+
+  @override
+  String get logout => 'Wyloguj';
+
+  @override
+  String stats_loading_error(String err) {
+    return 'Błąd ładowania statystyk:\n$err';
+  }
+
+  @override
+  String get error_title => 'Błąd';
+
+  @override
+  String get action_retry => 'Spróbuj ponownie';
+
+  @override
+  String get location_city => 'Miasto';
+
+  @override
+  String get stats_total_graves_visited => 'Łącznie odwiedzonych grobów';
+
+  @override
+  String get visit_history => 'Historia wizyt';
+
+  @override
+  String get visits_empty => 'Brak zarejestrowanych wizyt.';
+
+  @override
+  String get visit_date_unknown => 'Nieznana data';
+
+  @override
+  String get location_place => 'Miejsce';
+
+  @override
+  String visit_grave_id(String graveId) {
+    return 'ID grobu: $graveId';
+  }
+
+  @override
+  String visit_location_coords(String latitude, String longitude) {
+    return 'Lokalizacja: $latitude, $longitude';
+  }
+
+  @override
+  String get login_failed => 'Logowanie nie powiodło się. Sprawdź login i hasło.';
+
+  @override
+  String get login => 'Zaloguj';
+
+  @override
+  String get email => 'E-mail';
+
+  @override
+  String get password => 'Hasło';
 }

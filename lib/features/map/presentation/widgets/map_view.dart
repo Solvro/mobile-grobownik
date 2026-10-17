@@ -103,7 +103,12 @@ class _MapViewState extends ConsumerState<MapView> {
           myLocationTrackingMode: hasPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
           myLocationRenderMode: hasPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
         ),
-        _CurrentLocationButton(onPressed: _moveToCurrentLocation),
+        _CurrentLocationButton(
+          onPressed: () async {
+            await HapticFeedback.lightImpact();
+            await _moveToCurrentLocation();
+          },
+        ),
       ],
     );
   }
@@ -125,6 +130,7 @@ class _CurrentLocationButton extends ConsumerWidget {
       child: FloatingActionButton(
         tooltip: AppLocalizations.of(context)!.current_location,
         onPressed: () async {
+          await HapticFeedback.lightImpact();
           await HapticFeedback.selectionClick();
           await onPressed();
         },

@@ -117,10 +117,10 @@ packages:
     dependency: transitive
     description:
       name: build
-      sha256: a156715e7cd728130c592f30552575908aae5b100005fbc1f0fb16b3c03a3d10
+      sha256: "8a5c5761af8e31748bba3c82f68925ace40f3225c3eea25be9beb57eca7cd7a8"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.6"
+    version: "4.0.11"
   build_config:
     dependency: transitive
     description:
@@ -141,10 +141,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: "1523ce62448ebac2c15a8ba5fbad8acac169788658a7dd2a1c2d9c2a9318b9a6"
+      sha256: "5367e521935b102bdf1e735d2aab461e36b2edca6517662d088dd04cc39f8d16"
       url: "https://pub.dev"
     source: hosted
-    version: "2.15.0"
+    version: "2.15.1"
   built_collection:
     dependency: transitive
     description:
@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb0f1107cac15a5ea6ef0a6ef71a807b9e4267c713bb93e00e92d737cc8dbd8a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -225,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  cli_util:
+    dependency: transitive
+    description:
+      name: cli_util
+      sha256: ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.2"
   clock:
     dependency: transitive
     description:
@@ -357,10 +373,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: ea2bad3c89a27635ce2d85cce4d6b199da49a5a48ec77b03e45b65a3b90922b0
+      sha256: "852ec3b48cc431ac04fff978413c541502b67ffc3e26921e74e3d994694192c1"
       url: "https://pub.dev"
     source: hosted
-    version: "5.10.0"
+    version: "5.11.1"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -369,6 +385,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  drift:
+    dependency: "direct main"
+    description:
+      name: drift
+      sha256: bab55d542d63765f6250ee3e2c62e11bfa1145d4ec2ffa05353c8fb4e10b52c1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.34.4"
+  drift_dev:
+    dependency: "direct dev"
+    description:
+      name: drift_dev
+      sha256: "9cfff1576b49725da0d32c040651a41ae195e8c4af8d8da301593e41d7abc2f7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.34.0"
+  drift_flutter:
+    dependency: "direct main"
+    description:
+      name: drift_flutter
+      sha256: "91acf4bee7c3c84467cba46455aa70e5292a3b889f4582645d74f2e5a8c106f2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   envied:
     dependency: "direct main"
     description:
@@ -885,6 +925,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.6.4"
+  native_toolchain_c:
+    dependency: transitive
+    description:
+      name: native_toolchain_c
+      sha256: f9c168717100ae6d9fee9ffb0be379bf1f8b26b0f6bcbd4fdddcd931993a6a72
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.2"
   nm:
     dependency: transitive
     description:
@@ -1330,6 +1378,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.2"
+  sqlcipher_flutter_libs:
+    dependency: transitive
+    description:
+      name: sqlcipher_flutter_libs
+      sha256: "38d62d659d2fb8739bf25a42c9a350d1fdd6c29a5a61f13a946778ec75d27929"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0+eol"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      sha256: "4c7fe79840389aaeaf05fd093f795b631b5a98e2bd28d54e555c100f4a9c7a1c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.2"
+  sqlite3_flutter_libs:
+    dependency: transitive
+    description:
+      name: sqlite3_flutter_libs
+      sha256: "3ed7553eee7bb368f8950f58ba29f634e06e813c029aff6a0d60862b96de8454"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0+eol"
+  sqlparser:
+    dependency: transitive
+    description:
+      name: sqlparser
+      sha256: "40bdddb306a727be9ce510bd2d2b9a6c9db6c586d846ef7b22e3990a2b24f02d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.44.5"
   stack_trace:
     dependency: transitive
     description:

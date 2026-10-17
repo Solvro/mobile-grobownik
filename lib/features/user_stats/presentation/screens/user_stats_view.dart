@@ -2,6 +2,7 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:intl/intl.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
@@ -25,8 +26,8 @@ class UserStatsPage extends ConsumerWidget {
         actions: [
           const SettingsIconButton(),
           IconButton(
-            icon: const Icon(Icons.logout, semanticLabel: "Log out of your account"),
-            tooltip: "Log out",
+            icon: Icon(Icons.logout, semanticLabel: AppLocalizations.of(context)!.logout),
+            tooltip: AppLocalizations.of(context)!.logout,
             onPressed: () async {
               await HapticFeedback.selectionClick();
 
@@ -49,16 +50,21 @@ class UserStatsPage extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, color: context.colorScheme.error, size: 48, semanticLabel: "Error"),
+                Icon(
+                  Icons.error_outline,
+                  color: context.colorScheme.error,
+                  size: 48,
+                  semanticLabel: AppLocalizations.of(context)!.error_title,
+                ),
                 const SizedBox(height: 16),
-                Text("Error loading stats:\n$err", textAlign: TextAlign.center),
+                Text(AppLocalizations.of(context)!.stats_loading_error(err.toString()), textAlign: TextAlign.center),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () async {
                     await HapticFeedback.selectionClick();
                     ref.invalidate(userStatsControllerProvider);
                   },
-                  child: const Text("Retry"),
+                  child: Text(AppLocalizations.of(context)!.action_retry),
                 ),
               ],
             ),
@@ -86,14 +92,17 @@ class UserStatsPage extends ConsumerWidget {
                             Icons.location_city,
                             color: Theme.of(context).colorScheme.onPrimaryContainer,
                             size: 32,
-                            semanticLabel: "Location city",
+                            semanticLabel: AppLocalizations.of(context)!.location_city,
                           ),
                         ),
                         const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Total Graves Visited", style: Theme.of(context).textTheme.bodyMedium),
+                            Text(
+                              AppLocalizations.of(context)!.stats_total_graves_visited,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                             Text(
                               "${stats.visitedGravesCount}",
                               style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -107,21 +116,21 @@ class UserStatsPage extends ConsumerWidget {
                 const SizedBox(height: 24),
 
                 Text(
-                  "Visit History",
+                  AppLocalizations.of(context)!.visit_history,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
 
                 if (stats.visitHistory.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 32),
-                    child: Center(child: Text("No visits recorded yet.")),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: Center(child: Text(AppLocalizations.of(context)!.visits_empty)),
                   )
                 else
                   ...stats.visitHistory.map((visit) {
                     final dateStr = visit.visitedAt != null
-                        ? "${visit.visitedAt!.day}.${visit.visitedAt!.month}.${visit.visitedAt!.year}"
-                        : "Unknown date";
+                        ? DateFormat.yMd(Localizations.localeOf(context).toString()).format(visit.visitedAt!)
+                        : AppLocalizations.of(context)!.visit_date_unknown;
                     final photoId = visit.grave.photoIds.isNotEmpty ? visit.grave.photoIds.first : null;
 
                     return Card(
@@ -138,7 +147,9 @@ class UserStatsPage extends ConsumerWidget {
                           backgroundImage: photoId != null
                               ? CachedNetworkImageProvider(DirectusConfig.assetUrl(photoId))
                               : null,
-                          child: photoId == null ? const Icon(Icons.place, semanticLabel: "Place") : null,
+                          child: photoId == null
+                              ? Icon(Icons.place, semanticLabel: AppLocalizations.of(context)!.location_place)
+                              : null,
                         ),
                         title: Text(visit.grave.displayName),
                         trailing: Text(dateStr, style: Theme.of(context).textTheme.bodySmall),

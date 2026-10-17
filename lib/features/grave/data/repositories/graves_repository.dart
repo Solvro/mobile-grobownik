@@ -1,17 +1,20 @@
-import "dart:async";
+import "dart:convert";
 
-import "package:connectivity_plus/connectivity_plus.dart";
 import "package:dio/dio.dart";
 import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../../../common/network/directus_client.dart";
-import "../../../../common/services/graves_cache.dart";
+import "../../../../common/database/app_database.dart";
+import "../../../../common/database/app_database_provider.dart";
 import "../models/grave.dart";
 
 part "graves_repository.g.dart";
 
 const _graveFields = "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id";
+
+/// Directus returns only 100 items by default; -1 means "no limit". Without
+/// it, graves beyond the first 100 would never reach the local database.
+const _noLimit = -1;
 
 class DirectusOfflineException implements Exception {
   const DirectusOfflineException(this.cause);
@@ -22,82 +25,52 @@ class DirectusOfflineException implements Exception {
   String toString() => "DirectusOfflineException: ${cause.message ?? cause.type.name}";
 }
 
+/// All graves, read from the local database. The network never feeds the UI
+/// directly: SyncController downloads graves into the database and this
+/// stream re-emits whenever the database changes.
 @riverpod
-Future<IList<Grave>> gravesRepository(Ref ref) async {
-  final restClient = ref.watch(directusClientProvider);
-  final cache = await GravesCache.open();
-  return _fetchWithCache(
-    ref,
-    fetch: () async => (await restClient.fetchGraves()).toIList(),
-    save: cache.saveAll,
-    restore: cache.readAll,
-  );
+Stream<IList<Grave>> gravesRepository(Ref ref) {
+  final database = ref.watch(appDatabaseProvider);
+
+  return database.watchGraveRows().map((rows) => rows.map((row) => row.toGrave()).nonNulls.toIList());
 }
 
+/// A single grave from the local database; `null` when it is not there.
 @riverpod
-Future<Grave> graveRepository(Ref ref, String graveId) async {
-  final restClient = ref.watch(directusClientProvider);
-  final cache = await GravesCache.open();
-  return _fetchWithCache(
-    ref,
-    fetch: () => restClient.fetchGrave(graveId),
-    save: cache.save,
-    restore: () => cache.read(graveId),
-  );
+Stream<Grave?> graveRepository(Ref ref, String graveId) {
+  final database = ref.watch(appDatabaseProvider);
+
+  return database.watchGraveRow(graveId).map((row) => row?.toGrave());
 }
 
-Future<T> _fetchWithCache<T extends Object>(
-  Ref ref, {
-  required Future<T> Function() fetch,
-  required Future<void> Function(T) save,
-  required T? Function() restore,
-}) async {
-  try {
-    final value = await fetch();
-    await save(value);
-    return value;
-  } on DirectusOfflineException {
-    await _invalidateWhenOnline(ref);
-    final cached = restore();
-    if (cached == null) rethrow;
-    return cached;
+extension GraveRowX on GraveRow {
+  /// Returns `null` for a row that cannot be decoded, so one damaged row
+  /// does not take the whole list down.
+  Grave? toGrave() {
+    try {
+      return Grave.fromJson(jsonDecode(payload) as Map<String, dynamic>);
+    } on Object {
+      return null;
+    }
   }
 }
 
-Future<void> _invalidateWhenOnline(Ref ref) async {
-  final connectivity = Connectivity();
-  final current = await connectivity.checkConnectivity();
-  if (!current.contains(ConnectivityResult.none)) return;
-  late StreamSubscription<List<ConnectivityResult>> sub;
-  sub = connectivity.onConnectivityChanged.listen((result) {
-    if (!result.contains(ConnectivityResult.none)) {
-      unawaited(sub.cancel());
-      ref.invalidateSelf();
-    }
-  });
-  ref.onDispose(() => unawaited(sub.cancel()));
+extension GraveToRowX on Grave {
+  GravesCompanion toCompanion() {
+    return GravesCompanion.insert(id: id, firstName: firstName, lastName: lastName, payload: jsonEncode(toJson()));
+  }
 }
 
 extension DioFetchGravesX on Dio {
   Future<List<Grave>> fetchGraves() async {
     try {
-      final response = await get<Map<String, dynamic>>("/items/Graves", queryParameters: {"fields": _graveFields});
+      final response = await get<Map<String, dynamic>>(
+        "/items/Graves",
+        queryParameters: {"fields": _graveFields, "limit": _noLimit},
+      );
       final graves = response.data?["data"] as List? ?? [];
 
       return graves.map((dynamic item) => _parseGrave(item as Map)).toList();
-    } on DioException catch (e, stackTrace) {
-      Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
-    }
-  }
-
-  Future<Grave> fetchGrave(String graveId) async {
-    try {
-      final response = await get<Map<String, dynamic>>(
-        "/items/Graves/$graveId",
-        queryParameters: {"fields": _graveFields},
-      );
-
-      return _parseGrave(response.data?["data"] as Map);
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
