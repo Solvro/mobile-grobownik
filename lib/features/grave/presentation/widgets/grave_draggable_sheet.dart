@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
+import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:intl/intl.dart";
 
@@ -14,7 +15,7 @@ import "../../../../common/widgets/bottom_sheet_handler.dart";
 import "../../../../common/widgets/image_carousel.dart";
 import "../../../user_stats/presentation/widgets/profile_icon_button.dart";
 import "../../data/models/grave.dart";
-import "../providers/grave_details_provider.dart";
+import "../../data/repositories/graves_repository.dart";
 import "../providers/selected_grave_provider.dart";
 import "details_section.dart";
 import "feedback_section.dart";
@@ -142,7 +143,16 @@ class _GraveDetailsLoader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final graveState = ref.watch(graveDetailsProvider(graveId));
+    final graveState = ref.watch(graveRepositoryProvider(graveId));
+
+    // The grave can disappear from the local database (a sync removed it).
+    // There would be no way back from an empty details view, so go back to
+    // the list.
+    ref.listen(graveRepositoryProvider(graveId), (previous, next) {
+      if (next.hasValue && next.value == null) {
+        ref.read(selectedGraveIdProvider.notifier).clear();
+      }
+    });
 
     return graveState.when(
       loading: () => const Padding(
@@ -154,6 +164,13 @@ class _GraveDetailsLoader extends ConsumerWidget {
         child: Center(child: Text(AppLocalizations.of(context)!.loading_error)),
       ),
       data: (grave) {
+        if (grave == null) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Center(child: Text(AppLocalizations.of(context)!.no_graves_found)),
+          );
+        }
+
         final position = ref.watch(userLocationProvider).value;
         final distanceMeters = distanceToLocation(position, grave.location);
 
@@ -183,10 +200,12 @@ class _GraveDetails extends ConsumerWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back, semanticLabel: AppLocalizations.of(context)!.back_to_list),
             tooltip: AppLocalizations.of(context)!.back_to_list,
-            onPressed: () => ref.read(selectedGraveIdProvider.notifier).clear(),
+            onPressed: () async {
+              await HapticFeedback.lightImpact();
+              ref.read(selectedGraveIdProvider.notifier).clear();
+            },
           ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -195,34 +214,22 @@ class _GraveDetails extends ConsumerWidget {
               children: [
                 Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
                 const SizedBox(height: 8),
-
                 Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
               ],
             ),
-
             ProfileIconWidget(),
           ],
         ),
-
         const SizedBox(height: 8),
-
         Text(formatDistance(distanceMeters), style: context.textTheme.bodyMedium),
-
         const SizedBox(height: 16),
-
         GraveActionButtons(),
-
         const SizedBox(height: 16),
-
         ImageCarousel(photoIds: grave.photoIds),
         const SizedBox(height: 16),
-
         DetailsSection(biography: grave.biography ?? ""),
-
         const SizedBox(height: 8),
-
         FeedbackSection(),
-
         const SizedBox(height: 32),
       ],
     );

@@ -1,5 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
@@ -19,7 +20,10 @@ class GraveListItem extends StatelessWidget {
     final photoId = grave.photoIds.isNotEmpty ? grave.photoIds.first : null;
 
     return InkWell(
-      onTap: onTap,
+      onTap: () async {
+        await HapticFeedback.lightImpact();
+        onTap();
+      },
       borderRadius: BorderRadius.circular(16),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),

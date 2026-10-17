@@ -360,6 +360,155 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Repozytorium GitHub'**
   String get settings_team_github;
+
+  /// Shown above the list of graves while data is being downloaded
+  ///
+  /// In pl, this message translates to:
+  /// **'Synchronizacja…'**
+  String get sync_in_progress;
+
+  /// Shown above the list of graves after a successful synchronization
+  ///
+  /// In pl, this message translates to:
+  /// **'Zsynchronizowano: {time}'**
+  String sync_synced_at(String time);
+
+  /// Shown above the list of graves when no synchronization has run yet in this session
+  ///
+  /// In pl, this message translates to:
+  /// **'Dane z: {time}'**
+  String sync_data_from(String time);
+
+  /// Shown when synchronization failed because there is no connection and older data is available
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia. Dane z: {time}'**
+  String sync_offline_with_data(String time);
+
+  /// Shown when synchronization failed because there is no connection and nothing is stored yet
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia. Brak zapisanych danych'**
+  String get sync_offline_no_data;
+
+  /// Shown when synchronization failed for a reason other than missing connection and older data is available
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd synchronizacji. Dane z: {time}'**
+  String sync_failed_with_data(String time);
+
+  /// Shown when synchronization failed for a reason other than missing connection and nothing is stored yet
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd synchronizacji. Brak zapisanych danych'**
+  String get sync_failed_no_data;
+
+  /// Tooltip for the button that starts a synchronization by hand
+  ///
+  /// In pl, this message translates to:
+  /// **'Odśwież dane'**
+  String get sync_refresh;
+
+  /// Semantic label for the button that starts a synchronization by hand
+  ///
+  /// In pl, this message translates to:
+  /// **'Odśwież listę grobów z serwera'**
+  String get sync_refresh_semantic_label;
+  /// label for logout
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyloguj'**
+  String get logout;
+
+  /// Error message shown when statistics fail to load
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd ładowania statystyk:\n{err}'**
+  String stats_loading_error(String err);
+
+  /// General error title
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd'**
+  String get error_title;
+
+  /// Label for retry button
+  ///
+  /// In pl, this message translates to:
+  /// **'Spróbuj ponownie'**
+  String get action_retry;
+
+  /// Label for city location
+  ///
+  /// In pl, this message translates to:
+  /// **'Miasto'**
+  String get location_city;
+
+  /// Label for total graves visited statistic
+  ///
+  /// In pl, this message translates to:
+  /// **'Łącznie odwiedzonych grobów'**
+  String get stats_total_graves_visited;
+
+  /// Title for visit history screen
+  ///
+  /// In pl, this message translates to:
+  /// **'Historia wizyt'**
+  String get visit_history;
+
+  /// Message shown when there are no visit records
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak zarejestrowanych wizyt.'**
+  String get visits_empty;
+
+  /// Fallback text when visit date is unknown
+  ///
+  /// In pl, this message translates to:
+  /// **'Nieznana data'**
+  String get visit_date_unknown;
+
+  /// Label for place location
+  ///
+  /// In pl, this message translates to:
+  /// **'Miejsce'**
+  String get location_place;
+
+  /// Label displaying the grave identifier for a visit
+  ///
+  /// In pl, this message translates to:
+  /// **'ID grobu: {graveId}'**
+  String visit_grave_id(String graveId);
+
+  /// Coordinates displaying latitude and longitude for a visit location
+  ///
+  /// In pl, this message translates to:
+  /// **'Lokalizacja: {latitude}, {longitude}'**
+  String visit_location_coords(String latitude, String longitude);
+
+  /// Error message for failed authentication
+  ///
+  /// In pl, this message translates to:
+  /// **'Logowanie nie powiodło się. Sprawdź login i hasło.'**
+  String get login_failed;
+
+  /// Label for login
+  ///
+  /// In pl, this message translates to:
+  /// **'Zaloguj'**
+  String get login;
+
+  /// Label for email
+  ///
+  /// In pl, this message translates to:
+  /// **'E-mail'**
+  String get email;
+
+  /// Label for password
+  ///
+  /// In pl, this message translates to:
+  /// **'Hasło'**
+  String get password;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
