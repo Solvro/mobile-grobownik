@@ -414,7 +414,6 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Odśwież listę grobów z serwera'**
   String get sync_refresh_semantic_label;
-
   /// label for logout
   ///
   /// In pl, this message translates to:

@@ -179,8 +179,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get sync_refresh_semantic_label => 'Odśwież listę grobów z serwera';
-
-  @override
   String get logout => 'Wyloguj';
 
   @override
