@@ -88,9 +88,10 @@ List<List<double>> _asRing(Object raw) {
 }
 
 List<double> _asPoint(Object raw) {
-  final coords = _jsonList(raw);
-  if (coords.length < 2) return const [];
-  return [(coords[0] as num).toDouble(), (coords[1] as num).toDouble()];
+  return switch (_jsonList(raw)) {
+    [final num longitude, final num latitude, ...] => [longitude.toDouble(), latitude.toDouble()],
+    _ => const [],
+  };
 }
 
 bool _ringContains(List<List<double>> ring, double longitude, double latitude) {

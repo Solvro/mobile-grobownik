@@ -5,6 +5,7 @@ import "package:fast_immutable_collections/fast_immutable_collections.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 import "../../../../common/network/directus_client.dart";
+import "../../../grave/data/repositories/graves_repository.dart";
 import "../models/cemetery.dart";
 
 part "cemeteries_repository.g.dart";
@@ -42,7 +43,7 @@ Cemetery? _parseCemetery(dynamic raw) {
     }
 
     return Cemetery.fromJson(map);
-  } on Exception {
+  } on Object {
     return null;
   }
 }

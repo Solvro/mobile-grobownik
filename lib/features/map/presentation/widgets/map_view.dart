@@ -265,14 +265,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
     for (final cemetery in cemeteries) {
       for (final polygon in cemetery.boundary.polygons) {
-        final rings = <List<LatLng>>[];
-        for (final ring in polygon) {
-          final points = [
-            for (final point in ring)
-              if (point.length >= 2) LatLng(point[1], point[0]),
-          ];
-          if (points.length >= 3) rings.add(points);
-        }
+        final rings = polygon.map(_toLatLngs).where((points) => points.length >= 3).toList();
         if (rings.isEmpty) continue;
 
         options.add(
@@ -295,10 +288,7 @@ class _MapViewState extends ConsumerState<MapView> {
     for (final cemetery in cemeteries) {
       for (final polygon in cemetery.boundary.polygons) {
         if (polygon.isEmpty) continue;
-        final points = [
-          for (final point in polygon.first)
-            if (point.length >= 2) LatLng(point[1], point[0]),
-        ];
+        final points = _toLatLngs(polygon.first);
         if (points.length < 2) continue;
 
         options.add(
@@ -315,6 +305,11 @@ class _MapViewState extends ConsumerState<MapView> {
     return options;
   }
 
+  List<LatLng> _toLatLngs(List<List<double>> ring) => [
+    for (final point in ring)
+      if (point.length >= 2) LatLng(point[1], point[0]),
+  ];
+
   Future<void> _syncMarkers() async {
     final controller = _controller;
     if (!_styleLoaded || controller == null) return;
@@ -327,33 +322,38 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!mounted || generation != _syncGeneration) return;
 
     if (_showGravePins) {
-      if (graves.isEmpty) {
-        await _fitCameraToGraves(controller, graves);
-        return;
-      }
-
-      await controller.addSymbols(
-        [
-          for (final grave in graves)
-            SymbolOptions(
-              geometry: LatLng(grave.location.latitude, grave.location.longitude),
-              iconImage: _gravePinImage,
-              iconAnchor: "bottom",
-            ),
-        ],
-        [
-          for (final grave in graves) {"id": grave.id},
-        ],
-      );
+      await _addGravePins(controller, graves);
     } else {
-      final labels = _cemeteryCountSymbols();
-      await _ensureCountIcons(controller, labels.counts);
-      if (!mounted || generation != _syncGeneration) return;
-      if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
+      await _addCemeteryCountLabels(controller, generation);
     }
 
     if (!mounted || generation != _syncGeneration) return;
     await _fitCameraToGraves(controller, graves);
+  }
+
+  Future<void> _addGravePins(MapLibreMapController controller, List<Grave> graves) async {
+    if (graves.isEmpty) return;
+
+    await controller.addSymbols(
+      [
+        for (final grave in graves)
+          SymbolOptions(
+            geometry: LatLng(grave.location.latitude, grave.location.longitude),
+            iconImage: _gravePinImage,
+            iconAnchor: "bottom",
+          ),
+      ],
+      [
+        for (final grave in graves) {"id": grave.id},
+      ],
+    );
+  }
+
+  Future<void> _addCemeteryCountLabels(MapLibreMapController controller, int generation) async {
+    final labels = _cemeteryCountSymbols();
+    await _ensureCountIcons(controller, labels.counts);
+    if (!mounted || generation != _syncGeneration) return;
+    if (labels.options.isNotEmpty) await controller.addSymbols(labels.options, labels.data);
   }
 
   ({List<SymbolOptions> options, List<Map<dynamic, dynamic>> data, Set<int> counts}) _cemeteryCountSymbols() {
@@ -525,7 +525,12 @@ class _MapViewState extends ConsumerState<MapView> {
               myLocationTrackingMode: hasPermission ? MyLocationTrackingMode.tracking : MyLocationTrackingMode.none,
               myLocationRenderMode: hasPermission ? MyLocationRenderMode.compass : MyLocationRenderMode.normal,
             ),
-            _CurrentLocationButton(onPressed: _moveToCurrentLocation),
+            _CurrentLocationButton(
+              onPressed: () async {
+                await HapticFeedback.lightImpact();
+                await _moveToCurrentLocation();
+              },
+            ),
           ],
         );
       },

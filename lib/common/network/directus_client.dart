@@ -6,15 +6,6 @@ import "../../features/auth/data/auth_interceptor.dart";
 
 part "directus_client.g.dart";
 
-class DirectusOfflineException implements Exception {
-  const DirectusOfflineException(this.cause);
-
-  final DioException cause;
-
-  @override
-  String toString() => "DirectusOfflineException: ${cause.message ?? cause.type.name}";
-}
-
 abstract class DirectusConfig {
   static final rootUrl = Env.directusUrl;
 
