@@ -181,6 +181,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get sync_refresh_semantic_label => 'Odśwież listę grobów z serwera';
 
   @override
+  String get sync_icon_done => 'Dane aktualne';
+
+  @override
+  String get sync_icon_offline => 'Brak połączenia';
+
+  @override
+  String get sync_icon_failed => 'Błąd synchronizacji';
+
+  @override
+  String get sync_icon_idle => 'Dane zapisane w telefonie';
+
+  @override
   String get logout => 'Wyloguj';
 
   @override
