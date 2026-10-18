@@ -2,11 +2,16 @@ import "package:dio/dio.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "../../../app/config/env.dart";
 
+enum LoginResult { success, rejected, offline, error }
+
 class AuthService {
   static final rootUrl = Env.directusUrl;
   static const authEndpoint = "/auth/login";
   static String get apiFullUrl => rootUrl + authEndpoint;
-  static final _dio = Dio();
+
+  static final _dio = Dio(
+    BaseOptions(connectTimeout: const Duration(seconds: 10), receiveTimeout: const Duration(seconds: 15)),
+  );
 
   static Future<Map<String, String?>> getStoredCredentials() async {
     final prefs = await SharedPreferences.getInstance();
@@ -23,7 +28,12 @@ class AuthService {
     return prefs.getString("access_token") != null;
   }
 
-  static Future<bool> login(String email, String password) async {
+  static Future<bool> hasStoredCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("email") != null && prefs.getString("password") != null;
+  }
+
+  static Future<LoginResult> login(String email, String password) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         apiFullUrl,
@@ -41,11 +51,23 @@ class AuthService {
         await prefs.setString("access_token", accessToken.toString());
         await prefs.setString("refresh_token", refreshToken.toString());
 
-        return true;
+        return LoginResult.success;
       }
-    } on DioException catch (_) {}
+    } on DioException catch (e) {
+      return switch (e.type) {
+        DioExceptionType.connectionError ||
+        DioExceptionType.connectionTimeout ||
+        DioExceptionType.sendTimeout ||
+        DioExceptionType.receiveTimeout => LoginResult.offline,
+        DioExceptionType.badResponse when const [400, 401, 403].contains(e.response?.statusCode) =>
+          LoginResult.rejected,
+        _ => LoginResult.error,
+      };
+    } on Object {
+      return LoginResult.error;
+    }
 
-    return false;
+    return LoginResult.error;
   }
 
   static Future<void> logout() async {

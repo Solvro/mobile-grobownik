@@ -7,7 +7,7 @@ import "package:intl/intl.dart";
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
 import "../../../../common/network/directus_client.dart";
-import "../../../auth/data/auth_service.dart";
+import "../../../auth/presentation/providers/auth_controller.dart";
 import "../../../auth/presentation/screens/login_view.dart";
 import "../../../grave/presentation/providers/selected_grave_provider.dart";
 import "../../../settings/presentation/widgets/settings_icon_button.dart";
@@ -31,7 +31,7 @@ class UserStatsPage extends ConsumerWidget {
             onPressed: () async {
               await HapticFeedback.selectionClick();
 
-              await AuthService.logout();
+              await ref.read(authControllerProvider.notifier).logout();
               if (!context.mounted) return;
 
               await Navigator.pushReplacement(

@@ -13,7 +13,6 @@ import "../../../../common/providers/user_location_provider.dart";
 import "../../../../common/utils/distance.dart";
 import "../../../../common/widgets/bottom_sheet_handler.dart";
 import "../../../../common/widgets/image_carousel.dart";
-import "../../../user_stats/presentation/widgets/profile_icon_button.dart";
 import "../../data/models/grave.dart";
 import "../../data/repositories/graves_repository.dart";
 import "../providers/selected_grave_provider.dart";
@@ -206,20 +205,9 @@ class _GraveDetails extends ConsumerWidget {
             },
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
-                const SizedBox(height: 8),
-                Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
-              ],
-            ),
-            ProfileIconWidget(),
-          ],
-        ),
+        Text("${grave.firstName} ${grave.lastName}", style: context.textTheme.headlineMedium),
+        const SizedBox(height: 8),
+        Text("$birthDate - $deathDate", style: context.textTheme.bodyLarge),
         const SizedBox(height: 8),
         if (distanceMeters != null)
           Text(

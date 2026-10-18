@@ -696,6 +696,36 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Otwórz link'**
   String get action_open_link;
+
+  /// Login status: logging in
+  ///
+  /// In pl, this message translates to:
+  /// **'logowanie…'**
+  String get auth_status_in_progress;
+
+  /// Login status: logged in
+  ///
+  /// In pl, this message translates to:
+  /// **'zalogowano'**
+  String get auth_status_logged_in;
+
+  /// Login status: the server refused the login
+  ///
+  /// In pl, this message translates to:
+  /// **'logowanie nie powiodło się'**
+  String get auth_status_failed;
+
+  /// Login status: offline, session kept
+  ///
+  /// In pl, this message translates to:
+  /// **'brak połączenia, zalogujemy po jego odzyskaniu'**
+  String get auth_status_offline;
+
+  /// Login failed because the server could not be reached
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.'**
+  String get login_offline;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

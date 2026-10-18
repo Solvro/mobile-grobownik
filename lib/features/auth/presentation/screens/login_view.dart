@@ -2,18 +2,21 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../user_stats/presentation/screens/user_stats_view.dart";
 import "../../data/auth_service.dart";
+import "../providers/auth_controller.dart";
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -22,32 +25,31 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    unawaited(_checkAutoLogin());
+    unawaited(_prefillStoredCredentials());
   }
 
-  Future<void> _checkAutoLogin() async {
+  Future<void> _prefillStoredCredentials() async {
     final creds = await AuthService.getStoredCredentials();
+    if (!mounted) return;
 
-    if (creds["email"] != null && creds["password"] != null) {
-      _emailController.text = creds["email"]!;
-      _passwordController.text = creds["password"]!;
-
-      await _handleLogin(creds["email"]!, creds["password"]!);
-    }
+    _emailController.text = creds["email"] ?? "";
+    _passwordController.text = creds["password"] ?? "";
   }
 
   Future<void> _handleLogin(String email, String password) async {
     setState(() => _isLoading = true);
 
-    final success = await AuthService.login(email, password);
+    final result = await ref.read(authControllerProvider.notifier).login(email, password);
 
     if (mounted) {
       setState(() => _isLoading = false);
 
-      if (success) {
+      if (result == LoginResult.success) {
         await Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const UserStatsPage()));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.login_failed)));
+        final l10n = AppLocalizations.of(context)!;
+        final message = result == LoginResult.offline ? l10n.login_offline : l10n.login_failed;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
       }
     }
   }

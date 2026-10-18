@@ -464,5 +464,25 @@
   "action_open_link": "Otwórz link",
   "@action_open_link": {
     "description": "Screen reader label of an external link icon"
+  },
+  "auth_status_in_progress": "logowanie…",
+  "@auth_status_in_progress": {
+    "description": "Login status: logging in"
+  },
+  "auth_status_logged_in": "zalogowano",
+  "@auth_status_logged_in": {
+    "description": "Login status: logged in"
+  },
+  "auth_status_failed": "logowanie nie powiodło się",
+  "@auth_status_failed": {
+    "description": "Login status: the server refused the login"
+  },
+  "auth_status_offline": "brak połączenia, zalogujemy po jego odzyskaniu",
+  "@auth_status_offline": {
+    "description": "Login status: offline, session kept"
+  },
+  "login_offline": "Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.",
+  "@login_offline": {
+    "description": "Login failed because the server could not be reached"
   }
 }
