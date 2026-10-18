@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
@@ -5,8 +6,10 @@ import "package:intl/intl.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
+import "../../../../common/network/directus_client.dart";
 import "../../../auth/presentation/providers/auth_controller.dart";
 import "../../../auth/presentation/screens/login_view.dart";
+import "../../../grave/presentation/providers/selected_grave_provider.dart";
 import "../../../settings/presentation/widgets/settings_icon_button.dart";
 import "../providers/user_stats_provider.dart";
 
@@ -128,21 +131,27 @@ class UserStatsPage extends ConsumerWidget {
                     final dateStr = visit.visitedAt != null
                         ? DateFormat.yMd(Localizations.localeOf(context).toString()).format(visit.visitedAt!)
                         : AppLocalizations.of(context)!.visit_date_unknown;
+                    final photoId = visit.grave.photoIds.isNotEmpty ? visit.grave.photoIds.first : null;
 
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
+                        onTap: () async {
+                          await HapticFeedback.selectionClick();
+                          ref.read(selectedGraveIdProvider.notifier).select(visit.graveId);
+                          if (!context.mounted) return;
+                          Navigator.of(context).pop();
+                        },
                         leading: CircleAvatar(
                           backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                          child: Icon(Icons.place, semanticLabel: AppLocalizations.of(context)!.location_place),
+                          backgroundImage: photoId != null
+                              ? CachedNetworkImageProvider(DirectusConfig.assetUrl(photoId))
+                              : null,
+                          child: photoId == null
+                              ? Icon(Icons.place, semanticLabel: AppLocalizations.of(context)!.location_place)
+                              : null,
                         ),
-                        title: Text(AppLocalizations.of(context)!.visit_grave_id(visit.graveId)),
-                        subtitle: Text(
-                          AppLocalizations.of(context)!.visit_location_coords(
-                            visit.location.latitude.toStringAsFixed(4),
-                            visit.location.longitude.toStringAsFixed(4),
-                          ),
-                        ),
+                        title: Text(visit.grave.displayName),
                         trailing: Text(dateStr, style: Theme.of(context).textTheme.bodySmall),
                       ),
                     );

@@ -60,12 +60,19 @@ class _StatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return switch (status) {
       SyncInProgress() => const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2)),
-      SyncSuccess() => Icon(Icons.cloud_done_outlined, size: 18, color: color),
-      SyncFailure(isOffline: true) => Icon(Icons.cloud_off_outlined, size: 18, color: color),
-      SyncFailure() => Icon(Icons.error_outline, size: 18, color: color),
-      SyncIdle() => Icon(Icons.cloud_outlined, size: 18, color: color),
+      SyncSuccess() => Icon(Icons.cloud_done_outlined, size: 18, color: color, semanticLabel: l10n.sync_icon_done),
+      SyncFailure(isOffline: true) => Icon(
+        Icons.cloud_off_outlined,
+        size: 18,
+        color: color,
+        semanticLabel: l10n.sync_icon_offline,
+      ),
+      SyncFailure() => Icon(Icons.error_outline, size: 18, color: color, semanticLabel: l10n.sync_icon_failed),
+      SyncIdle() => Icon(Icons.cloud_outlined, size: 18, color: color, semanticLabel: l10n.sync_icon_idle),
     };
   }
 }

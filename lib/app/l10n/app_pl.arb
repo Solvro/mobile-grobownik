@@ -244,6 +244,22 @@
   "@sync_refresh_semantic_label": {
     "description": "Semantic label for the button that starts a synchronization by hand"
   },
+  "sync_icon_done": "Dane aktualne",
+  "@sync_icon_done": {
+    "description": "Screen reader label of the synced icon"
+  },
+  "sync_icon_offline": "Brak połączenia",
+  "@sync_icon_offline": {
+    "description": "Screen reader label of the offline icon"
+  },
+  "sync_icon_failed": "Błąd synchronizacji",
+  "@sync_icon_failed": {
+    "description": "Screen reader label of the sync error icon"
+  },
+  "sync_icon_idle": "Dane zapisane w telefonie",
+  "@sync_icon_idle": {
+    "description": "Screen reader label of the idle sync icon"
+  },
   "logout": "Wyloguj",
   "@logout": {
     "description": "label for logout"
