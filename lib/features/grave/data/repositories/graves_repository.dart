@@ -10,7 +10,8 @@ import "../models/grave.dart";
 
 part "graves_repository.g.dart";
 
-const _graveFields = "*,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id";
+const _graveFields =
+    "*,cemetery.id,cemetery.name,cemetery.address,subjects.Subjects_id.*,achievements.Achievements_id.*,photos.directus_files_id";
 
 /// Directus returns only 100 items by default; -1 means "no limit". Without
 /// it, graves beyond the first 100 would never reach the local database.
@@ -70,7 +71,7 @@ extension DioFetchGravesX on Dio {
       );
       final graves = response.data?["data"] as List? ?? [];
 
-      return graves.map((dynamic item) => _parseGrave(item as Map)).toList();
+      return graves.whereType<Map<dynamic, dynamic>>().map(_tryParseGrave).nonNulls.toList();
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
@@ -82,6 +83,14 @@ extension DioFetchGravesX on Dio {
     } on DioException catch (e, stackTrace) {
       Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
     }
+  }
+}
+
+Grave? _tryParseGrave(Map<dynamic, dynamic> raw) {
+  try {
+    return _parseGrave(raw);
+  } on Object {
+    return null;
   }
 }
 

@@ -20,7 +20,7 @@
   "@navigate": {
     "description": "Button for navigation"
   },
-    "navigate_semantic_label": "Nawiguj do celu",
+  "navigate_semantic_label": "Nawiguj do celu",
   "@navigate_semantic_label": {
     "description": "Semantic label for button for navigation"
   },
@@ -36,15 +36,15 @@
   "@profile_semantic_label": {
     "description": "Semantic label for profile button"
   },
-    "suggest_fix": "Zgłoś poprawkę",
+  "suggest_fix": "Zgłoś poprawkę",
   "@suggest_fix": {
     "description": "Button for fix issue"
   },
-     "suggest_fix_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
+  "suggest_fix_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
   "@suggest_fix_semantic_label": {
     "description": "Semantic label for fix issue button"
   },
-    "image_carousel_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
+  "image_carousel_semantic_label": "Zgłoś poprawkę dotyczącą informacji o grobie",
   "@image_carousel_semantic_label": {
     "description": "Semantic label for image caroudel images"
   },
@@ -244,6 +244,22 @@
   "@sync_refresh_semantic_label": {
     "description": "Semantic label for the button that starts a synchronization by hand"
   },
+  "sync_icon_done": "Dane aktualne",
+  "@sync_icon_done": {
+    "description": "Screen reader label of the synced icon"
+  },
+  "sync_icon_offline": "Brak połączenia",
+  "@sync_icon_offline": {
+    "description": "Screen reader label of the offline icon"
+  },
+  "sync_icon_failed": "Błąd synchronizacji",
+  "@sync_icon_failed": {
+    "description": "Screen reader label of the sync error icon"
+  },
+  "sync_icon_idle": "Dane zapisane w telefonie",
+  "@sync_icon_idle": {
+    "description": "Screen reader label of the idle sync icon"
+  },
   "logout": "Wyloguj",
   "@logout": {
     "description": "label for logout"
@@ -325,5 +341,128 @@
   "password": "Hasło",
   "@password": {
     "description": "Label for password"
+  },
+  "grave_tab_directions": "Wskazówki dojścia",
+  "@grave_tab_directions": {
+    "description": "Tab with location and directions in grave details"
+  },
+  "grave_tab_biography": "Życiorys",
+  "@grave_tab_biography": {
+    "description": "Tab with biography in grave details"
+  },
+  "grave_biography_title": "Życiorys",
+  "@grave_biography_title": {
+    "description": "Title of the biography card"
+  },
+  "grave_biography_empty": "Brak życiorysu",
+  "@grave_biography_empty": {
+    "description": "Shown when a grave has no biography"
+  },
+  "grave_cemetery": "Cmentarz",
+  "@grave_cemetery": {
+    "description": "Label for the cemetery a grave is in"
+  },
+  "grave_plot": "Kwatera",
+  "@grave_plot": {
+    "description": "Label for the field / row / grave number"
+  },
+  "grave_directions": "Jak dojść",
+  "@grave_directions": {
+    "description": "Label for on-site hints on finding the grave"
+  },
+  "grave_location_precision_grave": "Dokładne miejsce grobu",
+  "@grave_location_precision_grave": {
+    "description": "Pin points at the grave itself"
+  },
+  "grave_location_precision_field": "Przybliżona lokalizacja – środek kwatery",
+  "@grave_location_precision_field": {
+    "description": "Pin points at the middle of the cemetery field, not the grave"
+  },
+  "grave_location_precision_unknown": "Dokładność lokalizacji nieznana",
+  "@grave_location_precision_unknown": {
+    "description": "Location precision is not known"
+  },
+  "grave_location_missing": "Lokalizacja grobu nie jest jeszcze znana",
+  "@grave_location_missing": {
+    "description": "Shown when a grave has no coordinates"
+  },
+  "grave_no_location_details": "Brak dodatkowych informacji o położeniu grobu",
+  "@grave_no_location_details": {
+    "description": "Shown when a grave has no cemetery, plot or directions"
+  },
+  "grave_location_source_open": "Źródło: {source}",
+  "@grave_location_source_open": {
+    "description": "Button opening the record the location was taken from",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "grave_location_source_label": "Źródło lokalizacji: {source}",
+  "@grave_location_source_label": {
+    "description": "Location source without a link",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "location_source_grobonet": "Grobonet",
+  "@location_source_grobonet": {
+    "description": "Name of the grobonet.com source"
+  },
+  "location_source_mogily": "mogily.pl",
+  "@location_source_mogily": {
+    "description": "Name of the mogily.pl source"
+  },
+  "location_source_cui": "Wyszukiwarka grobów CUI Wrocław",
+  "@location_source_cui": {
+    "description": "Name of the groby.cui.wroclaw.pl source"
+  },
+  "location_source_spreadsheet": "Wykaz Politechniki Wrocławskiej",
+  "@location_source_spreadsheet": {
+    "description": "Location taken from the university's list"
+  },
+  "location_source_other": "Inne źródło",
+  "@location_source_other": {
+    "description": "Any other location source"
+  },
+  "grave_education": "Wykształcenie",
+  "@grave_education": {
+    "description": "Label for the person's education"
+  },
+  "grave_subjects": "Przedmioty",
+  "@grave_subjects": {
+    "description": "Label for subjects the person taught"
+  },
+  "grave_achievements": "Osiągnięcia",
+  "@grave_achievements": {
+    "description": "Label for the person's achievements"
+  },
+  "grave_notes": "Notatki",
+  "@grave_notes": {
+    "description": "Expandable section with notes from the CMS"
+  },
+  "grave_coordinates": "Współrzędne",
+  "@grave_coordinates": {
+    "description": "Label for the grave's GPS coordinates"
+  },
+  "grave_distance_from_you": "{distance} od Ciebie",
+  "@grave_distance_from_you": {
+    "description": "Distance between the user and the grave",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "location_source_volunteer": "Pomiar wolontariusza w terenie",
+  "@location_source_volunteer": {
+    "description": "Location measured on site by a volunteer (Directus value: volunteer)"
+  },
+  "action_open_link": "Otwórz link",
+  "@action_open_link": {
+    "description": "Screen reader label of an external link icon"
   }
 }

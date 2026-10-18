@@ -12,12 +12,15 @@ import "package:maplibre_gl/maplibre_gl.dart";
 import "../../../../app/l10n/app_localizations.dart";
 import "../../../../app/theme/app_theme.dart";
 import "../../../../app/theme/colors.dart";
+import "../../../../common/models/location.dart";
 import "../../../../common/providers/bottom_sheet_extent_provider.dart";
 import "../../../cemetery/data/models/cemetery.dart";
 import "../../../grave/data/models/grave.dart";
 import "../providers/location_provider.dart";
 
 const double _buttonMargin = 16;
+
+typedef _LocatedGrave = ({String id, Location location});
 
 class MapView extends ConsumerStatefulWidget {
   const MapView({required this.graves, required this.cemeteries, this.onGraveSelected, super.key});
@@ -138,13 +141,11 @@ class _MapViewState extends ConsumerState<MapView> {
 
     widget.onGraveSelected?.call(graveId);
 
-    final grave = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull;
+    final location = widget.graves.where((candidate) => candidate.id == graveId).firstOrNull?.location;
     final controller = _controller;
-    if (grave == null || controller == null) return;
+    if (location == null || controller == null) return;
 
-    unawaited(
-      controller.animateCamera(CameraUpdate.newLatLng(LatLng(grave.location.latitude, grave.location.longitude))),
-    );
+    unawaited(controller.animateCamera(CameraUpdate.newLatLng(LatLng(location.latitude, location.longitude))));
   }
 
   Future<void> _focusCemetery(String cemeteryId) async {
@@ -315,7 +316,7 @@ class _MapViewState extends ConsumerState<MapView> {
     if (!_styleLoaded || controller == null) return;
 
     final generation = ++_syncGeneration;
-    final graves = widget.graves.toList();
+    final graves = _locatedGraves;
 
     await controller.clearSymbols();
     await controller.clearCircles();
@@ -331,7 +332,12 @@ class _MapViewState extends ConsumerState<MapView> {
     await _fitCameraToGraves(controller, graves);
   }
 
-  Future<void> _addGravePins(MapLibreMapController controller, List<Grave> graves) async {
+  List<_LocatedGrave> get _locatedGraves => [
+    for (final grave in widget.graves)
+      if (grave.location case final location?) (id: grave.id, location: location),
+  ];
+
+  Future<void> _addGravePins(MapLibreMapController controller, List<_LocatedGrave> graves) async {
     if (graves.isEmpty) return;
 
     await controller.addSymbols(
@@ -445,7 +451,7 @@ class _MapViewState extends ConsumerState<MapView> {
   Map<String, int> _graveCountsByCemetery() {
     final counts = {for (final cemetery in widget.cemeteries) cemetery.id: 0};
 
-    for (final grave in widget.graves) {
+    for (final grave in _locatedGraves) {
       for (final cemetery in widget.cemeteries) {
         if (!cemetery.contains(grave.location.longitude, grave.location.latitude)) continue;
         counts[cemetery.id] = (counts[cemetery.id] ?? 0) + 1;
@@ -456,7 +462,7 @@ class _MapViewState extends ConsumerState<MapView> {
     return counts;
   }
 
-  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<Grave> graves) async {
+  Future<void> _fitCameraToGraves(MapLibreMapController controller, List<_LocatedGrave> graves) async {
     if (_didFitCamera || graves.isEmpty) return;
     _didFitCamera = true;
 
