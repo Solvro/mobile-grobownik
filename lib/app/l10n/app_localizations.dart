@@ -726,6 +726,108 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.'**
   String get login_offline;
+
+  /// Button label after the visit has been saved
+  ///
+  /// In pl, this message translates to:
+  /// **'Odwiedzono'**
+  String get visit_marked;
+
+  /// Snackbar after a visit is saved
+  ///
+  /// In pl, this message translates to:
+  /// **'Zapisano wizytę'**
+  String get visit_saved;
+
+  /// Snackbar when saving a visit fails
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zapisać wizyty. Spróbuj ponownie.'**
+  String get visit_save_failed;
+
+  /// Snackbar when offline
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak połączenia – nie można teraz zapisać wizyty.'**
+  String get visit_offline;
+
+  /// Snackbar when login is still running
+  ///
+  /// In pl, this message translates to:
+  /// **'Trwa logowanie, spróbuj za chwilę.'**
+  String get visit_login_in_progress;
+
+  /// Snackbar when user position is unknown
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie znamy Twojej lokalizacji. Włącz GPS i zezwól aplikacji na dostęp do lokalizacji.'**
+  String get visit_no_location;
+
+  /// Snackbar when the user is too far from the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Jesteś za daleko od grobu ({distance}). Podejdź bliżej – do {limit}.'**
+  String visit_too_far(String distance, String limit);
+
+  /// Visit count and last visit date of the user for this grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Twoje wizyty: {count} · ostatnio {date}'**
+  String grave_visits_summary(String count, String date);
+
+  /// Shown when the user has never visited the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie masz jeszcze wizyt przy tym grobie'**
+  String get grave_visits_none;
+
+  /// Tab with the user's visit history for the grave
+  ///
+  /// In pl, this message translates to:
+  /// **'Moje wizyty'**
+  String get grave_tab_my_visits;
+
+  /// Visit history tab when logged out
+  ///
+  /// In pl, this message translates to:
+  /// **'Zaloguj się, aby zapisywać wizyty i widzieć ich historię.'**
+  String get grave_visits_login_prompt;
+
+  /// Visit history tab while login is in progress, offline or failed
+  ///
+  /// In pl, this message translates to:
+  /// **'Historia wizyt będzie dostępna po zalogowaniu.'**
+  String get grave_visits_unavailable;
+
+  /// Visit history failed to load
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się pobrać historii wizyt.'**
+  String get grave_visits_error;
+
+  /// Title of the dialog asking to confirm a second visit on the same day
+  ///
+  /// In pl, this message translates to:
+  /// **'Dzisiejsza wizyta jest już zapisana'**
+  String get visit_again_today_title;
+
+  /// Body of the second-visit confirmation dialog
+  ///
+  /// In pl, this message translates to:
+  /// **'Masz już zapisaną dzisiejszą wizytę przy tym grobie (o {time}). Czy na pewno chcesz zapisać kolejną?'**
+  String visit_again_today_body(String time);
+
+  /// Confirm button of the second-visit dialog
+  ///
+  /// In pl, this message translates to:
+  /// **'Zapisz kolejną'**
+  String get visit_again_today_confirm;
+
+  /// Generic cancel button
+  ///
+  /// In pl, this message translates to:
+  /// **'Anuluj'**
+  String get action_cancel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

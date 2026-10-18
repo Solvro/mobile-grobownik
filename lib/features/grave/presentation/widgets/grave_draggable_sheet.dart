@@ -13,6 +13,7 @@ import "../../../../common/providers/user_location_provider.dart";
 import "../../../../common/utils/distance.dart";
 import "../../../../common/widgets/bottom_sheet_handler.dart";
 import "../../../../common/widgets/image_carousel.dart";
+import "../../../visits/presentation/widgets/grave_visits.dart";
 import "../../data/models/grave.dart";
 import "../../data/repositories/graves_repository.dart";
 import "../providers/selected_grave_provider.dart";
@@ -101,7 +102,7 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
             controller: _controller,
             builder: (BuildContext context, ScrollController scrollController) {
               return DefaultTabController(
-                length: 2,
+                length: 3,
                 child: DecoratedBox(
                   decoration: BoxDecoration(color: context.colorScheme.surface),
                   child: ClipRRect(
@@ -215,7 +216,8 @@ class _GraveDetails extends ConsumerWidget {
             style: context.textTheme.bodyMedium,
           ),
         const SizedBox(height: 16),
-        GraveActionButtons(),
+        GraveActionButtons(key: ValueKey(grave.id), grave: grave),
+        GraveVisitsSummary(graveId: grave.id),
         const SizedBox(height: 16),
         ImageCarousel(photoIds: grave.photoIds),
         const SizedBox(height: 16),

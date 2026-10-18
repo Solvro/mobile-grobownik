@@ -484,5 +484,94 @@
   "login_offline": "Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.",
   "@login_offline": {
     "description": "Login failed because the server could not be reached"
+  },
+  "visit_marked": "Odwiedzono",
+  "@visit_marked": {
+    "description": "Button label after the visit has been saved"
+  },
+  "visit_saved": "Zapisano wizytę",
+  "@visit_saved": {
+    "description": "Snackbar after a visit is saved"
+  },
+  "visit_save_failed": "Nie udało się zapisać wizyty. Spróbuj ponownie.",
+  "@visit_save_failed": {
+    "description": "Snackbar when saving a visit fails"
+  },
+  "visit_offline": "Brak połączenia – nie można teraz zapisać wizyty.",
+  "@visit_offline": {
+    "description": "Snackbar when offline"
+  },
+  "visit_login_in_progress": "Trwa logowanie, spróbuj za chwilę.",
+  "@visit_login_in_progress": {
+    "description": "Snackbar when login is still running"
+  },
+  "visit_no_location": "Nie znamy Twojej lokalizacji. Włącz GPS i zezwól aplikacji na dostęp do lokalizacji.",
+  "@visit_no_location": {
+    "description": "Snackbar when user position is unknown"
+  },
+  "visit_too_far": "Jesteś za daleko od grobu ({distance}). Podejdź bliżej – do {limit}.",
+  "@visit_too_far": {
+    "description": "Snackbar when the user is too far from the grave",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "grave_visits_summary": "Twoje wizyty: {count} · ostatnio {date}",
+  "@grave_visits_summary": {
+    "description": "Visit count and last visit date of the user for this grave",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "grave_visits_none": "Nie masz jeszcze wizyt przy tym grobie",
+  "@grave_visits_none": {
+    "description": "Shown when the user has never visited the grave"
+  },
+  "grave_tab_my_visits": "Moje wizyty",
+  "@grave_tab_my_visits": {
+    "description": "Tab with the user's visit history for the grave"
+  },
+  "grave_visits_login_prompt": "Zaloguj się, aby zapisywać wizyty i widzieć ich historię.",
+  "@grave_visits_login_prompt": {
+    "description": "Visit history tab when logged out"
+  },
+  "grave_visits_unavailable": "Historia wizyt będzie dostępna po zalogowaniu.",
+  "@grave_visits_unavailable": {
+    "description": "Visit history tab while login is in progress, offline or failed"
+  },
+  "grave_visits_error": "Nie udało się pobrać historii wizyt.",
+  "@grave_visits_error": {
+    "description": "Visit history failed to load"
+  },
+  "visit_again_today_title": "Dzisiejsza wizyta jest już zapisana",
+  "@visit_again_today_title": {
+    "description": "Title of the dialog asking to confirm a second visit on the same day"
+  },
+  "visit_again_today_body": "Masz już zapisaną dzisiejszą wizytę przy tym grobie (o {time}). Czy na pewno chcesz zapisać kolejną?",
+  "@visit_again_today_body": {
+    "description": "Body of the second-visit confirmation dialog",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "visit_again_today_confirm": "Zapisz kolejną",
+  "@visit_again_today_confirm": {
+    "description": "Confirm button of the second-visit dialog"
+  },
+  "action_cancel": "Anuluj",
+  "@action_cancel": {
+    "description": "Generic cancel button"
   }
 }

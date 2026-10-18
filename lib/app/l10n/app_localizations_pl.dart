@@ -347,4 +347,62 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get login_offline => 'Brak połączenia z serwerem. Spróbuj ponownie, gdy wróci internet.';
+
+  @override
+  String get visit_marked => 'Odwiedzono';
+
+  @override
+  String get visit_saved => 'Zapisano wizytę';
+
+  @override
+  String get visit_save_failed => 'Nie udało się zapisać wizyty. Spróbuj ponownie.';
+
+  @override
+  String get visit_offline => 'Brak połączenia – nie można teraz zapisać wizyty.';
+
+  @override
+  String get visit_login_in_progress => 'Trwa logowanie, spróbuj za chwilę.';
+
+  @override
+  String get visit_no_location =>
+      'Nie znamy Twojej lokalizacji. Włącz GPS i zezwól aplikacji na dostęp do lokalizacji.';
+
+  @override
+  String visit_too_far(String distance, String limit) {
+    return 'Jesteś za daleko od grobu ($distance). Podejdź bliżej – do $limit.';
+  }
+
+  @override
+  String grave_visits_summary(String count, String date) {
+    return 'Twoje wizyty: $count · ostatnio $date';
+  }
+
+  @override
+  String get grave_visits_none => 'Nie masz jeszcze wizyt przy tym grobie';
+
+  @override
+  String get grave_tab_my_visits => 'Moje wizyty';
+
+  @override
+  String get grave_visits_login_prompt => 'Zaloguj się, aby zapisywać wizyty i widzieć ich historię.';
+
+  @override
+  String get grave_visits_unavailable => 'Historia wizyt będzie dostępna po zalogowaniu.';
+
+  @override
+  String get grave_visits_error => 'Nie udało się pobrać historii wizyt.';
+
+  @override
+  String get visit_again_today_title => 'Dzisiejsza wizyta jest już zapisana';
+
+  @override
+  String visit_again_today_body(String time) {
+    return 'Masz już zapisaną dzisiejszą wizytę przy tym grobie (o $time). Czy na pewno chcesz zapisać kolejną?';
+  }
+
+  @override
+  String get visit_again_today_confirm => 'Zapisz kolejną';
+
+  @override
+  String get action_cancel => 'Anuluj';
 }

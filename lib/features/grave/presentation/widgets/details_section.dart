@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 import "../../../../app/l10n/app_localizations.dart";
+import "../../../visits/presentation/widgets/grave_visits.dart";
 import "../../data/models/grave.dart";
 import "biography_card.dart";
 import "grave_location_card.dart";
@@ -23,6 +24,7 @@ class DetailsSection extends StatelessWidget {
           tabs: [
             Tab(text: l10n.grave_tab_directions),
             Tab(text: l10n.grave_tab_biography),
+            Tab(text: l10n.grave_tab_my_visits),
           ],
         ),
         const SizedBox(height: 16),
@@ -41,7 +43,8 @@ class DetailsSection extends StatelessWidget {
                       GraveNotesCard(grave: grave),
                     ],
                   ),
-                  _ => BiographyCard(grave: grave),
+                  1 => BiographyCard(grave: grave),
+                  _ => GraveVisitsHistory(graveId: grave.id),
                 };
               },
             );
