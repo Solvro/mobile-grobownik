@@ -92,7 +92,9 @@ class _MyDraggableSheetState extends ConsumerState<MyDraggableSheet> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final minSize = 200 / constraints.maxHeight;
+          if (constraints.maxHeight <= 0) return const SizedBox.shrink();
+
+          final minSize = (200 / constraints.maxHeight).clamp(0.0, 0.4);
 
           return DraggableScrollableSheet(
             key: _sheet,
