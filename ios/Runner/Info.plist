@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikacja potrzebuje dostępu do aparatu, aby zrobić zdjęcie grobu do zgłoszenia.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aplikacja potrzebuje dostępu do zdjęć, aby dołączyć zdjęcie grobu do zgłoszenia.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Aplikacja potrzebuje dostępu do lokalizacji, aby wyświetlić Twoją pozycję na mapie.</string>
 	<key>UIApplicationSceneManifest</key>

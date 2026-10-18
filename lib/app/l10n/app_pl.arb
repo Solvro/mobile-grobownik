@@ -573,5 +573,187 @@
   "action_cancel": "Anuluj",
   "@action_cancel": {
     "description": "Generic cancel button"
+  },
+  "add_photos": "Dodaj zdjęcia",
+  "@add_photos": {
+    "description": "Button and screen title for adding grave photos"
+  },
+  "correction_intro": "Zmień tylko to, co wymaga poprawy. Zgłoszenie sprawdzi moderator, zanim zmiany pojawią się w aplikacji.",
+  "@correction_intro": {
+    "description": "Intro of the correction form"
+  },
+  "photo_intro": "Dodaj zdjęcia grobu. Pojawią się w aplikacji po sprawdzeniu przez moderatora.",
+  "@photo_intro": {
+    "description": "Intro of the add-photos form"
+  },
+  "correction_section_person": "Osoba",
+  "@correction_section_person": {
+    "description": "Section header in the correction form"
+  },
+  "correction_section_place": "Miejsce",
+  "@correction_section_place": {
+    "description": "Section header in the correction form"
+  },
+  "correction_section_photos": "Zdjęcia",
+  "@correction_section_photos": {
+    "description": "Section header in the correction form"
+  },
+  "field_first_name": "Imię",
+  "@field_first_name": {
+    "description": "Form field label"
+  },
+  "field_last_name": "Nazwisko",
+  "@field_last_name": {
+    "description": "Form field label"
+  },
+  "field_birth_date": "Data urodzenia",
+  "@field_birth_date": {
+    "description": "Form field label"
+  },
+  "field_death_date": "Data śmierci",
+  "@field_death_date": {
+    "description": "Form field label"
+  },
+  "correction_clear": "Wyczyść",
+  "@correction_clear": {
+    "description": "Clears a date field"
+  },
+  "correction_cemetery_none": "Nie wiem / brak",
+  "@correction_cemetery_none": {
+    "description": "Empty choice in the cemetery picker"
+  },
+  "correction_photo_camera": "Zrób zdjęcie",
+  "@correction_photo_camera": {
+    "description": "Pick a photo with the camera"
+  },
+  "correction_photo_gallery": "Wybierz z galerii",
+  "@correction_photo_gallery": {
+    "description": "Pick photos from the gallery"
+  },
+  "correction_photo_remove": "Usuń zdjęcie",
+  "@correction_photo_remove": {
+    "description": "Removes a picked photo"
+  },
+  "correction_photos_limit": "Możesz dodać maksymalnie {count} zdjęć.",
+  "@correction_photos_limit": {
+    "description": "Too many photos picked",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "correction_comment": "Komentarz lub źródło informacji",
+  "@correction_comment": {
+    "description": "Free-text field in the correction form"
+  },
+  "correction_submit": "Wyślij zgłoszenie",
+  "@correction_submit": {
+    "description": "Submit button of the correction form"
+  },
+  "correction_uploading": "Wysyłanie zdjęć {done}/{total}…",
+  "@correction_uploading": {
+    "description": "Progress while uploading photos",
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "correction_nothing_changed": "Nic nie zostało zmienione.",
+  "@correction_nothing_changed": {
+    "description": "Submitting a correction without any change"
+  },
+  "correction_no_photos": "Dodaj przynajmniej jedno zdjęcie.",
+  "@correction_no_photos": {
+    "description": "Submitting the add-photos form without photos"
+  },
+  "correction_sent": "Dziękujemy! Zgłoszenie trafiło do moderacji.",
+  "@correction_sent": {
+    "description": "Snackbar after sending a correction"
+  },
+  "correction_failed": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie.",
+  "@correction_failed": {
+    "description": "Sending a correction failed"
+  },
+  "correction_discard_title": "Odrzucić zmiany?",
+  "@correction_discard_title": {
+    "description": "Dialog when leaving the form with unsaved edits"
+  },
+  "correction_discard_body": "Wprowadzone zmiany nie zostaną wysłane.",
+  "@correction_discard_body": {
+    "description": "Dialog body when leaving the form"
+  },
+  "correction_discard_confirm": "Odrzuć",
+  "@correction_discard_confirm": {
+    "description": "Confirms leaving the form"
+  },
+  "location_picker_title": "Wskaż lokalizację grobu",
+  "@location_picker_title": {
+    "description": "Title of the map location picker"
+  },
+  "location_picker_hint": "Przesuń mapę tak, aby pinezka wskazywała dokładnie grób.",
+  "@location_picker_hint": {
+    "description": "Hint shown on the location picker"
+  },
+  "location_picker_confirm": "Wybierz tę lokalizację",
+  "@location_picker_confirm": {
+    "description": "Confirms the picked location"
+  },
+  "location_picker_satellite": "Widok satelitarny",
+  "@location_picker_satellite": {
+    "description": "Switches the picker to aerial imagery"
+  },
+  "location_picker_map": "Zwykła mapa",
+  "@location_picker_map": {
+    "description": "Switches the picker to the regular map"
+  },
+  "location_picker_show_me": "Pokaż moją lokalizację",
+  "@location_picker_show_me": {
+    "description": "Shows the user's position on the picker map"
+  },
+  "location_picker_hide_me": "Ukryj moją lokalizację",
+  "@location_picker_hide_me": {
+    "description": "Hides the user's position on the picker map"
+  },
+  "location_picker_go_to_me": "Przejdź do mojej lokalizacji",
+  "@location_picker_go_to_me": {
+    "description": "Moves the picker map to the user's position"
+  },
+  "location_picker_current": "Obecna lokalizacja w aplikacji",
+  "@location_picker_current": {
+    "description": "Legend for the grave's current location marker"
+  },
+  "correction_location_title": "Lokalizacja grobu",
+  "@correction_location_title": {
+    "description": "Row in the correction form"
+  },
+  "correction_location_unchanged": "Bez zmian",
+  "@correction_location_unchanged": {
+    "description": "No new location picked"
+  },
+  "correction_location_picked": "Nowa: {coordinates}",
+  "@correction_location_picked": {
+    "description": "A new location was picked",
+    "placeholders": {
+      "coordinates": {
+        "type": "String"
+      }
+    }
+  },
+  "correction_location_pick": "Wskaż na mapie",
+  "@correction_location_pick": {
+    "description": "Opens the map location picker"
+  },
+  "correction_photo_preview": "Dodane zdjęcie",
+  "@correction_photo_preview": {
+    "description": "Screen reader label of a picked photo thumbnail"
+  },
+  "location_picker_pin": "Wybrany punkt",
+  "@location_picker_pin": {
+    "description": "Screen reader label of the pin in the middle of the picker map"
   }
 }

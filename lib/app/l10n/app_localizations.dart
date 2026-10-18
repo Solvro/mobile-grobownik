@@ -828,6 +828,252 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Anuluj'**
   String get action_cancel;
+
+  /// Button and screen title for adding grave photos
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj zdjęcia'**
+  String get add_photos;
+
+  /// Intro of the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmień tylko to, co wymaga poprawy. Zgłoszenie sprawdzi moderator, zanim zmiany pojawią się w aplikacji.'**
+  String get correction_intro;
+
+  /// Intro of the add-photos form
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj zdjęcia grobu. Pojawią się w aplikacji po sprawdzeniu przez moderatora.'**
+  String get photo_intro;
+
+  /// Section header in the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Osoba'**
+  String get correction_section_person;
+
+  /// Section header in the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Miejsce'**
+  String get correction_section_place;
+
+  /// Section header in the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjęcia'**
+  String get correction_section_photos;
+
+  /// Form field label
+  ///
+  /// In pl, this message translates to:
+  /// **'Imię'**
+  String get field_first_name;
+
+  /// Form field label
+  ///
+  /// In pl, this message translates to:
+  /// **'Nazwisko'**
+  String get field_last_name;
+
+  /// Form field label
+  ///
+  /// In pl, this message translates to:
+  /// **'Data urodzenia'**
+  String get field_birth_date;
+
+  /// Form field label
+  ///
+  /// In pl, this message translates to:
+  /// **'Data śmierci'**
+  String get field_death_date;
+
+  /// Clears a date field
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyczyść'**
+  String get correction_clear;
+
+  /// Empty choice in the cemetery picker
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie wiem / brak'**
+  String get correction_cemetery_none;
+
+  /// Pick a photo with the camera
+  ///
+  /// In pl, this message translates to:
+  /// **'Zrób zdjęcie'**
+  String get correction_photo_camera;
+
+  /// Pick photos from the gallery
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybierz z galerii'**
+  String get correction_photo_gallery;
+
+  /// Removes a picked photo
+  ///
+  /// In pl, this message translates to:
+  /// **'Usuń zdjęcie'**
+  String get correction_photo_remove;
+
+  /// Too many photos picked
+  ///
+  /// In pl, this message translates to:
+  /// **'Możesz dodać maksymalnie {count} zdjęć.'**
+  String correction_photos_limit(String count);
+
+  /// Free-text field in the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Komentarz lub źródło informacji'**
+  String get correction_comment;
+
+  /// Submit button of the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyślij zgłoszenie'**
+  String get correction_submit;
+
+  /// Progress while uploading photos
+  ///
+  /// In pl, this message translates to:
+  /// **'Wysyłanie zdjęć {done}/{total}…'**
+  String correction_uploading(String done, String total);
+
+  /// Submitting a correction without any change
+  ///
+  /// In pl, this message translates to:
+  /// **'Nic nie zostało zmienione.'**
+  String get correction_nothing_changed;
+
+  /// Submitting the add-photos form without photos
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj przynajmniej jedno zdjęcie.'**
+  String get correction_no_photos;
+
+  /// Snackbar after sending a correction
+  ///
+  /// In pl, this message translates to:
+  /// **'Dziękujemy! Zgłoszenie trafiło do moderacji.'**
+  String get correction_sent;
+
+  /// Sending a correction failed
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się wysłać zgłoszenia. Spróbuj ponownie.'**
+  String get correction_failed;
+
+  /// Dialog when leaving the form with unsaved edits
+  ///
+  /// In pl, this message translates to:
+  /// **'Odrzucić zmiany?'**
+  String get correction_discard_title;
+
+  /// Dialog body when leaving the form
+  ///
+  /// In pl, this message translates to:
+  /// **'Wprowadzone zmiany nie zostaną wysłane.'**
+  String get correction_discard_body;
+
+  /// Confirms leaving the form
+  ///
+  /// In pl, this message translates to:
+  /// **'Odrzuć'**
+  String get correction_discard_confirm;
+
+  /// Title of the map location picker
+  ///
+  /// In pl, this message translates to:
+  /// **'Wskaż lokalizację grobu'**
+  String get location_picker_title;
+
+  /// Hint shown on the location picker
+  ///
+  /// In pl, this message translates to:
+  /// **'Przesuń mapę tak, aby pinezka wskazywała dokładnie grób.'**
+  String get location_picker_hint;
+
+  /// Confirms the picked location
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybierz tę lokalizację'**
+  String get location_picker_confirm;
+
+  /// Switches the picker to aerial imagery
+  ///
+  /// In pl, this message translates to:
+  /// **'Widok satelitarny'**
+  String get location_picker_satellite;
+
+  /// Switches the picker to the regular map
+  ///
+  /// In pl, this message translates to:
+  /// **'Zwykła mapa'**
+  String get location_picker_map;
+
+  /// Shows the user's position on the picker map
+  ///
+  /// In pl, this message translates to:
+  /// **'Pokaż moją lokalizację'**
+  String get location_picker_show_me;
+
+  /// Hides the user's position on the picker map
+  ///
+  /// In pl, this message translates to:
+  /// **'Ukryj moją lokalizację'**
+  String get location_picker_hide_me;
+
+  /// Moves the picker map to the user's position
+  ///
+  /// In pl, this message translates to:
+  /// **'Przejdź do mojej lokalizacji'**
+  String get location_picker_go_to_me;
+
+  /// Legend for the grave's current location marker
+  ///
+  /// In pl, this message translates to:
+  /// **'Obecna lokalizacja w aplikacji'**
+  String get location_picker_current;
+
+  /// Row in the correction form
+  ///
+  /// In pl, this message translates to:
+  /// **'Lokalizacja grobu'**
+  String get correction_location_title;
+
+  /// No new location picked
+  ///
+  /// In pl, this message translates to:
+  /// **'Bez zmian'**
+  String get correction_location_unchanged;
+
+  /// A new location was picked
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowa: {coordinates}'**
+  String correction_location_picked(String coordinates);
+
+  /// Opens the map location picker
+  ///
+  /// In pl, this message translates to:
+  /// **'Wskaż na mapie'**
+  String get correction_location_pick;
+
+  /// Screen reader label of a picked photo thumbnail
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodane zdjęcie'**
+  String get correction_photo_preview;
+
+  /// Screen reader label of the pin in the middle of the picker map
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybrany punkt'**
+  String get location_picker_pin;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
