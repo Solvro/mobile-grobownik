@@ -1,0 +1,49 @@
+import "dart:async";
+
+import "package:dio/dio.dart";
+import "package:fast_immutable_collections/fast_immutable_collections.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+
+import "../../../../common/network/directus_client.dart";
+import "../../../grave/data/repositories/graves_repository.dart";
+import "../models/cemetery.dart";
+
+part "cemeteries_repository.g.dart";
+
+@riverpod
+Future<IList<Cemetery>> cemeteriesRepository(Ref ref) async {
+  final restClient = ref.watch(directusClientProvider);
+  final cemeteries = await restClient.fetchCemeteries();
+  return cemeteries.toIList();
+}
+
+extension DioFetchCemeteriesX on Dio {
+  Future<List<Cemetery>> fetchCemeteries() async {
+    try {
+      final response = await get<Map<String, dynamic>>("/items/Cemeteries");
+      final cemeteries = response.data?["data"] as List? ?? [];
+
+      return cemeteries.map(_parseCemetery).whereType<Cemetery>().toList();
+    } on DioException catch (e, stackTrace) {
+      Error.throwWithStackTrace(DirectusOfflineException(e), stackTrace);
+    }
+  }
+}
+
+Cemetery? _parseCemetery(dynamic raw) {
+  if (raw is! Map) return null;
+
+  try {
+    final map = Map<String, dynamic>.from(raw);
+    final boundary = map["boundary"];
+    if (boundary is Map<String, dynamic>) {
+      map["boundary"] = boundary;
+    } else if (boundary is Map) {
+      map["boundary"] = Map<String, dynamic>.from(boundary);
+    }
+
+    return Cemetery.fromJson(map);
+  } on Object {
+    return null;
+  }
+}

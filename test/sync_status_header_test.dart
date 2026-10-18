@@ -8,26 +8,31 @@ import "package:mobile_grobownik/common/sync/sync_controller.dart";
 import "package:mobile_grobownik/common/sync/sync_status.dart";
 import "package:mobile_grobownik/features/grave/presentation/widgets/sync_status_header.dart";
 
+class _SyncCalls {
+  var count = 0;
+}
+
 /// Reports a fixed status and counts how many times a sync was requested.
 class _FakeSyncController extends SyncController {
-  _FakeSyncController(this.initial);
+  _FakeSyncController(this.initial, this._calls);
 
   final SyncStatus initial;
-  var syncCalls = 0;
+  final _SyncCalls _calls;
 
   @override
   SyncStatus build() => initial;
 
   @override
   Future<void> sync() async {
-    syncCalls++;
+    _calls.count++;
   }
 }
 
 String _time(DateTime value) => DateFormat("dd.MM.yyyy HH:mm").format(value.toLocal());
 
-Future<_FakeSyncController> _pumpHeader(WidgetTester tester, SyncStatus status) async {
-  final controller = _FakeSyncController(status);
+Future<_SyncCalls> _pumpHeader(WidgetTester tester, SyncStatus status) async {
+  final calls = _SyncCalls();
+  final controller = _FakeSyncController(status, calls);
 
   await tester.pumpWidget(
     ProviderScope(
@@ -41,7 +46,7 @@ Future<_FakeSyncController> _pumpHeader(WidgetTester tester, SyncStatus status) 
     ),
   );
 
-  return controller;
+  return calls;
 }
 
 IconButton _refreshButton(WidgetTester tester) => tester.widget<IconButton>(find.byType(IconButton));
@@ -108,11 +113,11 @@ void main() {
   });
 
   testWidgets("tapping the button starts a sync", (tester) async {
-    final controller = await _pumpHeader(tester, SyncSuccess(lastSyncedAt: syncedAt));
+    final calls = await _pumpHeader(tester, SyncSuccess(lastSyncedAt: syncedAt));
 
     await tester.tap(find.byTooltip("Odśwież dane"));
     await tester.pump();
 
-    expect(controller.syncCalls, 1);
+    expect(calls.count, 1);
   });
 }
