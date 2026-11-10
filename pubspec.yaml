@@ -52,6 +52,8 @@ dev_dependencies:
   flutter_gen_runner: ^5.14.1
   envied_generator: ^1.3.8
   drift_dev: 2.34.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 # auto_route_generator (<=10.5.0) caps analyzer <11 and has no analyzer-12 build yet;
 # the analyzer-12 lint/codegen stack needs analyzer 12, so force it here.
